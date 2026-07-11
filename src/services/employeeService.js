@@ -1,0 +1,191 @@
+import axios from 'axios';
+
+// URL de base de l'API (alignée sur apiConfig pour le déploiement)
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const isSupabase = API_URL?.includes?.('supabase.co');
+
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  ...(isSupabase && SUPABASE_ANON_KEY && {
+    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    apikey: SUPABASE_ANON_KEY
+  }),
+};
+
+// Instance axios avec la configuration de base
+const api = axios.create({
+  baseURL: API_URL,
+  headers: defaultHeaders,
+});
+
+// Pour les requêtes multipart/form-data (envoi de fichiers)
+const formDataApi = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    ...(isSupabase && SUPABASE_ANON_KEY && { Authorization: `Bearer ${SUPABASE_ANON_KEY}` }),
+  },
+});
+
+// Gestion des erreurs
+api.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
+formDataApi.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
+// Service pour les employés
+const employeeService = {
+  // Méthode pour récupérer tous les employés (ajoutée)
+  getAll: async () => {
+    try {
+      const response = await api.get('/employees');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching all employees:', error);
+      throw error;
+    }
+  },
+
+  // Méthode d'authentification des employés
+  authenticate: async (email, password) => {
+    try {
+      const response = await api.post('/employees/auth/login', { email, password });
+      return response.data;
+    } catch (error) {
+      console.error('Authentication error:', error);
+      throw error;
+    }
+  },
+  
+  // Rechercher des employés avec des filtres
+  search: async (params) => {
+    try {
+      const response = await api.get('/employees/search', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Error searching employees:', error);
+      throw error;
+    }
+  },
+  
+  // Récupérer un employé par ID
+  getById: async (id) => {
+    try {
+      const response = await api.get(`/employees/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching employee ${id}:`, error);
+      throw error;
+    }
+  },
+  
+  // Créer un nouvel employé
+  createEmployee: async (employeeData) => {
+    try {
+      // Utiliser formDataApi si employeeData est une instance de FormData
+      const isFormData = employeeData instanceof FormData;
+      const apiToUse = isFormData ? formDataApi : api;
+      
+      const response = await apiToUse.post('/employees', employeeData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error creating employee:', error);
+      return { 
+        success: false, 
+        message: error.response?.data?.error || 'Une erreur est survenue lors de la création de l\'employé',
+        details: error.response?.data?.details || error.message
+      };
+    }
+  },
+  
+  // Mettre à jour un employé
+  update: async (id, employeeData) => {
+    try {
+      const isFormData = employeeData instanceof FormData;
+      const apiToUse = isFormData ? formDataApi : api;
+
+      try {
+        const response = await apiToUse.put(`/employees/${id}`, employeeData);
+        return { success: true, data: response.data };
+      } catch (edgeError) {
+        // Fallback: Edge Function 404 → utiliser l'API REST Supabase directement
+        if (isSupabase && SUPABASE_ANON_KEY && !isFormData && edgeError.response?.status === 404) {
+          const restBase = API_URL.replace(/\/functions\/v1\/?$/, '/rest/v1');
+          const restUrl = `${restBase}/employees?id=eq.${id}`;
+          const restRes = await axios.patch(restUrl, employeeData, {
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=representation'
+            }
+          });
+          const data = Array.isArray(restRes.data) ? restRes.data[0] : restRes.data;
+          return { success: true, data };
+        }
+        throw edgeError;
+      }
+    } catch (error) {
+      console.error(`Error updating employee ${id}:`, error);
+      return {
+        success: false,
+        message: error.response?.data?.error || 'Une erreur est survenue lors de la mise à jour de l\'employé',
+        details: error.response?.data?.details || error.message
+      };
+    }
+  },
+  
+  // Supprimer un employé
+  delete: async (id) => {
+    try {
+      const response = await api.delete(`/employees/${id}`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error(`Error deleting employee ${id}:`, error);
+      return { 
+        success: false, 
+        message: error.response?.data?.error || 'Une erreur est survenue lors de la suppression de l\'employé',
+        details: error.response?.data?.details || error.message
+      };
+    }
+  },
+  
+  // Récupérer les employés dont le contrat expire bientôt
+  getExpiringContracts: async (daysThreshold = 30) => {
+    try {
+      const response = await api.get('/employees/alerts/expiring-contracts', {
+        params: { daysThreshold }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching expiring contracts:', error);
+      throw error;
+    }
+  },
+  
+  // Récupérer des statistiques sur les employés
+  getStatistics: async () => {
+    try {
+      const response = await api.get('/employees/stats/overview');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching employee statistics:', error);
+      throw error;
+    }
+  }
+};
+
+// Exporter uniquement l'objet employeeService par défaut
+export default employeeService;
