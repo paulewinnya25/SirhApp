@@ -4,8 +4,6 @@ import { formatDate } from '../../utils/dateUtils';
 import { decodeHtmlEntities } from '../../utils/textUtils';
 import employeeService from '../../services/employeeService';
 import EmployeeDetailModal from './EmployeeDetailModal';
-import EmployeeStatsCards from './EmployeeStatsCards';
-import ContractAlerts from './ContractAlerts';
 import EmailModal from '../common/EmailModal';
 import '../../styles/EmployeeList.css';
 import '../../styles/Tables.css';
@@ -313,12 +311,7 @@ const EmployeeList = () => {
           {error}
         </div>
       )}
-      
-      {/* Ajout des cartes statistiques d'effectifs */}
-      <EmployeeStatsCards employees={employees} />
-      
-      <ContractAlerts employees={employees} />
-      
+
       <div className="employee-filters">
         <div className="row">
           <div className="col-md-8 mb-3 mb-md-0">
