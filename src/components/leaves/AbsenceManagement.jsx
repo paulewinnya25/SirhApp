@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { absenceService, employeeService } from '../../services/api';
+import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
 
@@ -28,6 +29,8 @@ const AbsenceManagement = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [filterDateStart, setFilterDateStart] = useState('');
   const [filterDateEnd, setFilterDateEnd] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const baseAbsenceFields = {
     type_absence: Yup.string().required('Le type d\'absence est requis'),
@@ -612,6 +615,15 @@ const AbsenceManagement = () => {
     return result;
   }, [absences, searchTerm, statusFilter, typeFilter, filterDateStart, filterDateEnd, sortConfig]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, typeFilter, filterDateStart, filterDateEnd]);
+
+  const paginatedAbsences = React.useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedAbsences.slice(start, start + itemsPerPage);
+  }, [filteredAndSortedAbsences, currentPage, itemsPerPage]);
+
   // Reset filters
   const resetFilters = () => {
     setSearchTerm('');
@@ -620,6 +632,7 @@ const AbsenceManagement = () => {
     setFilterDateStart('');
     setFilterDateEnd('');
     setSortConfig({ key: 'date_debut', direction: 'desc' });
+    setCurrentPage(1);
   };
 
   // Get class for row highlight
@@ -836,7 +849,7 @@ const AbsenceManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAndSortedAbsences.map((absence) => (
+                  {paginatedAbsences.map((absence) => (
                     <tr key={absence.id} className={getRowHighlightClass(absence)}>
                       <td>
                         <div className="d-flex align-items-center">
@@ -899,6 +912,13 @@ const AbsenceManagement = () => {
                 </tbody>
               </table>
             </div>
+            <ListPagination
+              currentPage={currentPage}
+              totalItems={filteredAndSortedAbsences.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              itemLabel="absence"
+            />
           )}
         </div>
       </div>

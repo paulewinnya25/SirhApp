@@ -5,6 +5,7 @@ import { decodeHtmlEntities } from '../../utils/textUtils';
 import employeeService from '../../services/employeeService';
 import EmployeeDetailModal from './EmployeeDetailModal';
 import EmailModal from '../common/EmailModal';
+import ListPagination from '../common/ListPagination';
 import '../../styles/EmployeeList.css';
 import '../../styles/Tables.css';
 
@@ -180,13 +181,14 @@ const EmployeeList = () => {
     });
 
     setFilteredEmployees(filtered);
+    setCurrentPage(1);
   }, [employees, searchQuery, filters]);
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage) || 1;
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
@@ -498,47 +500,13 @@ const EmployeeList = () => {
             </div>
             
             {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="employee-pagination p-3 border-top">
-                <div className="pagination-info">
-                  Affichage de {indexOfFirstItem + 1} à {Math.min(indexOfLastItem, filteredEmployees.length)} sur {filteredEmployees.length} employés
-                </div>
-                <nav>
-                  <ul className="pagination mb-0">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <button 
-                        className="page-link" 
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                      >
-                        <i className="fas fa-chevron-left"></i>
-                      </button>
-                    </li>
-                    
-                    {[...Array(totalPages).keys()].map(number => (
-                      <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
-                        <button 
-                          className="page-link" 
-                          onClick={() => handlePageChange(number + 1)}
-                        >
-                          {number + 1}
-                        </button>
-                      </li>
-                    ))}
-                    
-                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <button 
-                        className="page-link" 
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                      >
-                        <i className="fas fa-chevron-right"></i>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+            <ListPagination
+              currentPage={currentPage}
+              totalItems={filteredEmployees.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              itemLabel="employé"
+            />
           </>
         )}
       </div>

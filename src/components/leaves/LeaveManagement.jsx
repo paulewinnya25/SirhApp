@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { congeService } from '../../services/congeService';
 import { employeeService } from '../../services/api';
+import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
 
@@ -28,6 +29,8 @@ const LeaveManagement = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [rejectReason, setRejectReason] = useState('');
   const [employeeDetails, setEmployeeDetails] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
   // Validation schema pour le formulaire de congé
@@ -602,11 +605,21 @@ const LeaveManagement = () => {
     return result;
   }, [conges, searchTerm, statusFilter, sortConfig]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
+
+  const paginatedConges = React.useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedConges.slice(start, start + itemsPerPage);
+  }, [filteredAndSortedConges, currentPage, itemsPerPage]);
+
   // Réinitialiser les filtres
   const resetFilters = () => {
     setSearchTerm('');
     setStatusFilter('');
     setSortConfig({ key: 'date_demande', direction: 'desc' });
+    setCurrentPage(1);
   };
 
   // Actualiser les données
@@ -777,7 +790,7 @@ const LeaveManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAndSortedConges.map((conge) => (
+                  {paginatedConges.map((conge) => (
                     <tr key={conge.id} className={conge.statut === 'En attente' ? 'table-row-highlight' : ''}>
                       <td>
                         <div className="d-flex align-items-center">
@@ -857,6 +870,13 @@ const LeaveManagement = () => {
                 </tbody>
               </table>
             </div>
+            <ListPagination
+              currentPage={currentPage}
+              totalItems={filteredAndSortedConges.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              itemLabel="demande"
+            />
           )}
         </div>
       </div>
