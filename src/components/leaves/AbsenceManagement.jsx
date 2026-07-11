@@ -793,6 +793,7 @@ const AbsenceManagement = () => {
               )}
             </div>
           ) : (
+            <>
             <div className="table-responsive">
               <table className="table table-hover">
                 <thead>
@@ -919,6 +920,7 @@ const AbsenceManagement = () => {
               onPageChange={setCurrentPage}
               itemLabel="absence"
             />
+            </>
           )}
         </div>
       </div>

@@ -740,6 +740,7 @@ const LeaveManagement = () => {
               )}
             </div>
           ) : (
+            <>
             <div className="table-responsive">
               <table id="congesTable" className="table table-hover">
                 <thead>
@@ -877,6 +878,7 @@ const LeaveManagement = () => {
               onPageChange={setCurrentPage}
               itemLabel="demande"
             />
+            </>
           )}
         </div>
       </div>
