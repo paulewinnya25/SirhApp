@@ -70,6 +70,15 @@
 
   --font-sans: "Outfit", "Manrope", system-ui, sans-serif;
   --font-display: "Outfit", "Manrope", system-ui, sans-serif;
+
+  /* Typographie unique pour tous les onglets */
+  --fs-xs: 0.7rem;
+  --fs-sm: 0.75rem;
+  --fs-base: 0.8125rem;
+  --fs-md: 0.875rem;
+  --fs-lg: 0.95rem;
+  --fs-title: 1.35rem;
+  --fs-subtitle: 0.82rem;
 }
 
 * {
@@ -80,9 +89,9 @@
 
 body {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.55;
+  font-size: var(--fs-md);
+  font-weight: 450;
+  line-height: 1.45;
   color: var(--text);
   background: var(--bg);
   background-image: var(--bg-pattern);
@@ -118,8 +127,8 @@ p {
 }
 
 .btn {
-  padding: 0.65rem 1.25rem;
-  font-size: 0.9rem;
+  padding: 0.4rem 0.85rem;
+  font-size: var(--fs-md);
   font-family: var(--font-sans);
   border-radius: var(--radius-sm);
   transition: background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
@@ -245,6 +254,119 @@ select:focus {
 }
 
 .page-content { color: var(--text); }
+
+/* ===== Typographie unifiée (tous les onglets) ===== */
+.page-content .page-title,
+.page-title {
+  font-family: var(--font-display) !important;
+  font-size: var(--fs-title) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.page-content .page-subtitle,
+.page-subtitle,
+.page-content .breadcrumb,
+.breadcrumb {
+  font-size: var(--fs-subtitle) !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+.page-content h1 { font-size: var(--fs-title) !important; font-weight: 700 !important; }
+.page-content h2,
+.page-content h3.data-card-title,
+.page-content .data-card-title,
+.page-content .card-title,
+.page-content .table-title,
+.page-content .filter-title {
+  font-size: var(--fs-lg) !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.01em;
+}
+
+.page-content h3:not(.data-card-title),
+.page-content h4,
+.page-content h5 {
+  font-size: var(--fs-lg) !important;
+  font-weight: 650 !important;
+}
+
+.page-content,
+.page-content p,
+.page-content td,
+.page-content th,
+.page-content label,
+.page-content .form-label {
+  font-size: var(--fs-base);
+}
+
+.page-content .table,
+.page-content .custom-table,
+.page-content table {
+  font-size: var(--fs-base) !important;
+}
+
+.page-content .table thead th,
+.page-content .custom-table thead th,
+.page-content table thead th {
+  font-size: var(--fs-xs) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.page-content .table tbody td,
+.page-content .custom-table tbody td,
+.page-content table tbody td {
+  font-size: var(--fs-base) !important;
+  font-weight: 450 !important;
+  line-height: 1.35 !important;
+}
+
+.page-content .form-select,
+.page-content .form-control,
+.page-content input,
+.page-content select,
+.page-content textarea {
+  font-size: var(--fs-md) !important;
+}
+
+.page-content .btn {
+  font-size: var(--fs-md) !important;
+  padding: 0.4rem 0.85rem;
+}
+
+.page-content .btn-sm {
+  font-size: var(--fs-sm) !important;
+  padding: 0.28rem 0.55rem;
+}
+
+.page-content .badge {
+  font-size: var(--fs-xs) !important;
+}
+
+.page-content .employee-name,
+.page-content .user-name {
+  font-size: var(--fs-md) !important;
+  font-weight: 600 !important;
+}
+
+.page-content .employee-position,
+.page-content .text-muted {
+  font-size: var(--fs-sm) !important;
+}
+
+.page-content .list-pagination-info {
+  font-size: var(--fs-md) !important;
+}
+
+.page-content .list-pagination-nav,
+.page-content .list-pagination-page {
+  font-size: var(--fs-md) !important;
+}
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translate3d(0, 14px, 0); }

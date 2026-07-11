@@ -18,9 +18,10 @@
 }
 
 .page-content {
-  padding: 1.75rem 2rem 3rem;
-  max-width: var(--content-max-width, 1200px);
+  padding: 1.35rem 1.5rem 2rem;
+  max-width: var(--content-max-width, 1680px);
   margin: 0 auto;
+  width: 100%;
 }
 
 .page-title-wrapper {
@@ -46,17 +47,17 @@
 
 .page-title {
   font-family: var(--font-display, Outfit, sans-serif);
-  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
-  font-weight: 800;
+  font-size: var(--fs-title, 1.35rem);
+  font-weight: 700;
   color: var(--navy, #0b1f33) !important;
-  margin-bottom: 0.35rem;
-  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
 }
 
 .page-subtitle,
 .breadcrumb {
   color: var(--text-muted, #5c6b7a) !important;
-  font-size: 0.9rem;
+  font-size: var(--fs-subtitle, 0.82rem);
   font-weight: 400;
   margin: 0;
 }

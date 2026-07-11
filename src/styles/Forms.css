@@ -10,8 +10,8 @@
 }
 
 .form-section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--fs-lg, 0.95rem);
+  font-weight: 650;
   color: var(--text);
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;

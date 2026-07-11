@@ -9,15 +9,6 @@
   padding-bottom: 0.85rem;
 }
 
-.employee-list-page .page-title {
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
-}
-
-.employee-list-page .page-subtitle {
-  font-size: 0.82rem !important;
-}
-
 .employee-list-page .employee-filters {
   margin-bottom: 1rem;
   padding: 0.85rem 1rem;
@@ -27,13 +18,11 @@
 }
 
 .employee-list-page .filter-title {
-  font-size: 0.78rem;
   margin-bottom: 0.55rem;
 }
 
 .employee-list-page .form-select,
 .employee-list-page .form-control {
-  font-size: 0.82rem;
   min-height: 36px;
   padding: 0.35rem 0.65rem;
 }
@@ -59,8 +48,6 @@
   align-items: center;
   gap: 0.55rem;
   margin: 0;
-  font-size: 0.95rem;
-  font-weight: 650;
   color: #1a3348;
 }
 
@@ -76,34 +63,13 @@
   font-size: 0.8rem;
 }
 
-.employee-list-page .btn-primary {
-  font-size: 0.82rem;
-  padding: 0.4rem 0.85rem;
-}
-
 .employee-list-page .custom-table {
   margin: 0;
-  font-size: 0.8125rem;
 }
 
 .employee-list-page .custom-table thead th {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #5c6b7a;
-  padding: 0.55rem 0.75rem;
   background: #f7fafc;
   white-space: nowrap;
-}
-
-.employee-list-page .custom-table tbody td {
-  padding: 0.45rem 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 450;
-  color: #334155;
-  vertical-align: middle;
-  line-height: 1.35;
 }
 
 .employee-list-page .custom-table tbody tr:hover {
@@ -133,7 +99,7 @@
   justify-content: center;
   color: white;
   font-weight: 650;
-  font-size: 0.68rem;
+  font-size: var(--fs-xs, 0.7rem);
   flex-shrink: 0;
 }
 
@@ -146,7 +112,6 @@
 
 .employee-list-page .employee-name,
 .employee-name {
-  font-size: 0.84rem;
   font-weight: 600;
   color: #1a3348;
   line-height: 1.25;
@@ -156,7 +121,6 @@
 
 .employee-list-page .employee-position,
 .employee-position {
-  font-size: 0.72rem;
   color: #6c757d;
   font-weight: 450;
   line-height: 1.25;
@@ -243,7 +207,6 @@
 }
 
 .employee-list-page .badge {
-  font-size: 0.7rem;
   font-weight: 600;
   padding: 0.28em 0.55em;
 }
