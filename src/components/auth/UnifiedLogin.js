@@ -219,42 +219,26 @@ const UnifiedLogin = () => {
 
   return (
     <div className="unified-login-page">
-      <aside className="unified-login-brand" aria-hidden="false">
-        <div className="unified-login-brand-overlay" />
-        <div className="unified-login-brand-content">
-          <img
-            src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png"
-            alt="Centre Diagnostic"
-            className="unified-login-brand-logo"
-          />
-          <p className="unified-login-brand-name">Centre Diagnostic</p>
-          <h1 className="unified-login-brand-headline">Portail des ressources humaines</h1>
-          <p className="unified-login-brand-text">
-            Accédez à votre espace sécurisé pour gérer les dossiers, congés, contrats et demandes.
-          </p>
-        </div>
-      </aside>
-
       <div className="unified-login-panel">
         <div className="unified-login-panel-inner">
           <header className="unified-login-header">
             <img
               src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png"
-              alt=""
-              className="unified-login-logo-mobile"
+              alt="Centre Diagnostic"
+              className="unified-login-brand-mark"
             />
-            <p className="unified-login-kicker">Connexion</p>
-            <h2 className="unified-login-title">
+            <p className="unified-login-kicker">Logiciel RH pensé pour vos équipes</p>
+            <h1 className="unified-login-title">
               {userType === 'admin'
                 ? 'Espace administrateur'
                 : userType === 'rh'
-                ? 'Espace RH'
+                ? 'Une gestion RH plus efficace'
                 : userType === 'employee'
-                ? 'Espace collaborateur'
-                : 'Bienvenue'}
-            </h2>
+                ? 'Votre espace collaborateur'
+                : 'Bienvenue sur votre portail RH'}
+            </h1>
             <p className="unified-login-subtitle">
-              Identifiez-vous avec votre email professionnel ou votre matricule.
+              Connectez-vous pour gérer congés, contrats, dossiers et demandes en un seul endroit.
             </p>
           </header>
 
@@ -292,7 +276,7 @@ const UnifiedLogin = () => {
               </div>
               {identifier && !userType && (
                 <small className="unified-form-hint">
-                  Email (ex. rh@centre-diagnostic.com) ou matricule (ex. CDL-2024-0001)
+                  Email professionnel ou matricule CDL-YYYY-XXXX
                 </small>
               )}
             </div>
@@ -351,20 +335,55 @@ const UnifiedLogin = () => {
                   Connexion…
                 </>
               ) : (
-                'Se connecter'
+                'Accéder à mon espace'
               )}
             </button>
           </form>
 
           <footer className="unified-login-footer">
             <p className="unified-help-text">
-              <span><strong>RH</strong> — adresse email</span>
-              <span><strong>Employé</strong> — matricule CDL-YYYY-XXXX</span>
+              <span><strong>RH</strong> — email</span>
+              <span><strong>Employé</strong> — matricule</span>
             </p>
             <p className="unified-copyright">© {new Date().getFullYear()} Centre Diagnostic</p>
           </footer>
         </div>
       </div>
+
+      <aside className="unified-login-visual" aria-hidden="true">
+        <div className="unified-blob unified-blob--teal" />
+        <div className="unified-blob unified-blob--coral" />
+        <div className="unified-blob unified-blob--sky" />
+        <div className="unified-dots" />
+        <div className="unified-mockup">
+          <div className="unified-mockup-bar">
+            <span /><span /><span />
+          </div>
+          <div className="unified-mockup-body">
+            <div className="unified-mockup-row">
+              <div className="unified-mockup-avatar" />
+              <div className="unified-mockup-lines">
+                <i /><i />
+              </div>
+            </div>
+            <div className="unified-mockup-cards">
+              <div className="unified-mockup-card" />
+              <div className="unified-mockup-card unified-mockup-card--accent" />
+            </div>
+            <div className="unified-mockup-calendar">
+              <b /><b /><b /><b /><b /><b /><b /><b />
+            </div>
+          </div>
+        </div>
+        <div className="unified-float-card unified-float-card--top">
+          <strong>Congés</strong>
+          <span>Validés en 1 clic</span>
+        </div>
+        <div className="unified-float-card unified-float-card--bottom">
+          <strong>154</strong>
+          <span>collaborateurs actifs</span>
+        </div>
+      </aside>
     </div>
   );
 };

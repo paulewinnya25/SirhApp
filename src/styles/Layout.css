@@ -1,4 +1,4 @@
-/* Layout shell */
+/* Layout aéré */
 .layout-container {
   display: flex;
   min-height: 100vh;
@@ -18,78 +18,70 @@
 }
 
 .page-content {
-  padding: 1.5rem 1.75rem 2.5rem;
+  padding: 1.75rem 2rem 3rem;
   max-width: var(--content-max-width);
   margin: 0 auto;
 }
 
-/* Page title — typography-first, no gradient banner */
 .page-title-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   background: transparent;
-  color: var(--text);
-  padding: 0.25rem 0 1rem;
-  border-radius: 0;
+  color: var(--navy);
+  padding: 0.5rem 0 1.15rem;
+  border-bottom: 1px solid var(--border);
   box-shadow: none;
   position: relative;
   overflow: visible;
-  border-bottom: 1px solid var(--border);
 }
 
 .page-title-wrapper::before,
-.page-title-wrapper::after {
-  display: none;
-}
+.page-title-wrapper::after { display: none; }
 
-.title-content {
-  flex: 1;
-}
+.title-content { flex: 1; }
 
 .page-title {
   font-family: var(--font-display);
-  font-size: 1.65rem;
-  font-weight: 600;
-  color: var(--text);
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+  font-weight: 800;
+  color: var(--navy);
   margin-bottom: 0.35rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .page-subtitle,
 .breadcrumb {
   color: var(--text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 400;
   margin: 0;
 }
 
 .voice-assistant-btn {
   margin-left: 1rem;
-  width: 42px;
-  height: 42px;
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  width: 44px;
+  height: 44px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  border: none;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background var(--transition-base), color var(--transition-base);
+  transition: background var(--transition-base), color var(--transition-base), transform var(--transition-base);
   box-shadow: none;
 }
 
 .voice-assistant-btn:hover {
-  background: var(--primary);
+  background: var(--accent);
   color: #fff;
-  transform: none;
+  transform: translateY(-1px);
 }
 
-.voice-assistant-btn i {
-  font-size: 1rem;
-}
+.voice-assistant-btn i { font-size: 1rem; }
 
 @media (max-width: 768px) {
   .main-content,
@@ -99,10 +91,6 @@
   }
 
   .page-content {
-    padding: 1rem 1rem 2rem;
-  }
-
-  .page-title {
-    font-size: 1.35rem;
+    padding: 1.15rem 1rem 2rem;
   }
 }

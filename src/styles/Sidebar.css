@@ -1,4 +1,4 @@
-/* Sidebar — navy clinique Centre Diagnostic */
+/* Sidebar claire — produit SaaS moderne */
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
@@ -6,7 +6,8 @@
   top: 0;
   left: 0;
   background: var(--sidebar-bg);
-  box-shadow: 4px 0 24px rgba(15, 28, 36, 0.12);
+  border-right: 1px solid var(--sidebar-border);
+  box-shadow: none;
   transition: width var(--transition-base);
   z-index: 1030;
   overflow-y: auto;
@@ -26,14 +27,14 @@
   justify-content: center;
   padding: 0 1rem;
   border-bottom: 1px solid var(--sidebar-border);
-  background: rgba(0, 0, 0, 0.12);
+  background: #fff;
 }
 
 .sidebar-header img {
-  max-height: 40px;
+  max-height: 42px;
   transition: max-height var(--transition-base);
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
+  filter: none;
+  opacity: 1;
 }
 
 .sidebar.collapsed .sidebar-header img {
@@ -42,41 +43,38 @@
 
 .nav-menu {
   list-style: none;
-  padding: 0.85rem 0;
+  padding: 1rem 0;
   margin: 0;
 }
 
-.nav-item {
-  position: relative;
-  margin: 0;
-}
+.nav-item { position: relative; margin: 0; }
 
 .nav-link {
   display: flex;
   align-items: center;
-  padding: 0.65rem 0.9rem;
+  padding: 0.7rem 0.95rem;
   color: var(--sidebar-text);
   text-decoration: none;
   transition: background var(--transition-base), color var(--transition-base);
   border-left: 3px solid transparent;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  border-radius: var(--radius-sm);
-  margin: 2px 0.65rem;
-  letter-spacing: 0.01em;
+  border-radius: 10px;
+  margin: 3px 0.7rem;
+  letter-spacing: -0.01em;
 }
 
 .nav-link:hover {
-  color: var(--sidebar-text-active);
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--navy);
+  background: var(--surface-2);
 }
 
 .nav-link.active,
 .nav-item.current > .nav-link,
 .nav-item.current button.nav-link {
-  color: var(--sidebar-text-active);
-  background: rgba(31, 111, 139, 0.35);
-  border-left-color: #7ec8e0;
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
 }
 
 .nav-icon {
@@ -86,9 +84,9 @@
   align-items: center;
   justify-content: center;
   margin-right: 0.75rem;
-  font-size: 0.9rem;
-  opacity: 0.9;
+  font-size: 0.95rem;
   flex-shrink: 0;
+  color: inherit;
 }
 
 .nav-text {
@@ -105,62 +103,54 @@
   width: 0;
 }
 
-.sidebar.collapsed .nav-icon {
-  margin-right: 0;
-}
+.sidebar.collapsed .nav-icon { margin-right: 0; }
 
 .sidebar.collapsed .nav-link {
   justify-content: center;
-  padding: 0.7rem;
+  padding: 0.75rem;
 }
 
 .nav-arrow {
   font-size: 0.65rem;
-  opacity: 0.7;
+  opacity: 0.55;
   transition: transform var(--transition-base);
 }
 
-.nav-item.active .nav-arrow {
-  transform: rotate(90deg);
-}
+.nav-item.active .nav-arrow { transform: rotate(90deg); }
 
 .sub-menu {
   list-style: none;
-  padding: 0.25rem 0 0.4rem 2.4rem;
-  margin: 0;
+  padding: 0.25rem 0 0.4rem 1.1rem;
+  margin: 0 0.7rem;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.25s ease;
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  margin-left: 0.65rem;
-  margin-right: 0.65rem;
+  background: var(--surface-2);
+  border-radius: 10px;
 }
 
-.nav-item.active > .sub-menu {
-  max-height: 520px;
-}
+.nav-item.active > .sub-menu { max-height: 520px; }
 
 .sub-menu-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.45rem 0.5rem;
-  color: rgba(255, 255, 255, 0.68);
+  padding: 0.5rem 0.65rem;
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  transition: color var(--transition-base);
+  transition: color var(--transition-base), background var(--transition-base);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .sub-menu-link:hover,
 .sub-menu-link.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent-hover);
+  background: #fff;
 }
 
 .sub-menu-text {
@@ -170,10 +160,10 @@
 }
 
 .notification-badge {
-  background-color: #c43c4a;
+  background-color: var(--accent);
   color: white;
-  border-radius: 4px;
-  padding: 2px 6px;
+  border-radius: 999px;
+  padding: 2px 7px;
   font-size: 0.65rem;
   font-weight: 700;
   min-width: 18px;
@@ -185,29 +175,10 @@
 }
 
 .sidebar.collapsed .notification-badge,
-.sidebar.collapsed .sub-menu {
-  display: none;
-}
-
-.sidebar-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  border-top: 1px solid var(--sidebar-border);
-  font-size: 0.7rem;
-  text-align: center;
-  opacity: 0.55;
-}
+.sidebar.collapsed .sub-menu { display: none; }
 
 @media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
+  .sidebar { transform: translateX(-100%); }
   .sidebar.mobile-open,
-  .sidebar.show {
-    transform: translateX(0);
-  }
+  .sidebar.show { transform: translateX(0); }
 }

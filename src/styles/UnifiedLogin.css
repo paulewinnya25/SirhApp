@@ -1,130 +1,64 @@
-/* Login — split panel professionnel Centre Diagnostic */
+/* Login hero — style SaaS moderne (texte gauche / visuel droite) */
 
 .unified-login-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  background: var(--surface);
-}
-
-.unified-login-brand {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  padding: 3.5rem;
-  background-color: var(--primary-dark);
-  background-image: url('https://res.cloudinary.com/dd64mwkl2/image/upload/v1724188779/Couverture_pr1eug.png');
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-  animation: brandReveal 0.7s ease both;
-}
-
-.unified-login-brand-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    165deg,
-    rgba(15, 61, 79, 0.72) 0%,
-    rgba(15, 61, 79, 0.88) 55%,
-    rgba(10, 40, 52, 0.95) 100%
-  );
-}
-
-.unified-login-brand-content {
-  position: relative;
-  z-index: 1;
-  max-width: 420px;
-  color: #fff;
-  animation: brandContentIn 0.75s ease 0.12s both;
-}
-
-.unified-login-brand-logo {
-  width: 72px;
-  height: auto;
-  margin-bottom: 1.25rem;
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
-}
-
-.unified-login-brand-name {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-  line-height: 1.15;
-}
-
-.unified-login-brand-headline {
-  font-family: var(--font-sans);
-  font-size: 1.05rem;
-  font-weight: 600;
-  opacity: 0.92;
-  margin-bottom: 0.85rem;
-  letter-spacing: 0.01em;
-}
-
-.unified-login-brand-text {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  opacity: 0.78;
-  font-weight: 400;
-  max-width: 36ch;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  background: #fff;
 }
 
 .unified-login-panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 2rem;
-  background:
-    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(31, 111, 139, 0.06), transparent 55%),
-    var(--surface);
+  padding: 3rem 2.5rem;
+  position: relative;
+  z-index: 2;
   animation: panelIn 0.55s ease both;
 }
 
 .unified-login-panel-inner {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
-.unified-login-logo-mobile {
-  display: none;
+.unified-login-brand-mark {
   width: 56px;
-  margin-bottom: 1rem;
+  height: auto;
+  margin-bottom: 1.75rem;
+  display: block;
 }
 
 .unified-login-kicker {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--primary);
-  margin-bottom: 0.5rem;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.01em;
 }
 
 .unified-login-title {
   font-family: var(--font-display);
-  font-size: 1.85rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 0.4rem;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.85rem, 3.2vw, 2.45rem);
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
 }
 
 .unified-login-subtitle {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  margin-bottom: 1.75rem;
-  line-height: 1.5;
-  font-weight: 500;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 38ch;
 }
 
 .unified-login-form {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
 }
 
 .unified-form-group {
@@ -134,10 +68,10 @@
 
 .unified-form-label {
   display: block;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
   font-weight: 600;
-  color: var(--text);
-  font-size: 0.8125rem;
+  color: var(--navy);
+  font-size: 0.85rem;
 }
 
 .unified-input-group {
@@ -149,7 +83,7 @@
 .unified-input-icon {
   position: absolute;
   left: 14px;
-  color: var(--text-muted);
+  color: var(--gray);
   font-size: 0.9rem;
   z-index: 2;
   pointer-events: none;
@@ -157,27 +91,22 @@
 
 .unified-form-control {
   width: 100%;
-  padding: 0.7rem 2.75rem 0.7rem 2.5rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  font-size: 0.9375rem;
+  padding: 0.8rem 2.75rem 0.8rem 2.5rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  font-size: 0.95rem;
   font-family: var(--font-sans);
   font-weight: 500;
-  background: var(--surface-2);
-  color: var(--text);
+  background: #fafbfc;
+  color: var(--navy);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .unified-form-control:focus {
   outline: none;
   border-color: var(--primary);
-  background: var(--surface);
-  box-shadow: 0 0 0 3px var(--primary-muted);
-}
-
-.unified-form-control:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--primary-muted);
 }
 
 .unified-input-group:focus-within .unified-input-icon {
@@ -187,10 +116,10 @@
 .unified-user-type-badge {
   position: absolute;
   right: 10px;
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -208,22 +137,22 @@
 .unified-password-toggle {
   position: absolute;
   right: 8px;
-  color: var(--text-muted);
+  color: var(--gray);
   cursor: pointer;
   font-size: 0.9rem;
   z-index: 3;
-  padding: 0.45rem;
+  padding: 0.5rem;
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .unified-password-toggle:hover {
-  color: var(--primary);
-  background: var(--primary-light);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .unified-form-group:has(.unified-user-type-badge) .unified-password-toggle {
@@ -234,7 +163,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.5rem;
 }
 
 .unified-form-check {
@@ -246,12 +175,12 @@
 .unified-form-check-input {
   width: 16px;
   height: 16px;
+  accent-color: var(--accent);
   cursor: pointer;
-  accent-color: var(--primary);
 }
 
 .unified-form-check-label {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   cursor: pointer;
   font-weight: 500;
@@ -262,34 +191,35 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  font-size: 0.9375rem;
+  padding: 0.9rem 1.4rem;
+  font-size: 0.95rem;
   font-weight: 700;
   font-family: var(--font-sans);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .unified-btn-primary {
-  background: var(--primary);
+  background: var(--accent);
   color: #fff;
+  box-shadow: 0 8px 20px rgba(255, 90, 47, 0.28);
 }
 
 .unified-btn-primary:hover:not(:disabled) {
-  background: var(--primary-hover);
-  box-shadow: var(--shadow-md);
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 90, 47, 0.35);
 }
 
 .unified-btn-primary:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
 }
 
-.unified-btn-block {
-  width: 100%;
-}
+.unified-btn-block { width: 100%; }
 
 .unified-spinner-border {
   display: inline-block;
@@ -301,41 +231,24 @@
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes brandReveal {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes brandContentIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes panelIn {
-  from {
-    opacity: 0;
-    transform: translateX(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes visualIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .unified-alert {
   padding: 0.85rem 1rem;
   margin-bottom: 1.25rem;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   font-size: 0.875rem;
   display: flex;
   align-items: flex-start;
@@ -344,9 +257,9 @@
 }
 
 .unified-alert-danger {
-  background: rgba(196, 60, 74, 0.08);
+  background: rgba(226, 59, 74, 0.08);
   color: var(--danger);
-  border: 1px solid rgba(196, 60, 74, 0.25);
+  border: 1px solid rgba(226, 59, 74, 0.22);
 }
 
 .unified-login-footer {
@@ -357,16 +270,13 @@
 
 .unified-help-text {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
   font-size: 0.8rem;
   color: var(--text-muted);
 }
 
-.unified-help-text strong {
-  color: var(--text);
-  font-weight: 700;
-}
+.unified-help-text strong { color: var(--navy); }
 
 .unified-copyright {
   margin-top: 1rem;
@@ -374,31 +284,228 @@
   color: var(--gray);
 }
 
-@media (max-width: 900px) {
+/* Panneau visuel — blobs + mockup */
+.unified-login-visual {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #fff7f3 0%, #eef9fc 45%, #f4f7ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: visualIn 0.7s ease 0.1s both;
+}
+
+.unified-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.unified-blob--teal {
+  width: min(52vw, 420px);
+  height: min(52vw, 420px);
+  background: #7ed4e0;
+  top: 8%;
+  right: 6%;
+  opacity: 0.85;
+}
+
+.unified-blob--coral {
+  width: min(48vw, 380px);
+  height: min(48vw, 380px);
+  background: #ff8f6b;
+  bottom: 4%;
+  left: 4%;
+  opacity: 0.9;
+}
+
+.unified-blob--sky {
+  width: min(36vw, 280px);
+  height: min(36vw, 280px);
+  background: #b8d4f0;
+  top: 42%;
+  left: 28%;
+  opacity: 0.75;
+}
+
+.unified-dots {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  width: 120px;
+  height: 80px;
+  background-image: radial-gradient(circle, rgba(11, 31, 51, 0.18) 1.5px, transparent 1.6px);
+  background-size: 14px 14px;
+  opacity: 0.5;
+}
+
+.unified-mockup {
+  position: relative;
+  z-index: 2;
+  width: min(78%, 380px);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(11, 31, 51, 0.14);
+  overflow: hidden;
+  border: 1px solid rgba(11, 31, 51, 0.06);
+  animation: floatY 5s ease-in-out infinite;
+}
+
+.unified-mockup-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0.75rem 1rem;
+  background: #f4f6f8;
+  border-bottom: 1px solid var(--border);
+}
+
+.unified-mockup-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d0d7de;
+}
+
+.unified-mockup-bar span:first-child { background: #ff8a7a; }
+.unified-mockup-bar span:nth-child(2) { background: #ffd166; }
+
+.unified-mockup-body { padding: 1.15rem; }
+
+.unified-mockup-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.unified-mockup-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a9bb0, #7ed4e0);
+  flex-shrink: 0;
+}
+
+.unified-mockup-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.unified-mockup-lines i {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: #e8edf2;
+}
+
+.unified-mockup-lines i:first-child { width: 70%; }
+.unified-mockup-lines i:last-child { width: 45%; }
+
+.unified-mockup-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.unified-mockup-card {
+  height: 64px;
+  border-radius: 10px;
+  background: #eef9fc;
+}
+
+.unified-mockup-card--accent {
+  background: linear-gradient(145deg, #ffe8e1, #ffd4c8);
+}
+
+.unified-mockup-calendar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.unified-mockup-calendar b {
+  display: block;
+  height: 28px;
+  border-radius: 6px;
+  background: #f0f3f6;
+}
+
+.unified-mockup-calendar b:nth-child(2),
+.unified-mockup-calendar b:nth-child(5) {
+  background: rgba(255, 90, 47, 0.25);
+}
+
+.unified-mockup-calendar b:nth-child(3) {
+  background: rgba(26, 155, 176, 0.28);
+}
+
+.unified-float-card {
+  position: absolute;
+  z-index: 3;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 12px 30px rgba(11, 31, 51, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: floatY 4.5s ease-in-out infinite;
+}
+
+.unified-float-card strong {
+  font-size: 0.95rem;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.unified-float-card span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.unified-float-card--top {
+  top: 14%;
+  left: 10%;
+  animation-delay: 0.4s;
+}
+
+.unified-float-card--bottom {
+  bottom: 16%;
+  right: 10%;
+  animation-delay: 0.8s;
+}
+
+.unified-float-card--bottom strong {
+  color: var(--accent);
+  font-size: 1.25rem;
+}
+
+@media (max-width: 960px) {
   .unified-login-page {
     grid-template-columns: 1fr;
   }
 
-  .unified-login-brand {
-    min-height: 220px;
-    padding: 2rem 1.5rem;
-    align-items: flex-end;
+  .unified-login-visual {
+    min-height: 280px;
+    order: -1;
   }
 
-  .unified-login-brand-headline,
-  .unified-login-brand-text {
-    display: none;
-  }
+  .unified-float-card { display: none; }
 
-  .unified-login-brand-name {
-    font-size: 1.4rem;
-  }
-
-  .unified-login-logo-mobile {
-    display: block;
+  .unified-mockup {
+    width: min(70%, 280px);
+    animation: none;
   }
 
   .unified-login-panel {
-    padding: 1.75rem 1.25rem 2.5rem;
+    padding: 2rem 1.35rem 2.5rem;
+  }
+
+  .unified-login-title {
+    font-size: 1.75rem;
   }
 }
