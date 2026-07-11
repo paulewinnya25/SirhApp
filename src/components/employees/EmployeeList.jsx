@@ -188,7 +188,6 @@ const EmployeeList = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage) || 1;
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
