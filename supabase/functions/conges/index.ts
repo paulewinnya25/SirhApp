@@ -293,6 +293,34 @@ serve(async (req) => {
       });
     }
 
+    // DELETE /conges/:id - Supprimer un congé
+    if (req.method === "DELETE" && segments[0] && /^\d+$/.test(segments[0])) {
+      const congeId = parseInt(segments[0], 10);
+      const { data, error } = await supabase
+        .from("conges")
+        .delete()
+        .eq("id", congeId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Delete conge error:", error);
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (!data) {
+        return new Response(JSON.stringify({ error: "Conge not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify({ message: "Conge deleted successfully", conge: data }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     return new Response(JSON.stringify({ error: "Not found" }), {
       status: 404,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

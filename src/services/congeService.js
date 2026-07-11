@@ -211,8 +211,28 @@ export const congeService = {
   // Supprimer un congé
   delete: async (id) => {
     try {
-      const response = await api.delete(`/conges/${id}`);
-      return response.data;
+      try {
+        const response = await api.delete(`/conges/${id}`);
+        return response.data;
+      } catch (edgeError) {
+        if (isSupabase && SUPABASE_ANON_KEY && edgeError.response?.status === 404) {
+          const restBase = API_URL.replace(/\/functions\/v1\/?$/, '/rest/v1');
+          const restRes = await axios.delete(`${restBase}/conges?id=eq.${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+              Prefer: 'return=representation'
+            }
+          });
+          const deleted = Array.isArray(restRes.data) ? restRes.data[0] : restRes.data;
+          if (!deleted) {
+            throw edgeError;
+          }
+          return { message: 'Conge deleted successfully', conge: deleted };
+        }
+        throw edgeError;
+      }
     } catch (error) {
       console.error(`Error deleting conge ${id}:`, error);
       throw error;
