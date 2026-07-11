@@ -298,7 +298,7 @@ const EmployeeList = () => {
   };
 
   return (
-    <>
+    <div className="employee-list-page">
       <div className="page-title-wrapper">
         <div className="title-content">
           <h1 className="page-title">Gestion des employés</h1>
@@ -432,7 +432,7 @@ const EmployeeList = () => {
                     <tr key={employee.id}>
                       <td>
                         <div className="d-flex align-items-center">
-                          <div className="employee-avatar me-3">
+                          <div className="employee-avatar me-2">
                             {employee.photo ? (
                               <img src={employee.photo} alt={decodeHtmlEntities(employee.nom_prenom)} />
                             ) : (
@@ -531,7 +531,7 @@ const EmployeeList = () => {
           onSend={handleSendEmail}
         />
       )}
-    </>
+    </div>
   );
 };
 

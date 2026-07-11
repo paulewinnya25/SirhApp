@@ -20,7 +20,7 @@
 }
 
 .page-content {
-  padding: 1.75rem 2rem 2rem;
+  padding: 1.35rem 1.5rem 2rem;
   max-width: var(--content-max-width);
   margin: 0 auto;
   width: 100%;
@@ -51,17 +51,17 @@
 
 .page-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
-  font-weight: 800;
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  font-weight: 700;
   color: var(--navy, #0b1f33) !important;
-  margin-bottom: 0.35rem;
-  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
 }
 
 .page-subtitle,
 .breadcrumb {
   color: var(--text-muted) !important;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 400;
   margin: 0;
 }

@@ -6,7 +6,7 @@
 }
 
 .app-footer-inner {
-  max-width: var(--content-max-width, 1200px);
+  max-width: var(--content-max-width, 1680px);
   margin: 0 auto;
   padding: 1.5rem 2rem 1.75rem;
   display: grid;

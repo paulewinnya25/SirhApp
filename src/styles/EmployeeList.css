@@ -1,4 +1,114 @@
-/* Ajoutez ces styles à votre fichier EmployeeList.css */
+/* Liste employés — densifiée et plus large */
+
+.employee-list-page {
+  width: 100%;
+}
+
+.employee-list-page .page-title-wrapper {
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+}
+
+.employee-list-page .page-title {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+}
+
+.employee-list-page .page-subtitle {
+  font-size: 0.82rem !important;
+}
+
+.employee-list-page .employee-filters {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+}
+
+.employee-list-page .filter-title {
+  font-size: 0.78rem;
+  margin-bottom: 0.55rem;
+}
+
+.employee-list-page .form-select,
+.employee-list-page .form-control {
+  font-size: 0.82rem;
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+}
+
+.employee-table-card {
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.employee-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(41, 87, 133, 0.1);
+}
+
+.employee-list-page .table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: #1a3348;
+}
+
+.employee-list-page .table-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #e8f4f8;
+  color: #295785;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.employee-list-page .btn-primary {
+  font-size: 0.82rem;
+  padding: 0.4rem 0.85rem;
+}
+
+.employee-list-page .custom-table {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.employee-list-page .custom-table thead th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #5c6b7a;
+  padding: 0.55rem 0.75rem;
+  background: #f7fafc;
+  white-space: nowrap;
+}
+
+.employee-list-page .custom-table tbody td {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 450;
+  color: #334155;
+  vertical-align: middle;
+  line-height: 1.35;
+}
+
+.employee-list-page .custom-table tbody tr:hover {
+  background: rgba(58, 142, 186, 0.04);
+}
 
 .employee-modal-backdrop {
   position: fixed;
@@ -13,16 +123,18 @@
   z-index: 1050;
 }
 
+.employee-list-page .employee-avatar,
 .employee-avatar {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 650;
+  font-size: 0.68rem;
+  flex-shrink: 0;
 }
 
 .employee-avatar img {
@@ -32,31 +144,41 @@
   object-fit: cover;
 }
 
+.employee-list-page .employee-name,
 .employee-name {
-  font-weight: 500;
-  color: var(--text);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #1a3348;
+  line-height: 1.25;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
+.employee-list-page .employee-position,
 .employee-position {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: #6c757d;
+  font-weight: 450;
+  line-height: 1.25;
+  margin-top: 0.1rem;
 }
 
 .action-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
+  margin-right: 4px;
   border: none;
   transition: all 0.2s ease;
   cursor: pointer;
+  font-size: 0.72rem;
 }
 
 .action-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .action-btn-view {
@@ -120,6 +242,12 @@
   opacity: 0.5;
 }
 
+.employee-list-page .badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.28em 0.55em;
+}
+
 .contract-type {
   padding: 5px 10px;
   border-radius: 12px;
@@ -166,27 +294,30 @@
   border: 1px solid #f1aeb5;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .action-btn {
     width: 28px;
     height: 28px;
     margin-right: 3px;
   }
-  
+
   .employee-avatar {
     width: 32px;
     height: 32px;
     font-size: 12px;
   }
-  
+
   .contract-type {
     font-size: 0.7rem;
     padding: 3px 6px;
   }
+
+  .employee-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
-/* Modal improvements */
 .employee-modal-backdrop .modal-dialog {
   margin: 1rem;
   max-width: none;
@@ -216,7 +347,6 @@
   padding: 1rem 1.5rem;
 }
 
-/* Animation for modals */
 .employee-modal-backdrop {
   animation: fadeIn 0.15s ease-out;
 }
@@ -226,12 +356,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideIn {
