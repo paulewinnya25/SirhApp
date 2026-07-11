@@ -1,52 +1,52 @@
-/* Design system — SaaS RH moderne (esprit Lucca, marque Centre Diagnostic) */
+/* Design system — SaaS moderne, couleurs logo Centre Diagnostic */
 :root {
-  /* Accent vif (CTA) */
-  --accent: #ff5a2f;
-  --accent-hover: #e84820;
-  --accent-soft: #ffe8e1;
+  /* Couleurs logo CDL */
+  --primary: #3a8eba;
+  --primary-hover: #2f7a9f;
+  --primary-light: #e8f4f8;
+  --primary-dark: #295785;
+  --primary-muted: rgba(58, 142, 186, 0.16);
 
-  /* Brand teal (identité CDL) */
-  --primary: #1a9bb0;
-  --primary-hover: #158a9d;
-  --primary-light: #e6f7fa;
-  --primary-dark: #0a3d4a;
-  --primary-muted: rgba(26, 155, 176, 0.14);
+  /* Accent = même famille logo (pas d'orange hors marque) */
+  --accent: #3a8eba;
+  --accent-hover: #295785;
+  --accent-soft: #e8f4f8;
 
-  /* Navy texte (contraste Lucca-like) */
-  --navy: #0b1f33;
-  --navy-soft: #1a3348;
+  /* Texte */
+  --navy: #1a3348;
+  --navy-soft: #295785;
 
   /* Semantic */
   --secondary: #6b7c8f;
-  --success: #12a06a;
-  --info: #2a8fd6;
+  --success: #2bb673;
+  --info: #3a8eba;
   --warning: #e8a317;
   --danger: #e23b4a;
   --light: #fafbfc;
-  --dark: #0b1f33;
+  --dark: #1a3348;
   --gray: #8a97a6;
   --gray-light: #f3f5f7;
   --white: #ffffff;
 
   /* Surfaces aérées */
-  --bg: #f7f8fa;
+  --bg: #f5f8fb;
   --bg-pattern:
-    radial-gradient(circle at 12% 18%, rgba(255, 90, 47, 0.06) 0%, transparent 42%),
-    radial-gradient(circle at 88% 8%, rgba(26, 155, 176, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 12% 18%, rgba(58, 142, 186, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(41, 87, 133, 0.07) 0%, transparent 40%),
     radial-gradient(circle at 70% 90%, rgba(184, 224, 240, 0.35) 0%, transparent 35%),
-    linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
+    linear-gradient(180deg, #ffffff 0%, #f5f8fb 100%);
   --surface: #ffffff;
-  --surface-2: #f4f6f8;
-  --text: #0b1f33;
+  --surface-2: #f4f8fb;
+  --text: #1a3348;
   --text-muted: #5c6b7a;
-  --border: rgba(11, 31, 51, 0.08);
-  --border-strong: rgba(11, 31, 51, 0.14);
+  --border: rgba(41, 87, 133, 0.1);
+  --border-strong: rgba(41, 87, 133, 0.16);
 
-  --gradient-primary: linear-gradient(135deg, #1a9bb0 0%, #0f6f80 100%);
-  --gradient-accent: linear-gradient(135deg, #ff7a52 0%, #ff5a2f 100%);
+  --gradient-primary: linear-gradient(135deg, #3a8eba 0%, #295785 100%);
+  --gradient-accent: linear-gradient(135deg, #3a8eba 0%, #295785 100%);
   --gradient-warning: linear-gradient(135deg, #f0b84a, #e8a317);
   --gradient-danger: linear-gradient(135deg, #f05a66, #e23b4a);
-  --gradient-success: linear-gradient(135deg, #2cbc82, #12a06a);
+  --gradient-success: linear-gradient(135deg, #3ecf8e, #2bb673);
 
   --sidebar-width: 260px;
   --sidebar-collapsed-width: 72px;
@@ -101,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-::selection { background: rgba(255, 90, 47, 0.18); }
+::selection { background: rgba(58, 142, 186, 0.2); }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }

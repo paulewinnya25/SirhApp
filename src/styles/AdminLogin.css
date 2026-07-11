@@ -1,9 +1,9 @@
-.admin-login-container {
+﻿.admin-login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, #ff5a2f 0%, #1a9bb0 100%);
+  background: linear-gradient(145deg, #3a8eba 0%, #3a8eba 100%);
   padding: 2rem;
 }
 
@@ -37,7 +37,7 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(145deg, #ff5a2f 0%, #1a9bb0 100%);
+  background: linear-gradient(145deg, #3a8eba 0%, #3a8eba 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -173,7 +173,7 @@
 .admin-login-button {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(145deg, #ff5a2f 0%, #1a9bb0 100%);
+  background: linear-gradient(145deg, #3a8eba 0%, #3a8eba 100%);
   color: white;
   border: none;
   border-radius: 10px;

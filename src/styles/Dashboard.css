@@ -1,4 +1,4 @@
-/* Dashboard — style SaaS moderne Lucca / Centre Diagnostic */
+﻿/* Dashboard — style SaaS moderne Lucca / Centre Diagnostic */
 
 .dashboard-hero {
   margin-bottom: 1.75rem;
@@ -7,7 +7,7 @@
 .dashboard-kicker {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--accent, #ff5a2f);
+  color: var(--accent, #3a8eba);
   margin-bottom: 0.4rem;
 }
 
@@ -86,27 +86,27 @@
 }
 
 .btn-primary {
-  background: #ff5a2f !important;
-  border-color: #ff5a2f !important;
+  background: #3a8eba !important;
+  border-color: #3a8eba !important;
   color: #fff !important;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {
-  background: #e84820 !important;
-  border-color: #e84820 !important;
+  background: #295785 !important;
+  border-color: #295785 !important;
   color: #fff !important;
 }
 
 .btn-outline-primary {
   background: transparent !important;
-  border-color: #ff5a2f !important;
-  color: #ff5a2f !important;
+  border-color: #3a8eba !important;
+  color: #3a8eba !important;
 }
 
 .btn-outline-primary:hover {
-  background: #ff5a2f !important;
+  background: #3a8eba !important;
   color: #fff !important;
 }
 
@@ -162,9 +162,9 @@
   box-shadow: none;
 }
 
-.stat-icon-blue { background: #e6f7fa !important; color: #1a9bb0 !important; }
+.stat-icon-blue { background: #e6f7fa !important; color: #3a8eba !important; }
 .stat-icon-green { background: rgba(18, 160, 106, 0.12) !important; color: #12a06a !important; }
-.stat-icon-orange { background: #ffe8e1 !important; color: #ff5a2f !important; }
+.stat-icon-orange { background: #e8f4f8 !important; color: #3a8eba !important; }
 .stat-icon-red { background: rgba(226, 59, 74, 0.1) !important; color: #e23b4a !important; }
 
 .stat-card:nth-child(n) { border-left: none !important; }
@@ -246,7 +246,7 @@
 
 .tool-card:hover {
   transform: translateY(-2px) !important;
-  border-color: rgba(255, 90, 47, 0.35) !important;
+  border-color: rgba(58, 142, 186, 0.4) !important;
   box-shadow: 0 12px 28px rgba(11, 31, 51, 0.08) !important;
   text-decoration: none !important;
   color: inherit !important;
@@ -256,8 +256,8 @@
   width: 44px !important;
   height: 44px !important;
   border-radius: 12px !important;
-  background: #ffe8e1 !important;
-  color: #ff5a2f !important;
+  background: #e8f4f8 !important;
+  color: #3a8eba !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -278,7 +278,7 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background: #ff5a2f;
+  background: #3a8eba;
   color: #fff;
   border-radius: 999px;
   padding: 2px 7px;
@@ -326,7 +326,7 @@
   height: 36px !important;
   border-radius: 10px !important;
   background: #e6f7fa !important;
-  color: #1a9bb0 !important;
+  color: #3a8eba !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -358,8 +358,8 @@
   border-radius: 14px !important;
   border: none !important;
   box-shadow: none !important;
-  background: #ffe8e1 !important;
-  color: #ff5a2f !important;
+  background: #e8f4f8 !important;
+  color: #3a8eba !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -419,7 +419,7 @@
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
   background: #e6f7fa;
-  color: #1a9bb0;
+  color: #3a8eba;
 }
 
 .note-number {
@@ -475,7 +475,7 @@
   height: 42px;
   border-radius: 12px;
   background: #e6f7fa;
-  color: #1a9bb0;
+  color: #3a8eba;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -513,12 +513,12 @@
 .btn-link-all {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #ff5a2f;
+  color: #3a8eba;
   text-decoration: none;
 }
 
 .btn-link-all:hover {
-  color: #e84820;
+  color: #295785;
   text-decoration: underline;
 }
 

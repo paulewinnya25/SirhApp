@@ -1,4 +1,4 @@
-/* Login hero — style SaaS moderne (texte gauche / visuel droite) */
+﻿/* Login hero — style SaaS moderne (texte gauche / visuel droite) */
 
 .unified-login-page {
   min-height: 100vh;
@@ -204,13 +204,13 @@
 .unified-btn-primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 8px 20px rgba(255, 90, 47, 0.28);
+  box-shadow: 0 8px 20px rgba(58, 142, 186, 0.28);
 }
 
 .unified-btn-primary:hover:not(:disabled) {
   background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(255, 90, 47, 0.35);
+  box-shadow: 0 12px 28px rgba(58, 142, 186, 0.35);
 }
 
 .unified-btn-primary:disabled {
@@ -288,7 +288,7 @@
 .unified-login-visual {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(160deg, #fff7f3 0%, #eef9fc 45%, #f4f7ff 100%);
+  background: linear-gradient(160deg, #f0f7fb 0%, #eef9fc 45%, #f4f7ff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,7 +305,7 @@
 .unified-blob--teal {
   width: min(52vw, 420px);
   height: min(52vw, 420px);
-  background: #7ed4e0;
+  background: #8ec9e0;
   top: 8%;
   right: 6%;
   opacity: 0.85;
@@ -314,10 +314,10 @@
 .unified-blob--coral {
   width: min(48vw, 380px);
   height: min(48vw, 380px);
-  background: #ff8f6b;
+  background: #295785;
   bottom: 4%;
   left: 4%;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .unified-blob--sky {
@@ -367,8 +367,8 @@
   background: #d0d7de;
 }
 
-.unified-mockup-bar span:first-child { background: #ff8a7a; }
-.unified-mockup-bar span:nth-child(2) { background: #ffd166; }
+.unified-mockup-bar span:first-child { background: #3a8eba; }
+.unified-mockup-bar span:nth-child(2) { background: #8ec9e0; }
 
 .unified-mockup-body { padding: 1.15rem; }
 
@@ -383,7 +383,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1a9bb0, #7ed4e0);
+  background: linear-gradient(135deg, #3a8eba, #8ec9e0);
   flex-shrink: 0;
 }
 
@@ -418,7 +418,7 @@
 }
 
 .unified-mockup-card--accent {
-  background: linear-gradient(145deg, #ffe8e1, #ffd4c8);
+  background: linear-gradient(145deg, #e8f4f8, #c5e4f0);
 }
 
 .unified-mockup-calendar {
@@ -436,7 +436,7 @@
 
 .unified-mockup-calendar b:nth-child(2),
 .unified-mockup-calendar b:nth-child(5) {
-  background: rgba(255, 90, 47, 0.25);
+  background: rgba(58, 142, 186, 0.28);
 }
 
 .unified-mockup-calendar b:nth-child(3) {

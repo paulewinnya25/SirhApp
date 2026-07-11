@@ -1,4 +1,4 @@
-/* Styles pour le composant EventCard et les événements dans le portail employé */
+﻿/* Styles pour le composant EventCard et les événements dans le portail employé */
 
 /* ====== Styles pour EventsComponent ====== */
 .event-card-component {
@@ -27,8 +27,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffe8e1;
-  color: #ff5a2f;
+  background: #e8f4f8;
+  color: #3a8eba;
   border-radius: 10px;
   margin-right: 0.75rem;
   font-size: 1rem;
