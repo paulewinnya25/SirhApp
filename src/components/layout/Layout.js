@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopNav from './TopNav';
+import Footer from './Footer';
 import '../../styles/Layout.css';
 
 const Layout = ({ user, onLogout }) => {
@@ -45,6 +46,8 @@ const Layout = ({ user, onLogout }) => {
         <div className="page-content">
           <Outlet />
         </div>
+
+        <Footer />
       </main>
     </div>
   );
