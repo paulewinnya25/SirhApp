@@ -5,6 +5,7 @@ import { recrutementService } from '../../services/api';
 import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
+import '../../styles/RecruitmentHistory.css';
 
 const RecruitmentHistory = () => {
   // États principaux
@@ -403,6 +404,18 @@ const RecruitmentHistory = () => {
     });
   };
 
+  const getInitials = (name = '') => {
+    const parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '?';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  };
+
+  const avatarColor = (name = '') => {
+    const hue = (String(name).length * 37) % 360;
+    return `hsl(${hue}, 52%, 48%)`;
+  };
+
   // Filter and sort recruitments
   const filteredAndSortedRecruitments = useMemo(() => {
     let result = [...recruitments];
@@ -456,7 +469,7 @@ const RecruitmentHistory = () => {
   }, [filteredAndSortedRecruitments, currentPage, itemsPerPage]);
 
   return (
-    <>
+    <div className="recruitment-list-page">
       <div className="page-title-wrapper">
         <div className="title-content">
           <h1 className="page-title">Historique de recrutement</h1>
@@ -480,44 +493,13 @@ const RecruitmentHistory = () => {
         </div>
       )}
 
-      <div className="card table-card mb-4">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <div className="card-icon">
-              <i className="fas fa-user-tie"></i>
-            </div>
-            <h3 className="card-title">Candidatures</h3>
-          </div>
-          <button 
-            className="btn btn-primary" 
-            onClick={() => {
-              setShowModal(true);
-              setSelectedFile(null);
-            }}
-          >
-            <i className="fas fa-plus me-2"></i>
-            Nouvelle candidature
-          </button>
-        </div>
-        
-        <div className="card-body">
-          <div className="table-filters mb-4">
-            <div className="row g-3">
+      <div className="recruitment-filters">
+        <div className="row align-items-end g-2">
+          <div className="col-lg-8">
+            <h5 className="filter-title">Filtres</h5>
+            <div className="row g-2">
               <div className="col-md-3">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="fas fa-search"></i></span>
-                  <input 
-                    type="text" 
-                    placeholder="Rechercher par nom..." 
-                    className="form-control" 
-                    name="name"
-                    value={searchParams.name}
-                    onChange={handleSearchChange}
-                  />
-                </div>
-              </div>
-              <div className="col-md-2">
-                <select 
+                <select
                   className="form-select"
                   name="department"
                   value={searchParams.department}
@@ -529,8 +511,8 @@ const RecruitmentHistory = () => {
                   ))}
                 </select>
               </div>
-              <div className="col-md-2">
-                <select 
+              <div className="col-md-3">
+                <select
                   className="form-select"
                   name="status"
                   value={searchParams.status}
@@ -542,91 +524,110 @@ const RecruitmentHistory = () => {
                   ))}
                 </select>
               </div>
-              <div className="col-md-2">
-                <input 
-                  type="date" 
-                  className="form-control" 
-                  placeholder="Date début" 
+              <div className="col-md-3">
+                <input
+                  type="date"
+                  className="form-control"
                   name="dateFrom"
                   value={searchParams.dateFrom}
                   onChange={handleSearchChange}
+                  title="Date début"
                 />
               </div>
-              <div className="col-md-2">
-                <input 
-                  type="date" 
-                  className="form-control" 
-                  placeholder="Date fin" 
+              <div className="col-md-3">
+                <input
+                  type="date"
+                  className="form-control"
                   name="dateTo"
                   value={searchParams.dateTo}
                   onChange={handleSearchChange}
+                  title="Date fin"
                 />
               </div>
-              <div className="col-md-1 d-flex">
-                <button 
-                  className="btn btn-outline-primary w-100" 
-                  onClick={handleSearch}
-                  title="Rechercher"
-                >
+            </div>
+          </div>
+          <div className="col-lg-4">
+            <div className="d-flex gap-2">
+              <div className="input-group flex-grow-1">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Rechercher un candidat..."
+                  name="name"
+                  value={searchParams.name}
+                  onChange={handleSearchChange}
+                />
+                <button className="btn btn-outline-primary" type="button" onClick={handleSearch}>
                   <i className="fas fa-search"></i>
                 </button>
               </div>
-            </div>
-            <div className="d-flex justify-content-end mt-2">
-              <button 
-                className="btn btn-sm btn-outline-secondary" 
+              <button
+                className="btn btn-outline-secondary"
                 onClick={resetSearchFilters}
+                title="Réinitialiser"
               >
-                <i className="fas fa-filter-circle-xmark me-2"></i>
-                Réinitialiser les filtres
+                <i className="fas fa-undo"></i>
               </button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {isLoading ? (
-            <div className="text-center p-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Chargement...</span>
-              </div>
-              <p className="mt-3 text-muted">Chargement des données...</p>
+      <div className="recruitment-table-card">
+        <div className="recruitment-table-header">
+          <h5 className="table-title">
+            <div className="table-icon">
+              <i className="fas fa-user-tie"></i>
             </div>
-          ) : filteredAndSortedRecruitments.length === 0 ? (
-            <div className="empty-state text-center p-5">
-              <i className="fas fa-user-slash empty-icon text-muted mb-3" style={{ fontSize: '3rem' }}></i>
-              <h4 className="mb-3">Aucune candidature trouvée</h4>
-              <p className="text-muted mb-4">
-                {searchParams.name || searchParams.department || searchParams.status || searchParams.dateFrom || searchParams.dateTo ? 
-                  'Aucun résultat ne correspond à vos critères de recherche.' : 
-                  'Aucune candidature n\'a été enregistrée pour le moment.'}
-              </p>
-              {searchParams.name || searchParams.department || searchParams.status || searchParams.dateFrom || searchParams.dateTo ? (
-                <button className="btn btn-outline-secondary" onClick={resetSearchFilters}>
-                  <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
-                </button>
-              ) : (
-                <button 
-                  className="btn btn-primary" 
-                  onClick={() => setShowModal(true)}
-                >
-                  <i className="fas fa-plus me-2"></i>Nouvelle candidature
-                </button>
-              )}
+            Liste des candidatures ({filteredAndSortedRecruitments.length})
+          </h5>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              setShowModal(true);
+              setSelectedFile(null);
+            }}
+          >
+            <i className="fas fa-plus me-2"></i>
+            Nouvelle candidature
+          </button>
+        </div>
+
+        {isLoading ? (
+          <div className="text-center p-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Chargement...</span>
             </div>
-          ) : (
-            <>
+            <p className="mt-3 text-muted">Chargement des données...</p>
+          </div>
+        ) : filteredAndSortedRecruitments.length === 0 ? (
+          <div className="empty-state text-center p-5">
+            <i className="fas fa-user-slash empty-icon text-muted mb-3"></i>
+            <h4 className="mb-3">Aucune candidature trouvée</h4>
+            <p className="text-muted mb-4">
+              {searchParams.name || searchParams.department || searchParams.status || searchParams.dateFrom || searchParams.dateTo
+                ? 'Aucun résultat ne correspond à vos critères de recherche.'
+                : 'Aucune candidature n\'a été enregistrée pour le moment.'}
+            </p>
+            {searchParams.name || searchParams.department || searchParams.status || searchParams.dateFrom || searchParams.dateTo ? (
+              <button className="btn btn-outline-secondary" onClick={resetSearchFilters}>
+                <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+                <i className="fas fa-plus me-2"></i>Nouvelle candidature
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
             <div className="table-responsive">
               <table className="table table-hover align-middle custom-table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('fullName')} className="sortable-header">
-                      Nom
+                      Candidat
                       {sortConfig.key === 'fullName' && (
-                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('position')} className="sortable-header">
-                      Poste
-                      {sortConfig.key === 'position' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
@@ -643,13 +644,13 @@ const RecruitmentHistory = () => {
                       )}
                     </th>
                     <th onClick={() => handleSort('applicationDate')} className="sortable-header">
-                      Date de recrutement
+                      Date
                       {sortConfig.key === 'applicationDate' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
                     <th onClick={() => handleSort('status')} className="sortable-header">
-                      Type de contrat
+                      Contrat
                       {sortConfig.key === 'status' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
@@ -660,10 +661,22 @@ const RecruitmentHistory = () => {
                 <tbody>
                   {paginatedRecruitments.map((recruitment) => (
                     <tr key={recruitment.id}>
-                      <td>{recruitment.fullName}</td>
-                      <td>{recruitment.position}</td>
-                      <td>{recruitment.department}</td>
-                      <td>{recruitment.source}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div
+                            className="recruitment-avatar me-2"
+                            style={{ backgroundColor: avatarColor(recruitment.fullName) }}
+                          >
+                            {getInitials(recruitment.fullName)}
+                          </div>
+                          <div>
+                            <div className="recruitment-name">{recruitment.fullName}</div>
+                            <div className="recruitment-position">{recruitment.position || '-'}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{recruitment.department || '-'}</td>
+                      <td>{recruitment.source || '-'}</td>
                       <td>{formatDate(recruitment.applicationDate)}</td>
                       <td>
                         <span className={`badge bg-${getStatusBadgeColor(recruitment.status)}`}>
@@ -671,32 +684,32 @@ const RecruitmentHistory = () => {
                         </span>
                       </td>
                       <td>
-                        <div className="action-btns">
-                          <button 
-                            className="btn btn-sm btn-info me-1" 
+                        <div className="d-flex">
+                          <button
+                            className="action-btn action-btn-view"
                             onClick={() => handleViewDetails(recruitment.id)}
                             title="Voir détails"
                           >
                             <i className="fas fa-eye"></i>
                           </button>
-                          <button 
-                            className="btn btn-sm btn-primary me-1" 
+                          <button
+                            className="action-btn action-btn-edit"
                             onClick={() => handleEditRecruitment(recruitment.id)}
                             title="Modifier"
                           >
                             <i className="fas fa-edit"></i>
                           </button>
                           {recruitment.cv_path && (
-                            <button 
-                              className="btn btn-sm btn-secondary me-1" 
+                            <button
+                              className="action-btn action-btn-email"
                               title="Télécharger CV"
                               onClick={() => handleDownloadCV(recruitment.id)}
                             >
                               <i className="fas fa-download"></i>
                             </button>
                           )}
-                          <button 
-                            className="btn btn-sm btn-danger" 
+                          <button
+                            className="action-btn action-btn-delete"
                             title="Supprimer"
                             onClick={() => confirmDelete(recruitment.id)}
                           >
@@ -709,16 +722,17 @@ const RecruitmentHistory = () => {
                 </tbody>
               </table>
             </div>
-            <ListPagination
-              currentPage={currentPage}
-              totalItems={filteredAndSortedRecruitments.length}
-              itemsPerPage={itemsPerPage}
-              onPageChange={setCurrentPage}
-              itemLabel="candidature"
-            />
-            </>
-          )}
-        </div>
+            <div className="recruitment-pagination-wrap">
+              <ListPagination
+                currentPage={currentPage}
+                totalItems={filteredAndSortedRecruitments.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                itemLabel="candidature"
+              />
+            </div>
+          </>
+        )}
       </div>
 
       {/* New Recruitment Modal */}
@@ -1460,7 +1474,7 @@ const RecruitmentHistory = () => {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,167 @@
+/* Recrutement — même densité / structure que Effectif */
+
+.recruitment-list-page {
+  width: 100%;
+}
+
+.recruitment-list-page .page-title-wrapper {
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+}
+
+.recruitment-filters {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+}
+
+.recruitment-list-page .filter-title {
+  font-size: var(--fs-sm, 0.8125rem);
+  color: #6c757d;
+  margin-bottom: 0.55rem;
+  font-weight: 600;
+}
+
+.recruitment-list-page .form-select,
+.recruitment-list-page .form-control {
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+}
+
+.recruitment-table-card {
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.recruitment-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(41, 87, 133, 0.1);
+}
+
+.recruitment-list-page .table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: #1a3348;
+  font-size: var(--fs-lg, 1.05rem);
+  font-weight: 650;
+}
+
+.recruitment-list-page .table-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #e8f4f8;
+  color: #295785;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.recruitment-list-page .custom-table {
+  margin: 0;
+}
+
+.recruitment-list-page .custom-table thead th {
+  background: #f7fafc;
+  white-space: nowrap;
+}
+
+.recruitment-list-page .custom-table tbody tr:hover {
+  background: rgba(58, 142, 186, 0.04);
+}
+
+.recruitment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 650;
+  font-size: var(--fs-xs, 0.75rem);
+  flex-shrink: 0;
+}
+
+.recruitment-name {
+  font-weight: 600;
+  color: #1a3348;
+  line-height: 1.25;
+}
+
+.recruitment-position {
+  color: #6c757d;
+  font-weight: 450;
+  line-height: 1.25;
+  margin-top: 0.1rem;
+  font-size: var(--fs-sm, 0.8125rem);
+}
+
+.recruitment-list-page .action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  border: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.recruitment-list-page .action-btn:hover {
+  transform: scale(1.05);
+}
+
+.recruitment-list-page .action-btn-view {
+  background-color: rgba(58, 142, 186, 0.12);
+  color: var(--primary, #3a8eba);
+}
+
+.recruitment-list-page .action-btn-edit {
+  background-color: #fff3cd;
+  color: #d39e00;
+}
+
+.recruitment-list-page .action-btn-delete {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.recruitment-list-page .action-btn-email {
+  background-color: #d1e7dd;
+  color: #198754;
+}
+
+.recruitment-pagination-wrap {
+  padding: 0 1rem 0.5rem;
+}
+
+.recruitment-list-page .empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.45;
+}
+
+.recruitment-list-page .empty-state h4 {
+  font-size: var(--fs-lg, 1.05rem);
+}
+
+@media (max-width: 768px) {
+  .recruitment-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
