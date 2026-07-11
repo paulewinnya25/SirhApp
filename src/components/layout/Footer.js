@@ -16,20 +16,20 @@ const Footer = () => {
           />
           <div>
             <p className="app-footer-name">Centre Diagnostic</p>
-            <p className="app-footer-tagline">Portail des ressources humaines</p>
+            <p className="app-footer-tagline">Portail RH — gestion des collaborateurs</p>
           </div>
         </div>
 
-        <nav className="app-footer-nav" aria-label="Liens pied de page">
-          <Link to="/">Tableau de bord</Link>
-          <Link to="/employees">Employés</Link>
+        <nav className="app-footer-nav" aria-label="Liens utiles">
+          <Link to="/dashboard">Tableau de bord</Link>
+          <Link to="/employees">Effectif</Link>
           <Link to="/leave-management">Congés</Link>
           <Link to="/service-notes">Notes de service</Link>
         </nav>
 
         <div className="app-footer-meta">
-          <p>© {year} Centre Diagnostic. Tous droits réservés.</p>
-          <p className="app-footer-support">Support RH · Accès sécurisé</p>
+          <p>© {year} Centre Diagnostic</p>
+          <p className="app-footer-support">Données confidentielles · Accès réservé</p>
         </div>
       </div>
     </footer>

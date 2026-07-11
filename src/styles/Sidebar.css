@@ -24,21 +24,36 @@
   height: var(--topbar-height);
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  padding: 0 1.1rem;
   border-bottom: 1px solid var(--sidebar-border);
   background: #fff;
 }
 
 .sidebar-header img {
-  max-height: 42px;
+  max-height: 36px;
   transition: max-height var(--transition-base);
   filter: none;
   opacity: 1;
 }
 
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 0 0.5rem;
+}
+
 .sidebar.collapsed .sidebar-header img {
   max-height: 32px;
+}
+
+.sidebar-brand-label {
+  font-size: 0.78rem;
+  font-weight: 750;
+  color: #295785;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .nav-menu {

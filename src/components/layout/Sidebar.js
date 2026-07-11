@@ -10,25 +10,24 @@ const Sidebar = ({ collapsed }) => {
   const menuItems = useMemo(() => [
     {
       title: 'Tableau de bord',
-      icon: 'fas fa-tachometer-alt',
+      icon: 'fas fa-home',
       path: '/dashboard',
       subMenu: null
     },
-    
     {
-      title: 'Mes entreprises',
+      title: 'Entreprises',
       icon: 'fas fa-building',
       path: '#',
       subMenu: [
         { title: 'Centre Diagnostic', path: '#' },
         { title: 'Optikah', path: '#' },
-        { title: 'Centre wellness', path: '#' },
-        { title: 'Café walhya', path: '#' }
+        { title: 'Centre Wellness', path: '#' },
+        { title: 'Café Walhya', path: '#' }
       ]
     },
     {
-      title: 'On/Off boarding',
-      icon: 'fas fa-sign-in-alt',
+      title: 'Intégration & départ',
+      icon: 'fas fa-exchange-alt',
       path: '#',
       subMenu: [
         { title: 'Onboarding', path: '/onboarding' },
@@ -36,18 +35,17 @@ const Sidebar = ({ collapsed }) => {
       ]
     },
     {
-      title: 'Gestion des Employés',
+      title: 'Collaborateurs',
       icon: 'fas fa-users',
       path: '#',
       subMenu: [
-        { title: 'Ajouter un Employé', path: '/new-employee' },
+        { title: 'Nouvel employé', path: '/new-employee' },
         { title: 'Effectif', path: '/employees' },
-        
-        { title: 'Alertes Contrats', path: '/contract-alerts' }
+        { title: 'Alertes contrats', path: '/contract-alerts' }
       ]
     },
     {
-      title: 'Gestion des Congés',
+      title: 'Temps & absences',
       icon: 'fas fa-calendar-alt',
       path: '#',
       subMenu: [
@@ -60,18 +58,17 @@ const Sidebar = ({ collapsed }) => {
       icon: 'fas fa-file-signature',
       path: '#',
       subMenu: [
-        { title: 'Gestion des Contrats', path: '/contrats' }
-        
+        { title: 'Tous les contrats', path: '/contrats' }
       ]
     },
     {
-      title: 'RH & Performance',
-      icon: 'fas fa-chart-line',
+      title: 'Vie de l’entreprise',
+      icon: 'fas fa-briefcase',
       path: '#',
       subMenu: [
         { title: 'Sanctions', path: '/sanctions' },
-        { title: 'Gestion Performance', path: '/performance-management' },
-        { title: 'Notes de Service', path: '/service-notes' }
+        { title: 'Performance', path: '/performance-management' },
+        { title: 'Notes de service', path: '/service-notes' }
       ]
     },
     {
@@ -79,28 +76,27 @@ const Sidebar = ({ collapsed }) => {
       icon: 'fas fa-user-tie',
       path: '#',
       subMenu: [
-        { title: 'Historique de recrutement', path: '/recruitment-history' },   
-        { title: 'Historique de depart', path: '/departure-history' },
-        { title: 'Visites Médicale', path: '/medical-visits' },
+        { title: 'Historique recrutement', path: '/recruitment-history' },
+        { title: 'Historique départs', path: '/departure-history' },
+        { title: 'Visites médicales', path: '/medical-visits' },
         { title: 'Entretiens', path: '/interviews' },
-        { title: 'Gestion des Tâches', path: '/tasks' }
-        
+        { title: 'Tâches', path: '/tasks' }
       ]
     },
     {
-      title: 'Évènements',
+      title: 'Événements',
       icon: 'fas fa-calendar-check',
       path: '#',
       subMenu: [
-        { title: 'Gestion des Évènements', path: '/events' }
+        { title: 'Calendrier', path: '/events' }
       ]
     },
     {
-      title: 'Graphiques',
+      title: 'Analyses',
       icon: 'fas fa-chart-bar',
       path: '#',
       subMenu: [
-        { title: 'Graphiques', path: '/charts' }
+        { title: 'Graphiques RH', path: '/charts' }
       ]
     }
   ], []);
@@ -140,8 +136,11 @@ const Sidebar = ({ collapsed }) => {
       <div className="sidebar-header">
         <img 
           src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png" 
-          alt="Centre Diagnostic Logo" 
+          alt="Centre Diagnostic" 
         />
+        {!collapsed && (
+          <span className="sidebar-brand-label">Portail RH</span>
+        )}
       </div>
       
       <ul className="nav-menu">

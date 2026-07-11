@@ -271,7 +271,15 @@
   font-size: 0.95rem !important;
   font-weight: 700 !important;
   color: #0b1f33 !important;
-  margin: 0 !important;
+  margin: 0 0 0.2rem !important;
+}
+
+.tool-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #5c6b7a;
+  line-height: 1.35;
+  font-weight: 500;
 }
 
 .tool-notification-badge {

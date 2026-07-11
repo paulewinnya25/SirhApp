@@ -121,8 +121,10 @@ const TopNav = ({
   };
 
   // Get user display info with fallbacks
-  const userName = user?.name || user?.nom || user?.prenom || 'Admin RH';
-  const userRole = user?.role || user?.poste || user?.fonction || 'Administration';
+  const userName = user?.name || user?.nom || user?.prenom || 'Administrateur RH';
+  const userRole = user?.role === 'admin' || user?.role === 'rh'
+    ? 'Ressources humaines'
+    : (user?.poste || user?.fonction || user?.role || 'Centre Diagnostic');
 
   return (
     <div className="top-nav-container">
@@ -130,7 +132,7 @@ const TopNav = ({
         <button 
           className="toggle-sidebar" 
           onClick={handleSidebarToggle}
-          title="Basculer la barre latérale"
+          title="Ouvrir ou fermer le menu"
         >
           <i className="fas fa-bars"></i>
         </button>
@@ -140,7 +142,7 @@ const TopNav = ({
             <input 
               type="text" 
               className={`search-input ${isSearchFocused ? 'focused' : ''}`}
-              placeholder="Rechercher un employé, un contrat..." 
+              placeholder="Rechercher un collaborateur, un contrat…" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={handleSearchFocus}

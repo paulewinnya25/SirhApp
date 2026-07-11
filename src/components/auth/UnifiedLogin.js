@@ -227,18 +227,18 @@ const UnifiedLogin = () => {
               alt="Centre Diagnostic"
               className="unified-login-brand-mark"
             />
-            <p className="unified-login-kicker">Logiciel RH pensé pour vos équipes</p>
+            <p className="unified-login-kicker">Centre Diagnostic · Portail RH</p>
             <h1 className="unified-login-title">
               {userType === 'admin'
-                ? 'Espace administrateur'
+                ? 'Connexion administrateur'
                 : userType === 'rh'
-                ? 'Une gestion RH plus efficace'
+                ? 'Connexion espace RH'
                 : userType === 'employee'
-                ? 'Votre espace collaborateur'
-                : 'Bienvenue sur votre portail RH'}
+                ? 'Connexion collaborateur'
+                : 'Accédez à votre espace'}
             </h1>
             <p className="unified-login-subtitle">
-              Connectez-vous pour gérer congés, contrats, dossiers et demandes en un seul endroit.
+              Gérez effectifs, congés, contrats et demandes en toute sécurité.
             </p>
           </header>
 
@@ -342,8 +342,8 @@ const UnifiedLogin = () => {
 
           <footer className="unified-login-footer">
             <p className="unified-help-text">
-              <span><strong>RH</strong> — email</span>
-              <span><strong>Employé</strong> — matricule</span>
+              <span><strong>Équipe RH</strong> — email professionnel</span>
+              <span><strong>Collaborateur</strong> — matricule CDL-AAAA-XXXX</span>
             </p>
             <p className="unified-copyright">© {new Date().getFullYear()} Centre Diagnostic</p>
           </footer>

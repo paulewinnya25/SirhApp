@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { evenementService, noteService } from '../../services/api';
+import employeeService from '../../services/employeeService';
 import { usePendingRequestsCount } from '../../hooks/usePendingRequestsCount';
 import EventsComponent from '../common/EventsComponent';
 import '../../styles/Dashboard.css';
@@ -8,49 +9,54 @@ import '../../styles/Dashboard.css';
 const Dashboard = () => {
   const [notes, setNotes] = useState([]);
   const [events, setEvents] = useState([]);
+  const [employeeCount, setEmployeeCount] = useState(null);
   const [loadingNotes, setLoadingNotes] = useState(true);
   const [notesError, setNotesError] = useState(null);
   const { pendingCount } = usePendingRequestsCount();
 
+  const greeting = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bonjour';
+    if (hour < 18) return 'Bon après-midi';
+    return 'Bonsoir';
+  }, []);
+
+  const todayLabel = useMemo(() => {
+    return new Date().toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }, []);
+
   useEffect(() => {
-    // Fetch data
     const fetchData = async () => {
       try {
-        // Récupérer les événements depuis l'API
-        const eventsData = await evenementService.getUpcoming();
-        setEvents(eventsData);
+        const [eventsData, employeesData] = await Promise.all([
+          evenementService.getUpcoming().catch(() => []),
+          employeeService.getAll().catch(() => null)
+        ]);
 
-        // Récupérer les notes de service publiques depuis l'API
+        setEvents(Array.isArray(eventsData) ? eventsData : []);
+
+        if (Array.isArray(employeesData)) {
+          setEmployeeCount(employeesData.length);
+        } else if (employeesData?.data && Array.isArray(employeesData.data)) {
+          setEmployeeCount(employeesData.data.length);
+        } else if (typeof employeesData?.count === 'number') {
+          setEmployeeCount(employeesData.count);
+        }
+
         setLoadingNotes(true);
         try {
-          // Utiliser le service API pour récupérer uniquement les notes publiques
           const notesData = await noteService.getPublicNotes();
-          setNotes(notesData);
+          setNotes(Array.isArray(notesData) ? notesData : []);
           setNotesError(null);
         } catch (noteError) {
           console.error('Error fetching public notes:', noteError);
-          setNotesError('Impossible de charger les notes de service.');
-          // En cas d'erreur, utiliser des données fictives pour la démo
-          setNotes([
-            {
-              id: 1,
-              full_note_number: 'NS-2025-001',
-              category: 'Information',
-              title: 'Nouveau processus de congés',
-              content: 'Suite à la réunion du comité de direction, nous mettons en place un nouveau processus de demande de congés à partir du 1er juillet 2025.',
-              created_at: '2025-06-20T10:30:00Z',
-              created_by: 'Admin RH'
-            },
-            {
-              id: 2,
-              full_note_number: 'NS-2025-002',
-              category: 'Organisation',
-              title: 'Horaires d\'été',
-              content: 'Les horaires d\'été seront appliqués du 1er juillet au 31 août 2025. Les bureaux seront ouverts de 8h à 16h du lundi au vendredi.',
-              created_at: '2025-06-22T14:15:00Z',
-              created_by: 'Admin RH'
-            }
-          ]);
+          setNotesError('Les notes de service sont temporairement indisponibles.');
+          setNotes([]);
         } finally {
           setLoadingNotes(false);
         }
@@ -62,85 +68,87 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  // Stats data
   const stats = [
-    { 
-      value: 1, 
-      label: 'Collaborateurs', 
-      icon: 'fas fa-users', 
-      color: 'blue' 
+    {
+      value: employeeCount ?? '—',
+      label: 'Collaborateurs',
+      icon: 'fas fa-users',
+      color: 'blue'
     },
-    { 
-      value: 0, 
-      label: 'Congés en attente', 
-      icon: 'fas fa-calendar-check', 
-      color: 'green' 
+    {
+      value: pendingCount ?? 0,
+      label: 'Demandes en attente',
+      icon: 'fas fa-inbox',
+      color: 'green'
     },
-    { 
-      value: 4, 
-      label: 'Entreprises', 
-      icon: 'fas fa-building', 
-      color: 'orange' 
+    {
+      value: 4,
+      label: 'Entités du groupe',
+      icon: 'fas fa-building',
+      color: 'orange'
     },
-    { 
-      value: events.length, 
-      label: 'Évènements cette semaine', 
-      icon: 'fas fa-calendar-day', 
-      color: 'red' 
+    {
+      value: events.length,
+      label: 'Événements à venir',
+      icon: 'fas fa-calendar-day',
+      color: 'red'
     }
   ];
 
-  // Tools data
   const tools = [
     {
       title: 'Notes de service',
-      icon: 'fas fa-file-alt',
+      description: 'Communications internes',
+      icon: 'fas fa-bullhorn',
       path: '/service-notes'
     },
     {
-      title: 'Gestion de contrats',
+      title: 'Contrats',
+      description: 'Suivi et renouvellements',
       icon: 'fas fa-file-signature',
       path: '/contrats'
     },
     {
-      title: 'Gestion des sanctions',
-      icon: 'fas fa-gavel',
+      title: 'Sanctions',
+      description: 'Dossiers disciplinaires',
+      icon: 'fas fa-balance-scale',
       path: '/sanctions'
     },
     {
-      title: 'Demandes employés',
-      icon: 'fas fa-file-alt',
+      title: 'Demandes',
+      description: 'Attestations & documents',
+      icon: 'fas fa-folder-open',
       path: '/employee-requests',
       notificationCount: pendingCount
     }
-    
   ];
 
-  // HR cards data
   const hrCards = [
     {
       title: 'Congés et absences',
       icon: 'fas fa-calendar-alt',
-      text: 'Vous n\'avez aucune demande de congé en attente',
-      buttonText: 'Déclarer un congé',
+      text: pendingCount > 0
+        ? `${pendingCount} demande${pendingCount > 1 ? 's' : ''} à traiter.`
+        : 'Aucune demande urgente pour le moment.',
+      buttonText: 'Gérer les congés',
       buttonIcon: 'far fa-calendar-check',
       buttonPath: '/leave-management',
       buttonVariant: 'outline-primary'
     },
     {
-      title: 'Gestion des collaborateurs',
+      title: 'Effectif',
       icon: 'fas fa-users',
-      count: 1,
-      countLabel: 'Collaborateur',
+      count: employeeCount ?? '—',
+      countLabel: employeeCount === 1 ? 'collaborateur' : 'collaborateurs',
       buttons: [
         {
-          text: 'Ajouter un employé',
+          text: 'Nouvel employé',
           icon: 'fas fa-user-plus',
           path: '/new-employee',
           variant: 'primary'
         },
         {
-          text: 'Déclarer un départ',
+          text: 'Historique des départs',
           icon: 'fas fa-user-minus',
           path: '/departure-history',
           variant: 'outline-danger'
@@ -149,10 +157,8 @@ const Dashboard = () => {
     }
   ];
 
-  // Formatter la date
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR', {
       day: '2-digit',
@@ -161,7 +167,6 @@ const Dashboard = () => {
     });
   };
 
-  // Obtenir la classe CSS pour la catégorie de note
   const getCategoryClass = (category) => {
     switch (category) {
       case 'Information':
@@ -173,6 +178,7 @@ const Dashboard = () => {
       case 'Procédure':
         return 'category-procedure';
       case 'Évènement':
+      case 'Événement':
         return 'category-event';
       case 'Recrutement':
         return 'category-recruitment';
@@ -181,103 +187,96 @@ const Dashboard = () => {
     }
   };
 
-  // Stat Card Component (inline)
-  const StatCard = ({ value, label, icon, color, delay = 0.1 }) => {
-    return (
-      <div className="stat-card fade-in-up" style={{ animationDelay: `${delay}s` }}>
-        <div className={`stat-icon-wrapper stat-icon-${color}`}>
-          <i className={icon}></i>
-        </div>
-        <div className="stat-content">
-          <div className="stat-value">{value}</div>
-          <div className="stat-label">{label}</div>
-        </div>
+  const StatCard = ({ value, label, icon, color, delay = 0.1 }) => (
+    <div className="stat-card fade-in-up" style={{ animationDelay: `${delay}s` }}>
+      <div className={`stat-icon-wrapper stat-icon-${color}`}>
+        <i className={icon}></i>
       </div>
-    );
-  };
+      <div className="stat-content">
+        <div className="stat-value">{value}</div>
+        <div className="stat-label">{label}</div>
+      </div>
+    </div>
+  );
 
-  // Tool Card Component (inline)
-  const ToolCard = ({ title, icon, path, notificationCount }) => {
-    return (
-      <Link to={path} className="tool-card">
-        <div className="tool-icon">
-          <i className={icon}></i>
-          {notificationCount > 0 && (
-            <span className="tool-notification-badge">
-              {notificationCount > 99 ? '99+' : notificationCount}
-            </span>
-          )}
-        </div>
+  const ToolCard = ({ title, description, icon, path, notificationCount }) => (
+    <Link to={path} className="tool-card">
+      <div className="tool-icon">
+        <i className={icon}></i>
+        {notificationCount > 0 && (
+          <span className="tool-notification-badge">
+            {notificationCount > 99 ? '99+' : notificationCount}
+          </span>
+        )}
+      </div>
+      <div>
         <h3 className="tool-title">{title}</h3>
-      </Link>
-    );
-  };
+        {description && <p className="tool-desc">{description}</p>}
+      </div>
+    </Link>
+  );
 
-  // HR Card Component (inline)
-  const HRCard = ({ 
-    title, 
-    icon, 
-    text, 
-    count, 
-    countLabel, 
-    buttonText, 
-    buttonIcon, 
-    buttonPath, 
+  const HRCard = ({
+    title,
+    icon,
+    text,
+    count,
+    countLabel,
+    buttonText,
+    buttonIcon,
+    buttonPath,
     buttonVariant = 'primary',
     buttons
-  }) => {
-    return (
-      <div className="hr-card">
-        <div className="hr-icon">
-          <i className={icon}></i>
-        </div>
-        <h3 className="hr-title">{title}</h3>
-        
-        {text && <p className="hr-text">{text}</p>}
-        
-        {count !== undefined && (
-          <div className="hr-count">
-            {count} <span>{countLabel}</span>
-          </div>
-        )}
-        
-        {buttonText && buttonPath && (
-          <Link to={buttonPath} className={`btn btn-${buttonVariant}`}>
-            {buttonIcon && <i className={`${buttonIcon} btn-icon`}></i>}
-            {buttonText}
-          </Link>
-        )}
-        
-        {buttons && buttons.length > 0 && (
-          <div className="d-grid gap-2">
-            {buttons.map((button, index) => (
-              <Link 
-                key={index}
-                to={button.path} 
-                className={`btn btn-${button.variant} ${index > 0 ? 'mt-2' : ''}`}
-              >
-                {button.icon && <i className={`${button.icon} btn-icon`}></i>}
-                {button.text}
-              </Link>
-            ))}
-          </div>
-        )}
+  }) => (
+    <div className="hr-card">
+      <div className="hr-icon">
+        <i className={icon}></i>
       </div>
-    );
-  };
+      <h3 className="hr-title">{title}</h3>
+      {text && <p className="hr-text">{text}</p>}
+      {count !== undefined && (
+        <div className="hr-count">
+          {count} <span>{countLabel}</span>
+        </div>
+      )}
+      {buttonText && buttonPath && (
+        <Link to={buttonPath} className={`btn btn-${buttonVariant}`}>
+          {buttonIcon && <i className={`${buttonIcon} btn-icon`}></i>}
+          {buttonText}
+        </Link>
+      )}
+      {buttons && buttons.length > 0 && (
+        <div className="d-grid gap-2">
+          {buttons.map((button, index) => (
+            <Link
+              key={index}
+              to={button.path}
+              className={`btn btn-${button.variant} ${index > 0 ? 'mt-2' : ''}`}
+            >
+              {button.icon && <i className={`${button.icon} btn-icon`}></i>}
+              {button.text}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="dashboard-page">
       <header className="dashboard-hero">
-        <p className="dashboard-kicker">Tableau de bord</p>
-        <h1>Une gestion RH plus claire, au quotidien</h1>
-        <p>Suivez vos effectifs, demandes et communications depuis un seul espace.</p>
+        <p className="dashboard-kicker">{todayLabel}</p>
+        <h1>{greeting}, voici votre activité RH</h1>
+        <p>
+          Pilotez l’effectif, les demandes et les communications du Centre Diagnostic
+          depuis un tableau de bord unique.
+        </p>
       </header>
 
       <div className="stats-row">
         {stats.map((stat, index) => (
           <StatCard
-            key={index}
+            key={stat.label}
             value={stat.value}
             label={stat.label}
             icon={stat.icon}
@@ -292,14 +291,8 @@ const Dashboard = () => {
           <h2 className="section-title">Accès rapides</h2>
         </div>
         <div className="tools-grid">
-          {tools.map((tool, index) => (
-            <ToolCard
-              key={index}
-              title={tool.title}
-              icon={tool.icon}
-              path={tool.path}
-              notificationCount={tool.notificationCount}
-            />
+          {tools.map((tool) => (
+            <ToolCard key={tool.path} {...tool} />
           ))}
         </div>
       </div>
@@ -310,25 +303,27 @@ const Dashboard = () => {
             <div className="card-icon">
               <i className="fas fa-bolt"></i>
             </div>
-            <h3 className="card-title">Actions prioritaires</h3>
+            <h3 className="card-title">À traiter en priorité</h3>
           </div>
           <div className="card-body">
             <div className="welcome-wrapper">
               <div className="welcome-image welcome-image-fallback" aria-hidden="true">
-                <i className="fas fa-user-plus"></i>
+                <i className="fas fa-clipboard-check"></i>
               </div>
               <div className="welcome-content">
-                <h4 className="welcome-title">Faites avancer vos dossiers RH</h4>
+                <h4 className="welcome-title">Gagnez du temps sur vos dossiers</h4>
                 <p className="welcome-text">
-                  Ajoutez un collaborateur, suivez les demandes en attente ou consultez les contrats à renouveler.
+                  Créez un collaborateur, validez une demande ou consultez les contrats
+                  arrivant à échéance.
                 </p>
                 <div className="action-buttons">
                   <Link to="/new-employee" className="btn btn-primary">
                     <i className="fas fa-user-plus btn-icon"></i>
-                    Ajouter un employé
+                    Nouvel employé
                   </Link>
                   <Link to="/employee-requests" className="btn btn-outline-primary">
-                    Voir les demandes
+                    Demandes
+                    {pendingCount > 0 ? ` (${pendingCount})` : ''}
                   </Link>
                 </div>
               </div>
@@ -342,7 +337,7 @@ const Dashboard = () => {
       <div className="notes-section">
         <div className="section-header">
           <h2 className="section-title">Notes de service</h2>
-          <Link to="/service-notes" className="btn-link-all">Voir tout</Link>
+          <Link to="/service-notes" className="btn-link-all">Toutes les notes</Link>
         </div>
 
         <div className="card note-card">
@@ -374,11 +369,11 @@ const Dashboard = () => {
                     <h4 className="note-title">{note.title}</h4>
                     <p className="note-content">
                       {note.content.length > 150
-                        ? `${note.content.substring(0, 150)}...`
+                        ? `${note.content.substring(0, 150)}…`
                         : note.content}
                     </p>
                     <Link to={`/service-notes/${note.id}`} className="btn btn-sm btn-outline-primary">
-                      Lire la note
+                      Lire
                     </Link>
                   </li>
                 ))}
@@ -386,7 +381,10 @@ const Dashboard = () => {
             ) : (
               <div className="empty-notes">
                 <i className="fas fa-file-alt empty-icon"></i>
-                <p className="empty-text">Aucune note de service pour le moment.</p>
+                <p className="empty-text">Aucune note publiée pour l’instant.</p>
+                <Link to="/service-notes" className="btn btn-sm btn-outline-primary mt-2">
+                  Créer une note
+                </Link>
               </div>
             )}
           </div>
@@ -395,11 +393,11 @@ const Dashboard = () => {
 
       <div className="hr-section">
         <div className="section-header">
-          <h2 className="section-title">Ressources humaines</h2>
+          <h2 className="section-title">Modules RH</h2>
         </div>
         <div className="hr-grid">
-          {hrCards.map((card, index) => (
-            <HRCard key={index} {...card} />
+          {hrCards.map((card) => (
+            <HRCard key={card.title} {...card} />
           ))}
         </div>
       </div>

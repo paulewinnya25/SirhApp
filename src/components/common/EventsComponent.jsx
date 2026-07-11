@@ -57,7 +57,7 @@ const EventsComponent = ({ limit = 3, showTitle = true, className = '' }) => {
           <div className="card-icon">
             <i className="fas fa-calendar-week"></i>
           </div>
-          <h3 className="card-title">Événements à venir</h3>
+          <h3 className="card-title">Prochains événements</h3>
         </div>
       )}
       
@@ -79,7 +79,7 @@ const EventsComponent = ({ limit = 3, showTitle = true, className = '' }) => {
         ) : events.length === 0 ? (
           <div className="empty-events">
             <i className="far fa-calendar-times empty-icon"></i>
-            <p className="empty-text">Aucun événement prévu prochainement.</p>
+            <p className="empty-text">Aucun événement planifié pour les prochains jours.</p>
           </div>
         ) : (
           <ul className="event-list">
