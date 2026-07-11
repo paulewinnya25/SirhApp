@@ -72,13 +72,13 @@
   --font-display: "Outfit", "Manrope", system-ui, sans-serif;
 
   /* Typographie unique pour tous les onglets */
-  --fs-xs: 0.7rem;
-  --fs-sm: 0.75rem;
-  --fs-base: 0.8125rem;
-  --fs-md: 0.875rem;
-  --fs-lg: 0.95rem;
-  --fs-title: 1.35rem;
-  --fs-subtitle: 0.82rem;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.875rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: 1.05rem;
+  --fs-title: 1.5rem;
+  --fs-subtitle: 0.9rem;
 }
 
 * {
