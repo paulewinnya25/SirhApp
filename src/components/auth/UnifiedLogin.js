@@ -219,45 +219,64 @@ const UnifiedLogin = () => {
 
   return (
     <div className="unified-login-page">
-      <div className="unified-login-container">
-        <div className="unified-login-card">
-          <div className="unified-login-header">
-            <img 
-              src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png" 
-              alt="Centre Diagnostic Logo" 
-              className="unified-login-logo" 
+      <aside className="unified-login-brand" aria-hidden="false">
+        <div className="unified-login-brand-overlay" />
+        <div className="unified-login-brand-content">
+          <img
+            src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png"
+            alt="Centre Diagnostic"
+            className="unified-login-brand-logo"
+          />
+          <p className="unified-login-brand-name">Centre Diagnostic</p>
+          <h1 className="unified-login-brand-headline">Portail des ressources humaines</h1>
+          <p className="unified-login-brand-text">
+            Accédez à votre espace sécurisé pour gérer les dossiers, congés, contrats et demandes.
+          </p>
+        </div>
+      </aside>
+
+      <div className="unified-login-panel">
+        <div className="unified-login-panel-inner">
+          <header className="unified-login-header">
+            <img
+              src="https://res.cloudinary.com/dd64mwkl2/image/upload/v1723636014/Centre_Diagnostic_logo_coucleur_ie6ywu.png"
+              alt=""
+              className="unified-login-logo-mobile"
             />
-            <h1 className="unified-login-title">Bienvenue !</h1>
-            <p className="unified-login-subtitle">
+            <p className="unified-login-kicker">Connexion</p>
+            <h2 className="unified-login-title">
               {userType === 'admin'
-                ? 'Connexion Administrateur Système'
-                : userType === 'rh' 
-                ? 'Connexion Administrateur RH' 
-                : userType === 'employee' 
-                ? 'Connexion Employé' 
-                : 'Connectez-vous à votre espace'}
+                ? 'Espace administrateur'
+                : userType === 'rh'
+                ? 'Espace RH'
+                : userType === 'employee'
+                ? 'Espace collaborateur'
+                : 'Bienvenue'}
+            </h2>
+            <p className="unified-login-subtitle">
+              Identifiez-vous avec votre email professionnel ou votre matricule.
             </p>
-          </div>
-          
+          </header>
+
           {error && (
-            <div className="unified-alert unified-alert-danger">
-              <i className="fas fa-exclamation-circle me-2"></i>
-              {error}
+            <div className="unified-alert unified-alert-danger" role="alert">
+              <i className="fas fa-exclamation-circle" aria-hidden="true"></i>
+              <span>{error}</span>
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="unified-login-form">
             <div className="unified-form-group">
               <label htmlFor="identifier" className="unified-form-label">
                 {inputConfig.label}
               </label>
               <div className="unified-input-group">
-                <i className={`fas ${inputConfig.icon} unified-input-icon`}></i>
-                <input 
-                  type="text" 
+                <i className={`fas ${inputConfig.icon} unified-input-icon`} aria-hidden="true"></i>
+                <input
+                  type="text"
                   id="identifier"
                   name="identifier"
-                  className="unified-form-control" 
+                  className="unified-form-control"
                   placeholder={inputConfig.placeholder}
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
@@ -267,51 +286,51 @@ const UnifiedLogin = () => {
                 />
                 {userType && (
                   <span className="unified-user-type-badge">
-                    {userType === 'admin' ? '🛡️ Admin' : userType === 'rh' ? '👔 RH' : '👤 Employé'}
+                    {userType === 'admin' ? 'Admin' : userType === 'rh' ? 'RH' : 'Employé'}
                   </span>
                 )}
               </div>
               {identifier && !userType && (
                 <small className="unified-form-hint">
-                  💡 Format attendu : email (ex: user@example.com) ou matricule (ex: CDL-2024-0001)
+                  Email (ex. rh@centre-diagnostic.com) ou matricule (ex. CDL-2024-0001)
                 </small>
               )}
             </div>
-            
+
             <div className="unified-form-group">
               <label htmlFor="password" className="unified-form-label">Mot de passe</label>
               <div className="unified-input-group">
-                <i className="fas fa-lock unified-input-icon"></i>
-                <input 
-                  type={showPassword ? "text" : "password"} 
+                <i className="fas fa-lock unified-input-icon" aria-hidden="true"></i>
+                <input
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   name="password"
-                  className="unified-form-control" 
-                  placeholder="Votre mot de passe" 
+                  className="unified-form-control"
+                  placeholder="Votre mot de passe"
                   value={password || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    console.log('🔑 Password onChange:', val ? 'présent' : 'vide', 'Longueur:', val?.length);
-                    setPassword(val);
-                  }}
-                  required 
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   disabled={isLoading}
                   autoComplete="current-password"
                 />
-                <i 
-                  className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} unified-password-toggle`}
+                <button
+                  type="button"
+                  className="unified-password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
-                  title={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                ></i>
+                  title={showPassword ? 'Masquer' : 'Afficher'}
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                >
+                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} aria-hidden="true"></i>
+                </button>
               </div>
             </div>
-            
+
             <div className="unified-form-options">
               <div className="unified-form-check">
-                <input 
-                  className="unified-form-check-input" 
-                  type="checkbox" 
-                  id="rememberMe" 
+                <input
+                  className="unified-form-check-input"
+                  type="checkbox"
+                  id="rememberMe"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
@@ -320,40 +339,30 @@ const UnifiedLogin = () => {
                 </label>
               </div>
             </div>
-            
-            <button 
-              type="submit" 
-              className="unified-btn unified-btn-primary unified-btn-block" 
+
+            <button
+              type="submit"
+              className="unified-btn unified-btn-primary unified-btn-block"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
                   <span className="unified-spinner-border" role="status" aria-hidden="true"></span>
-                  Connexion en cours...
+                  Connexion…
                 </>
               ) : (
-                <>
-                  <i className="fas fa-sign-in-alt me-2"></i>
-                  Se connecter
-                </>
+                'Se connecter'
               )}
             </button>
           </form>
-          
-          <div className="unified-login-footer">
-            <div className="unified-login-help">
-              <p><strong>Besoin d'aide ?</strong></p>
-              <p className="unified-help-text">
-                <span className="unified-help-item">
-                  <i className="fas fa-envelope"></i> RH : Utilisez votre adresse email
-                </span>
-                <span className="unified-help-item">
-                  <i className="fas fa-id-card"></i> Employé : Utilisez votre matricule (CDL-YYYY-XXXX)
-                </span>
-              </p>
-            </div>
-            <p className="unified-copyright">© 2025 Centre Diagnostic. Tous droits réservés.</p>
-          </div>
+
+          <footer className="unified-login-footer">
+            <p className="unified-help-text">
+              <span><strong>RH</strong> — adresse email</span>
+              <span><strong>Employé</strong> — matricule CDL-YYYY-XXXX</span>
+            </p>
+            <p className="unified-copyright">© {new Date().getFullYear()} Centre Diagnostic</p>
+          </footer>
         </div>
       </div>
     </div>

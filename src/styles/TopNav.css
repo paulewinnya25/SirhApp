@@ -1,56 +1,51 @@
-/* Note: utilise les variables globales définies dans `src/index.css` */
-
-/* Top navigation container */
+/* Top navigation — barre d'outils professionnelle */
 .top-nav-container {
   position: relative;
   z-index: 1020;
+  padding: 0.85rem 1.5rem 0;
 }
 
-/* Top navigation bar */
 .top-nav {
   height: var(--topbar-height);
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--surface);
   box-shadow: var(--shadow-sm);
-  padding: 0 20px;
+  padding: 0 1rem 0 0.85rem;
   display: flex;
   align-items: center;
-  position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: 0.85rem;
   z-index: 1020;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  backdrop-filter: none;
 }
 
 .toggle-sidebar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-light);
-  border: none;
-  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--primary);
-  transition: var(--transition-base);
+  font-size: 1rem;
+  color: var(--primary-dark);
+  transition: background var(--transition-base), color var(--transition-base);
   flex-shrink: 0;
 }
 
 .toggle-sidebar:hover {
   background: var(--primary);
   color: var(--white);
-  transform: scale(1.05);
+  transform: none;
 }
 
-/* Search box */
 .top-nav-search {
   position: relative;
-  max-width: 350px;
-  margin: 0 20px;
+  max-width: 360px;
+  margin: 0 1.25rem;
   flex: 1;
 }
 
@@ -62,47 +57,45 @@
 .search-input {
   width: 100%;
   height: 40px;
-  padding: 10px 45px 10px 15px;
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.65);
-  transition: var(--transition-base);
+  padding: 0.5rem 2.75rem 0.5rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
   font-size: 0.875rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
 }
 
-.search-input:focus {
+.search-input:focus,
+.search-input.focused {
   outline: none;
   border-color: var(--primary);
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 0 0 4px rgba(58, 142, 186, 0.18);
-}
-
-.search-input.focused {
-  border-color: var(--primary);
-  background: var(--white);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--primary-muted);
 }
 
 .search-submit {
   position: absolute;
-  right: 5px;
+  right: 4px;
   top: 50%;
   transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: var(--primary);
   color: var(--white);
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-base);
+  transition: background var(--transition-base);
 }
 
 .search-submit:hover {
-  background: var(--primary-dark);
-  transform: translateY(-50%) scale(1.1);
+  background: var(--primary-hover);
+  transform: translateY(-50%);
 }
 
 .search-icon {
@@ -222,27 +215,27 @@
 }
 
 .nav-action-btn {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-light);
-  border: none;
-  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--primary);
+  font-size: 1rem;
+  color: var(--primary-dark);
   position: relative;
-  transition: var(--transition-base);
+  transition: background var(--transition-base), color var(--transition-base);
   flex-shrink: 0;
 }
 
 .nav-action-btn:hover {
   background: var(--primary);
   color: var(--white);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: none;
+  box-shadow: none;
 }
 
 .notification-btn {

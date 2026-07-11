@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(145deg, #0f3d4f 0%, #1f6f8b 100%);
   padding: 2rem;
 }
 
@@ -37,7 +37,7 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(145deg, #0f3d4f 0%, #1f6f8b 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -173,7 +173,7 @@
 .admin-login-button {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(145deg, #0f3d4f 0%, #1f6f8b 100%);
   color: white;
   border: none;
   border-radius: 10px;
