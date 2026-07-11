@@ -28,32 +28,35 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1.75rem;
-  background: transparent;
-  color: var(--navy);
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--navy, #0b1f33);
   padding: 0.5rem 0 1.15rem;
-  border-bottom: 1px solid var(--border);
-  box-shadow: none;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   position: relative;
   overflow: visible;
+  border-bottom: 1px solid var(--border);
 }
 
 .page-title-wrapper::before,
-.page-title-wrapper::after { display: none; }
-
-.title-content { flex: 1; }
+.page-title-wrapper::after {
+  display: none !important;
+  content: none !important;
+}
 
 .page-title {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.4vw, 1.9rem);
   font-weight: 800;
-  color: var(--navy);
+  color: var(--navy, #0b1f33) !important;
   margin-bottom: 0.35rem;
   letter-spacing: -0.03em;
 }
 
 .page-subtitle,
 .breadcrumb {
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   font-size: 0.9rem;
   font-weight: 400;
   margin: 0;

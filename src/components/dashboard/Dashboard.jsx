@@ -267,39 +267,33 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div className="page-title-wrapper">
-        <div className="title-content">
-          <h1 className="page-title">Bienvenue sur votre portail RH</h1>
-          <p className="page-subtitle">Gérez efficacement toutes les ressources humaines de votre entreprise.</p>
-        </div>
-       
-      </div>
-      
+    <div className="dashboard-page">
+      <header className="dashboard-hero">
+        <p className="dashboard-kicker">Tableau de bord</p>
+        <h1>Une gestion RH plus claire, au quotidien</h1>
+        <p>Suivez vos effectifs, demandes et communications depuis un seul espace.</p>
+      </header>
+
       <div className="stats-row">
         {stats.map((stat, index) => (
-          <StatCard 
+          <StatCard
             key={index}
             value={stat.value}
             label={stat.label}
             icon={stat.icon}
             color={stat.color}
-            delay={0.1 * (index + 1)}
+            delay={0.05 * (index + 1)}
           />
         ))}
       </div>
-      
-      <div className="tools-section fade-in-up" style={{ animationDelay: '0.5s' }}>
+
+      <div className="tools-section">
         <div className="section-header">
-          <div className="section-icon">
-            <i className="fas fa-tools"></i>
-          </div>
-          <h2 className="section-title">Outils RH</h2>
+          <h2 className="section-title">Accès rapides</h2>
         </div>
-        
         <div className="tools-grid">
           {tools.map((tool, index) => (
-            <ToolCard 
+            <ToolCard
               key={index}
               title={tool.title}
               icon={tool.icon}
@@ -309,64 +303,52 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
-      
-      <div className="main-grid fade-in-up" style={{ animationDelay: '0.6s' }}>
+
+      <div className="main-grid">
         <div className="card">
           <div className="card-header">
             <div className="card-icon">
-              <i className="fas fa-tasks"></i>
+              <i className="fas fa-bolt"></i>
             </div>
-            <h3 className="card-title">Mes démarches</h3>
+            <h3 className="card-title">Actions prioritaires</h3>
           </div>
           <div className="card-body">
             <div className="welcome-wrapper">
               <div className="welcome-image welcome-image-fallback" aria-hidden="true">
-                <i className="fas fa-briefcase"></i>
+                <i className="fas fa-user-plus"></i>
               </div>
-              
               <div className="welcome-content">
-                <h4 className="welcome-title">Bienvenue sur votre espace !</h4>
+                <h4 className="welcome-title">Faites avancer vos dossiers RH</h4>
                 <p className="welcome-text">
-                  Vous n'avez aucun employé inscrit et aucune entreprise. Ajoutez de nouveaux employés et vos autres entités.
+                  Ajoutez un collaborateur, suivez les demandes en attente ou consultez les contrats à renouveler.
                 </p>
-                
                 <div className="action-buttons">
                   <Link to="/new-employee" className="btn btn-primary">
-                    <i className="fas fa-user-plus btn-icon"></i>Ajouter un employé
+                    <i className="fas fa-user-plus btn-icon"></i>
+                    Ajouter un employé
+                  </Link>
+                  <Link to="/employee-requests" className="btn btn-outline-primary">
+                    Voir les demandes
                   </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Event Card - Utilisation du composant réutilisable */}
+
         <EventsComponent />
       </div>
-      
-      {/* Service Note Card */}
-      <div className="notes-section fade-in-up" style={{ animationDelay: '0.65s', marginBottom: '35px' }}>
+
+      <div className="notes-section">
         <div className="section-header">
-          <div className="section-icon">
-            <i className="fas fa-file-alt"></i>
-          </div>
-          <h2 className="section-title">Notes de service récentes</h2>
+          <h2 className="section-title">Notes de service</h2>
+          <Link to="/service-notes" className="btn-link-all">Voir tout</Link>
         </div>
-        
+
         <div className="card note-card">
-          <div className="card-header">
-            <div className="card-icon">
-              <i className="fas fa-clipboard-list"></i>
-            </div>
-            <h3 className="card-title">Dernières communications</h3>
-            <Link to="/service-notes" className="btn-sm">Voir tout</Link>
-          </div>
           <div className="card-body">
-            <div className="note-decoration decoration-3"></div>
-            <div className="note-decoration decoration-4"></div>
-            
             {loadingNotes ? (
-              <div className="text-center p-5">
+              <div className="text-center p-4">
                 <div className="spinner-border text-primary" role="status">
                   <span className="visually-hidden">Chargement...</span>
                 </div>
@@ -391,47 +373,37 @@ const Dashboard = () => {
                     <div className="note-number">{note.full_note_number}</div>
                     <h4 className="note-title">{note.title}</h4>
                     <p className="note-content">
-                      {note.content.length > 150 
-                        ? `${note.content.substring(0, 150)}...` 
-                        : note.content
-                      }
+                      {note.content.length > 150
+                        ? `${note.content.substring(0, 150)}...`
+                        : note.content}
                     </p>
-                    <div className="mt-2">
-                      <Link to={`/service-notes/${note.id}`} className="btn btn-sm btn-outline-primary">
-                        <i className="fas fa-eye me-1"></i> Voir détails
-                      </Link>
-                    </div>
+                    <Link to={`/service-notes/${note.id}`} className="btn btn-sm btn-outline-primary">
+                      Lire la note
+                    </Link>
                   </li>
                 ))}
               </ul>
             ) : (
               <div className="empty-notes">
                 <i className="fas fa-file-alt empty-icon"></i>
-                <p className="empty-text">Aucune note de service disponible.</p>
+                <p className="empty-text">Aucune note de service pour le moment.</p>
               </div>
             )}
           </div>
         </div>
       </div>
-      
-      <div className="hr-section fade-in-up" style={{ animationDelay: '0.7s' }}>
+
+      <div className="hr-section">
         <div className="section-header">
-          <div className="section-icon">
-            <i className="fas fa-user-tie"></i>
-          </div>
           <h2 className="section-title">Ressources humaines</h2>
         </div>
-        
         <div className="hr-grid">
           {hrCards.map((card, index) => (
-            <HRCard 
-              key={index}
-              {...card}
-            />
+            <HRCard key={index} {...card} />
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
