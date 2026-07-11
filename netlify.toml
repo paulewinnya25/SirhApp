@@ -1,25 +1,22 @@
-# Configuration Netlify pour le portail RH CDL
+# Configuration Netlify – Frontend React + backend Supabase Edge Functions
 
 [build]
-  # Commande de build du frontend React
   command = "npm run build"
-  
-  # Dossier de sortie du build Create React App
   publish = "build"
-  
-  # Variables d'environnement pour le build (à configurer dans Netlify Dashboard)
-  # REACT_APP_API_URL = URL de votre backend déployé
 
 [build.environment]
   NODE_VERSION = "18"
+  # Obligatoire au build (à définir aussi dans le dashboard Netlify) :
+  # REACT_APP_API_URL = https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1
+  # REACT_APP_SUPABASE_URL = https://llmyrnodvjgwdpdiyagi.supabase.co
+  # REACT_APP_SUPABASE_ANON_KEY = <clé anon Settings > API>
 
-# Redirects pour le routing SPA (React Router)
+# SPA React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Headers de sécurité
 [[headers]]
   for = "/*"
   [headers.values]

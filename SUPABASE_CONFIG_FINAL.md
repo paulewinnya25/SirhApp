@@ -1,10 +1,10 @@
-# Configuration Supabase Finale
+﻿# Configuration Supabase Finale
 
 ## ✅ Informations de Connexion
 
-- **URL Supabase**: `https://dwpkqdiunxbgumepkveb.supabase.co`
+- **URL Supabase**: `https://llmyrnodvjgwdpdiyagi.supabase.co`
 - **Anon Key**: `sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh`
-- **Database Host**: `db.dwpkqdiunxbgumepkveb.supabase.co`
+- **Database Host**: `db.llmyrnodvjgwdpdiyagi.supabase.co`
 - **Database Port**: `5432`
 - **Database Name**: `postgres`
 - **Database User**: `postgres`
@@ -15,9 +15,9 @@
 Ajoutez ces variables dans Netlify Dashboard > Site settings > Environment variables :
 
 ```
-SUPABASE_URL=https://dwpkqdiunxbgumepkveb.supabase.co
+SUPABASE_URL=https://llmyrnodvjgwdpdiyagi.supabase.co
 SUPABASE_ANON_KEY=sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh
-DB_HOST=db.dwpkqdiunxbgumepkveb.supabase.co
+DB_HOST=db.llmyrnodvjgwdpdiyagi.supabase.co
 DB_PORT=5432
 DB_NAME=postgres
 DB_USER=postgres
@@ -42,7 +42,7 @@ NODE_ENV=production
 ### 3. Migrer les Données (optionnel)
 
 ```bash
-export DB_HOST=db.cziclswpmsptxasdkrtw.supabase.co
+export DB_HOST=db.llmyrnodvjgwdpdiyagi.supabase.co
 export DB_PORT=5432
 export DB_NAME=postgres
 export DB_USER=postgres
@@ -58,7 +58,7 @@ Testez la connexion avec :
 node -e "
 const { Pool } = require('pg');
 const pool = new Pool({
-  host: 'db.dwpkqdiunxbgumepkveb.supabase.co',
+  host: 'db.llmyrnodvjgwdpdiyagi.supabase.co',
   port: 5432,
   database: 'postgres',
   user: 'postgres',
@@ -77,6 +77,6 @@ pool.query('SELECT NOW()').then(r => {
 
 ## 🔗 Liens Utiles
 
-- **Supabase Dashboard**: https://app.supabase.com/project/dwpkqdiunxbgumepkveb
-- **API Documentation**: https://dwpkqdiunxbgumepkveb.supabase.co/docs
-- **SQL Editor**: https://app.supabase.com/project/dwpkqdiunxbgumepkveb/sql
+- **Supabase Dashboard**: https://app.supabase.com/project/llmyrnodvjgwdpdiyagi
+- **API Documentation**: https://llmyrnodvjgwdpdiyagi.supabase.co/docs
+- **SQL Editor**: https://app.supabase.com/project/llmyrnodvjgwdpdiyagi/sql

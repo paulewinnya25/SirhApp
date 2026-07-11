@@ -1,4 +1,4 @@
-# Guide d'import des données vers Supabase
+﻿# Guide d'import des données vers Supabase
 
 Ce guide décrit comment importer toutes vos données depuis `rh_portail.sql` vers votre base Supabase.
 
@@ -21,13 +21,13 @@ Ce guide décrit comment importer toutes vos données depuis `rh_portail.sql` ve
 
 ```powershell
 $env:DB_PASSWORD = "votre_mot_de_passe_supabase"
-$env:DB_HOST = "db.dwpkqdiunxbgumepkveb.supabase.co"
+$env:DB_HOST = "db.llmyrnodvjgwdpdiyagi.supabase.co"
 ```
 
 3. Lancez l'import :
 
 ```powershell
-cd c:\Users\surface\Desktop\sirhCDL
+cd c:\Users\paule\Desktop\Projets\sirhCDL
 node scripts/import-data-to-supabase.js
 ```
 
@@ -50,7 +50,7 @@ scripts\import-data-to-supabase.bat
 
 1. Ouvrez pgAdmin
 2. Créez une nouvelle connexion :
-   - **Host** : `db.dwpkqdiunxbgumepkveb.supabase.co`
+   - **Host** : `db.llmyrnodvjgwdpdiyagi.supabase.co`
    - **Port** : 5432
    - **Database** : postgres
    - **Username** : postgres

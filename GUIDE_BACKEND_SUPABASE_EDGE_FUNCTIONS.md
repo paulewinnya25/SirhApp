@@ -1,4 +1,4 @@
-# Backend 100 % Supabase – Edge Functions
+﻿# Backend 100 % Supabase – Edge Functions
 
 Ce guide décrit le déploiement du backend entièrement sur Supabase Cloud via Edge Functions.
 
@@ -73,7 +73,7 @@ supabase functions deploy departments --no-verify-jwt
 
 Dans **Project Settings** > **Edge Functions** > **Secrets**, configurer :
 
-- `SUPABASE_URL` : URL du projet (ex: `https://dwpkqdiunxbgumepkveb.supabase.co`)
+- `SUPABASE_URL` : URL du projet (ex: `https://llmyrnodvjgwdpdiyagi.supabase.co`)
 - `SUPABASE_SERVICE_ROLE_KEY` : Clé service role (Settings > API)
 - `JWT_SECRET` : Secret pour les tokens JWT (auth-login)
 
@@ -83,7 +83,7 @@ Dans **Site settings** > **Environment variables** :
 
 | Variable                   | Valeur                                               |
 |----------------------------|------------------------------------------------------|
-| `REACT_APP_API_URL`        | `https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1` |
+| `REACT_APP_API_URL`        | `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1` |
 | `REACT_APP_SUPABASE_ANON_KEY` | Clé anon Supabase                                 |
 
 > **Important** : `REACT_APP_API_URL` doit pointer vers `/functions/v1` **sans** `/api` à la fin.

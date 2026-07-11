@@ -1,4 +1,4 @@
-# Guide : Après la Configuration Supabase et Netlify
+﻿# Guide : Après la Configuration Supabase et Netlify
 
 ## ✅ Ce qui est déjà fait
 
@@ -12,8 +12,8 @@
 ### Étape 1 : Créer les Tables dans Supabase
 
 1. **Allez sur Supabase Dashboard** :
-   - URL : https://app.supabase.com/project/cziclswpmsptxasdkrtw
-   - Ou via : https://cziclswpmsptxasdkrtw.supabase.co
+   - URL : https://app.supabase.com/project/llmyrnodvjgwdpdiyagi
+   - Ou via : https://llmyrnodvjgwdpdiyagi.supabase.co
 
 2. **Ouvrir SQL Editor** :
    - Menu de gauche > **SQL Editor**
@@ -38,7 +38,7 @@ Si vous avez des données existantes à migrer :
 cd C:\Users\paule\Desktop\SirhCDL
 
 # Définir les variables d'environnement
-$env:DB_HOST="db.cziclswpmsptxasdkrtw.supabase.co"
+$env:DB_HOST="db.llmyrnodvjgwdpdiyagi.supabase.co"
 $env:DB_PORT="5432"
 $env:DB_NAME="postgres"
 $env:DB_USER="postgres"
@@ -62,9 +62,9 @@ node backend/scripts/migrate-to-supabase.js
 3. **Ajouter les variables** (cliquez sur "Add a variable" pour chacune) :
 
    ```
-   SUPABASE_URL = https://cziclswpmsptxasdkrtw.supabase.co
+   SUPABASE_URL = https://llmyrnodvjgwdpdiyagi.supabase.co
    SUPABASE_ANON_KEY = sb_publishable_sEKubMm6Mv0hL7sBMT06fQ_acU2Aisr
-   DB_HOST = db.cziclswpmsptxasdkrtw.supabase.co
+   DB_HOST = db.llmyrnodvjgwdpdiyagi.supabase.co
    DB_PORT = 5432
    DB_NAME = postgres
    DB_USER = postgres
@@ -151,7 +151,7 @@ Après le déploiement réussi :
 ### Erreur : "Cannot connect to database"
 
 - Vérifiez que `DB_PASSWORD` est correct dans Netlify
-- Vérifiez que `DB_HOST` est correct (`db.cziclswpmsptxasdkrtw.supabase.co`)
+- Vérifiez que `DB_HOST` est correct (`db.llmyrnodvjgwdpdiyagi.supabase.co`)
 - Vérifiez que SSL est activé (déjà configuré dans le code)
 
 ### Erreur : "CORS policy"
@@ -187,7 +187,7 @@ Après le déploiement réussi :
 
 ## 📚 Ressources
 
-- **Supabase Dashboard** : https://app.supabase.com/project/cziclswpmsptxasdkrtw
+- **Supabase Dashboard** : https://app.supabase.com/project/llmyrnodvjgwdpdiyagi
 - **Netlify Dashboard** : https://app.netlify.com
 - **Documentation Supabase** : https://supabase.com/docs
 - **Documentation Netlify** : https://docs.netlify.com

@@ -1,0 +1,59 @@
+# A string used to distinguish different Supabase projects on the same host
+project_id = "sirh2cdl"
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+major_version = 17
+
+# JWT désactivé : la clé anon/publishable n'est pas un JWT legacy
+[functions.auth-login]
+verify_jwt = false
+
+[functions.evenements]
+verify_jwt = false
+
+[functions.requests]
+verify_jwt = false
+
+[functions.employees]
+verify_jwt = false
+
+[functions.conges]
+verify_jwt = false
+
+[functions.absences]
+verify_jwt = false
+
+[functions.contrats]
+verify_jwt = false
+
+[functions.notes]
+verify_jwt = false
+
+[functions.sanctions]
+verify_jwt = false
+
+[functions.recrutements]
+verify_jwt = false
+
+[functions.departs]
+verify_jwt = false
+
+[functions.visites-medicales]
+verify_jwt = false
+
+[functions.interviews]
+verify_jwt = false
+
+[functions.tasks]
+verify_jwt = false
+
+[functions.performance]
+verify_jwt = false
+
+[functions.departments]
+verify_jwt = false

@@ -30,7 +30,7 @@ if (!fs.existsSync(sqlFile)) {
   process.exit(1);
 }
 
-const host = process.env.DB_HOST || 'db.dwpkqdiunxbgumepkveb.supabase.co';
+const host = process.env.DB_HOST || 'db.llmyrnodvjgwdpdiyagi.supabase.co';
 const user = process.env.DB_USER || 'postgres';
 const database = process.env.DB_NAME || 'postgres';
 const password = process.env.DB_PASSWORD;

@@ -1,8 +1,8 @@
-# Configuration Supabase - Guide Rapide
+﻿# Configuration Supabase - Guide Rapide
 
 ## ✅ Informations de Connexion
 
-- **URL Supabase**: `https://dwpkqdiunxbgumepkveb.supabase.co`
+- **URL Supabase**: `https://llmyrnodvjgwdpdiyagi.supabase.co`
 - **Anon Key**: `sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh`
 
 ## 🔐 Étape 1 : Récupérer le Mot de Passe de la Base de Données
@@ -20,9 +20,9 @@
 Dans le dashboard Netlify, ajoutez ces variables d'environnement :
 
 ```
-SUPABASE_URL=https://dwpkqdiunxbgumepkveb.supabase.co
+SUPABASE_URL=https://llmyrnodvjgwdpdiyagi.supabase.co
 SUPABASE_ANON_KEY=sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh
-DB_HOST=db.dwpkqdiunxbgumepkveb.supabase.co
+DB_HOST=db.llmyrnodvjgwdpdiyagi.supabase.co
 DB_PORT=5432
 DB_NAME=postgres
 DB_USER=postgres
@@ -35,9 +35,9 @@ NODE_ENV=production
 Créez un fichier `.env` à la racine du projet :
 
 ```env
-SUPABASE_URL=https://dwpkqdiunxbgumepkveb.supabase.co
+SUPABASE_URL=https://llmyrnodvjgwdpdiyagi.supabase.co
 SUPABASE_ANON_KEY=sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh
-DB_HOST=db.dwpkqdiunxbgumepkveb.supabase.co
+DB_HOST=db.llmyrnodvjgwdpdiyagi.supabase.co
 DB_PORT=5432
 DB_NAME=postgres
 DB_USER=postgres
@@ -57,7 +57,7 @@ Une fois les tables créées, exécutez le script de migration :
 ```bash
 # Définir le mot de passe Supabase
 export DB_PASSWORD=votre_mot_de_passe_supabase
-export DB_HOST=db.dwpkqdiunxbgumepkveb.supabase.co
+export DB_HOST=db.llmyrnodvjgwdpdiyagi.supabase.co
 
 # Exécuter la migration
 node backend/scripts/migrate-to-supabase.js
@@ -71,7 +71,7 @@ Testez la connexion avec :
 node -e "
 const { Pool } = require('pg');
 const pool = new Pool({
-  host: 'db.dwpkqdiunxbgumepkveb.supabase.co',
+  host: 'db.llmyrnodvjgwdpdiyagi.supabase.co',
   port: 5432,
   database: 'postgres',
   user: 'postgres',

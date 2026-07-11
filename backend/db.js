@@ -8,7 +8,7 @@ const useSupabase = process.env.SUPABASE_URL ||
 const poolConfig = useSupabase
   ? {
       user: process.env.DB_USER || 'postgres',
-      host: process.env.DB_HOST || 'db.dwpkqdiunxbgumepkveb.supabase.co',
+      host: process.env.DB_HOST || 'db.llmyrnodvjgwdpdiyagi.supabase.co',
       database: process.env.DB_NAME || 'postgres',
       password: process.env.DB_PASSWORD,
       port: parseInt(process.env.DB_PORT, 10) || 5432,

@@ -1,4 +1,4 @@
-# Backend géré par Supabase
+﻿# Backend géré par Supabase
 
 Ce guide décrit comment utiliser Supabase comme backend complet (hébergé dans le cloud).
 
@@ -17,7 +17,7 @@ Frontend (Netlify)  →  Supabase
 
 | Variable | Valeur | Description |
 |----------|--------|-------------|
-| `REACT_APP_API_URL` | `https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1` | URL des Edge Functions |
+| `REACT_APP_API_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1` | URL des Edge Functions |
 | `REACT_APP_SUPABASE_ANON_KEY` | `sb_publishable_VKZReniDd61V10U-E8-v4A_aNbAk2kh` | Clé anonyme Supabase |
 
 ### 2. Tables d'administration dans Supabase
@@ -54,7 +54,7 @@ Puis :
 
 ```powershell
 npx supabase login
-npx supabase link --project-ref dwpkqdiunxbgumepkveb
+npx supabase link --project-ref llmyrnodvjgwdpdiyagi
 npx supabase functions deploy auth-login
 ```
 
@@ -74,7 +74,7 @@ L'Edge Function `auth-login` gère uniquement l'authentification. Pour les donn�
 - L'auth reste sur Express (/auth/login) dans ce cas
 
 **Option B - Supabase uniquement** :
-- `REACT_APP_API_URL` = `https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1`
+- `REACT_APP_API_URL` = `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1`
 - `REACT_APP_SUPABASE_ANON_KEY` = votre clé anon
 - L'auth utilise l'Edge Function auth-login ✓
 - Les autres endpoints nécessitent des Edge Functions supplémentaires (à développer)

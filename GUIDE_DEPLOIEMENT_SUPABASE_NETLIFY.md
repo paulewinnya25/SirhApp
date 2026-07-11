@@ -1,4 +1,4 @@
-# Guide de déploiement : Supabase + Netlify
+﻿# Guide de déploiement : Supabase + Netlify
 
 Ce guide vous accompagne pour utiliser **Supabase** comme base de données et déployer l'application sur **Netlify**.
 
@@ -104,17 +104,19 @@ Configurez les variables dans Netlify (voir section 3.2). d’environnement dire
    - **Publish directory** : `build`
    - **Base directory** : (laisser vide, le frontend est à la racine)
 
-5. **Environment variables** (Site settings > Environment variables) :
-   ```
-   REACT_APP_API_URL = https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1
-   REACT_APP_SUPABASE_ANON_KEY = <votre clé anon Supabase>
-   NODE_VERSION = 18
-   ```
-   
-   - `REACT_APP_API_URL` : URL des Edge Functions Supabase (auth + données)
-   - `REACT_APP_SUPABASE_ANON_KEY` : Clé anonyme Supabase (Settings > API)
+5. **Environment variables** (Add environment variables) — ajoutez ces 3 clés :
+   | Key | Value |
+   |-----|--------|
+   | `REACT_APP_API_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1` |
+   | `REACT_APP_SUPABASE_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co` |
+   | `REACT_APP_SUPABASE_ANON_KEY` | Clé **anon** / **publishable** (Supabase > Settings > API) |
 
-6. Cliquez sur **Deploy site**
+   - Base directory : **laisser vide**
+   - Functions directory : **laisser vide** (le backend est sur Supabase, pas Netlify Functions)
+   - Build command : `npm run build`
+   - Publish directory : `build`
+
+6. Cliquez sur **Deploy sirh2cdl**
 
 ### 3.3 Déploiement manuel (drag & drop)
 
@@ -130,9 +132,9 @@ Exécutez ces étapes dans l'ordre :
 ### Étape 1 – Déployer les Edge Functions
 
 ```bash
-cd c:\Users\surface\Desktop\sirhCDL
+cd c:\Users\paule\Desktop\Projets\sirhCDL
 supabase login
-supabase link --project-ref dwpkqdiunxbgumepkveb
+supabase link --project-ref llmyrnodvjgwdpdiyagi
 supabase functions deploy auth-login
 supabase functions deploy evenements --no-verify-jwt
 supabase functions deploy requests --no-verify-jwt
@@ -145,7 +147,7 @@ Dashboard Supabase > **Project Settings** > **Edge Functions** > **Secrets** :
 
 | Secret | Valeur |
 |--------|--------|
-| `SUPABASE_URL` | `https://dwpkqdiunxbgumepkveb.supabase.co` |
+| `SUPABASE_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé **service_role** (Settings > API) |
 | `JWT_SECRET` | Une chaîne aléatoire longue (ex. 32 caractères) |
 
@@ -155,7 +157,7 @@ Netlify > **Site settings** > **Environment variables** > **Add variable** :
 
 | Variable | Valeur |
 |----------|--------|
-| `REACT_APP_API_URL` | `https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1` |
+| `REACT_APP_API_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1` |
 | `REACT_APP_SUPABASE_ANON_KEY` | Clé **anon** (Settings > API) |
 | `NODE_VERSION` | `18` |
 
@@ -186,7 +188,7 @@ Options > **Trigger deploy** > **Deploy site** (ou pousser un commit sur la bran
 ### Netlify (Frontend)
 | Variable | Valeur |
 |---------|--------|
-| `REACT_APP_API_URL` | `https://dwpkqdiunxbgumepkveb.supabase.co/functions/v1` |
+| `REACT_APP_API_URL` | `https://llmyrnodvjgwdpdiyagi.supabase.co/functions/v1` |
 | `REACT_APP_SUPABASE_ANON_KEY` | Clé anon Supabase |
 | `NODE_VERSION` | 18 |
 
@@ -195,7 +197,7 @@ Options > **Trigger deploy** > **Deploy site** (ou pousser un commit sur la bran
 ### Edge Functions (Secrets Supabase)
 | Variable | Valeur |
 |---------|--------|
-| `SUPABASE_URL` | https://dwpkqdiunxbgumepkveb.supabase.co |
+| `SUPABASE_URL` | https://llmyrnodvjgwdpdiyagi.supabase.co |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé service role (Settings > API) |
 | `JWT_SECRET` | Secret pour les tokens JWT |
 
