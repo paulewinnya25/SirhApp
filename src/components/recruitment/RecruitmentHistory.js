@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { recrutementService } from '../../services/api';
+import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
 
@@ -21,6 +22,8 @@ const RecruitmentHistory = () => {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'applicationDate', direction: 'desc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // États de recherche
   const [searchParams, setSearchParams] = useState({
@@ -443,6 +446,15 @@ const RecruitmentHistory = () => {
     return result;
   }, [recruitments, searchParams, sortConfig]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchParams]);
+
+  const paginatedRecruitments = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedRecruitments.slice(start, start + itemsPerPage);
+  }, [filteredAndSortedRecruitments, currentPage, itemsPerPage]);
+
   return (
     <>
       <div className="page-title-wrapper">
@@ -601,6 +613,7 @@ const RecruitmentHistory = () => {
               )}
             </div>
           ) : (
+            <>
             <div className="table-responsive">
               <table className="table table-hover align-middle custom-table">
                 <thead>
@@ -645,7 +658,7 @@ const RecruitmentHistory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAndSortedRecruitments.map((recruitment) => (
+                  {paginatedRecruitments.map((recruitment) => (
                     <tr key={recruitment.id}>
                       <td>{recruitment.fullName}</td>
                       <td>{recruitment.position}</td>
@@ -696,6 +709,14 @@ const RecruitmentHistory = () => {
                 </tbody>
               </table>
             </div>
+            <ListPagination
+              currentPage={currentPage}
+              totalItems={filteredAndSortedRecruitments.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              itemLabel="candidature"
+            />
+            </>
           )}
         </div>
       </div>
