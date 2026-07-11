@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { visiteMedicaleService } from '../../services/api';
+import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
+import '../../styles/MedicalVisitsList.css';
 
 const MedicalVisits = () => {
   // States
@@ -552,94 +554,43 @@ const MedicalVisits = () => {
     setCurrentPage(page);
   }, [totalPages]);
 
-  // Generate pagination items
-  const getPaginationItems = useCallback(() => {
-    const items = [];
-    
-    // First page always
-    items.push(
-      <li key="first" className={`page-item ${currentPage === 1 ? 'active' : ''}`}>
-        <button className="page-link" onClick={() => handlePageChange(1)}>1</button>
-      </li>
-    );
-    
-    // Ellipsis after first page if needed
-    if (currentPage > 3) {
-      items.push(
-        <li key="ellipsis1" className="page-item disabled">
-          <span className="page-link">...</span>
-        </li>
-      );
-    }
-    
-    // Pages around current page
-    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-      if (i === 1 || i === totalPages) continue; // Skip first and last pages as they're always shown
-      
-      items.push(
-        <li key={i} className={`page-item ${currentPage === i ? 'active' : ''}`}>
-          <button className="page-link" onClick={() => handlePageChange(i)}>{i}</button>
-        </li>
-      );
-    }
-    
-    // Ellipsis before last page if needed
-    if (currentPage < totalPages - 2) {
-      items.push(
-        <li key="ellipsis2" className="page-item disabled">
-          <span className="page-link">...</span>
-        </li>
-      );
-    }
-    
-    // Last page always (if more than 1 page)
-    if (totalPages > 1) {
-      items.push(
-        <li key="last" className={`page-item ${currentPage === totalPages ? 'active' : ''}`}>
-          <button className="page-link" onClick={() => handlePageChange(totalPages)}>{totalPages}</button>
-        </li>
-      );
-    }
-    
-    return items;
-  }, [currentPage, totalPages, handlePageChange]);
-
   return (
-    <>
-      <div className="page-title-wrapper fade-in-up">
-        <h1 className="page-title">Suivi des visites médicales</h1>
-        <p className="page-subtitle">Gérez et suivez les visites médicales de vos collaborateurs</p>
+    <div className="medical-list-page">
+      <div className="page-title-wrapper">
+        <div className="title-content">
+          <h1 className="page-title">Suivi des visites médicales</h1>
+          <p className="page-subtitle">Gérez et suivez les visites médicales de vos collaborateurs</p>
+        </div>
       </div>
-      
-      {/* Notification */}
+
       {notification.show && (
-        <div className={`alert alert-${notification.type} alert-dismissible fade show slide-in-right`} role="alert">
+        <div className={`alert alert-${notification.type} alert-dismissible fade show animated fadeIn`} role="alert">
           <i className={`fas fa-${notification.type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2`}></i>
           {notification.message}
-          <button 
-            type="button" 
-            className="btn-close" 
+          <button
+            type="button"
+            className="btn-close"
             onClick={() => setNotification({ ...notification, show: false })}
             aria-label="Fermer"
           ></button>
         </div>
       )}
-      
+
       {error && (
-        <div className="alert alert-danger alert-dismissible fade show slide-in-right" role="alert">
+        <div className="alert alert-danger alert-dismissible fade show animated fadeIn" role="alert">
           <i className="fas fa-exclamation-triangle me-2"></i>
           {error}
-          <button 
-            type="button" 
-            className="btn-close" 
+          <button
+            type="button"
+            className="btn-close"
             onClick={() => setError(null)}
             aria-label="Fermer"
           ></button>
         </div>
       )}
-      
+
       {/* Statistics Cards */}
-      <div className="stats-row fade-in-up" style={{ animationDelay: '0.1s' }}>
+      <div className="stats-row">
         <div className="stat-card" onClick={() => { setPeriode('overdue'); handleSearch(); }}>
           <div className="stat-icon stat-icon-red">
             <i className="fas fa-exclamation-triangle"></i>
@@ -649,7 +600,7 @@ const MedicalVisits = () => {
             <div className="stat-label">Visites en retard</div>
           </div>
         </div>
-        
+
         <div className="stat-card" onClick={() => { setPeriode('30days'); handleSearch(); }}>
           <div className="stat-icon stat-icon-orange">
             <i className="fas fa-clock"></i>
@@ -659,7 +610,7 @@ const MedicalVisits = () => {
             <div className="stat-label">Dans les 30 jours</div>
           </div>
         </div>
-        
+
         <div className="stat-card" onClick={() => { setPeriode('90days'); handleSearch(); }}>
           <div className="stat-icon stat-icon-blue">
             <i className="fas fa-calendar-alt"></i>
@@ -669,7 +620,7 @@ const MedicalVisits = () => {
             <div className="stat-label">Dans les 90 jours</div>
           </div>
         </div>
-        
+
         <div className="stat-card" onClick={() => { setStatut('Complété'); handleSearch(); }}>
           <div className="stat-icon stat-icon-green">
             <i className="fas fa-check-circle"></i>
@@ -680,115 +631,98 @@ const MedicalVisits = () => {
           </div>
         </div>
       </div>
-      
-      {/* Filters Card */}
-      <div className="card fade-in-up" style={{ animationDelay: '0.2s' }}>
-        <div className="card-header">
-          <h3 className="card-title"><i className="fas fa-filter me-2"></i>Filtres et actions</h3>
-        </div>
-        <div className="card-body">
-          <div className="row g-3 mb-4">
-            <div className="col-md-3">
-              <label htmlFor="search" className="form-label">Recherche</label>
-              <div className="input-group">
-                <span className="input-group-text"><i className="fas fa-search"></i></span>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  id="search" 
-                  placeholder="Nom ou prénom..." 
+
+      <div className="medical-filters">
+        <div className="row align-items-end g-2">
+          <div className="col-lg-9">
+            <h5 className="filter-title">Filtres</h5>
+            <div className="row g-2">
+              <div className="col-md-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="search"
+                  placeholder="Nom ou prénom..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-            </div>
-            
-            <div className="col-md-3">
-              <label htmlFor="poste" className="form-label">Poste</label>
-              <select 
-                className="form-select" 
-                id="poste"
-                value={poste}
-                onChange={(e) => setPoste(e.target.value)}
-              >
-                <option value="">Tous les postes</option>
-                {postes.map((p, index) => (
-                  <option key={index} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="col-md-3">
-              <label htmlFor="periode" className="form-label">Période</label>
-              <select 
-                className="form-select" 
-                id="periode"
-                value={periode}
-                onChange={(e) => setPeriode(e.target.value)}
-              >
-                <option value="">Toutes les périodes</option>
-                <option value="overdue">En retard</option>
-                <option value="30days">30 prochains jours</option>
-                <option value="60days">60 prochains jours</option>
-                <option value="90days">90 prochains jours</option>
-              </select>
-            </div>
-            
-            <div className="col-md-3">
-              <label htmlFor="statut" className="form-label">Statut</label>
-              <select 
-                className="form-select" 
-                id="statut"
-                value={statut}
-                onChange={(e) => setStatut(e.target.value)}
-              >
-                <option value="">Tous les statuts</option>
-                <option value="À venir">À venir</option>
-                <option value="Planifié">Planifié</option>
-                <option value="Complété">Complété</option>
-                <option value="Annulé">Annulé</option>
-              </select>
+              <div className="col-md-3">
+                <select
+                  className="form-select"
+                  id="poste"
+                  value={poste}
+                  onChange={(e) => setPoste(e.target.value)}
+                >
+                  <option value="">Tous les postes</option>
+                  {postes.map((p, index) => (
+                    <option key={index} value={p}>{p}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-md-3">
+                <select
+                  className="form-select"
+                  id="periode"
+                  value={periode}
+                  onChange={(e) => setPeriode(e.target.value)}
+                >
+                  <option value="">Toutes les périodes</option>
+                  <option value="overdue">En retard</option>
+                  <option value="30days">30 prochains jours</option>
+                  <option value="60days">60 prochains jours</option>
+                  <option value="90days">90 prochains jours</option>
+                </select>
+              </div>
+              <div className="col-md-3">
+                <select
+                  className="form-select"
+                  id="statut"
+                  value={statut}
+                  onChange={(e) => setStatut(e.target.value)}
+                >
+                  <option value="">Tous les statuts</option>
+                  <option value="À venir">À venir</option>
+                  <option value="Planifié">Planifié</option>
+                  <option value="Complété">Complété</option>
+                  <option value="Annulé">Annulé</option>
+                </select>
+              </div>
             </div>
           </div>
-          
-          <div className="d-flex justify-content-between">
-            <button 
-              type="button" 
-              className="btn btn-primary"
-              onClick={handleSearch}
-            >
-              <i className="fas fa-search btn-icon"></i>Filtrer
-            </button>
-            
-            <div>
-              <button 
-                type="button" 
-                className="btn btn-outline-secondary me-2"
-                onClick={handleResetFilters}
+          <div className="col-lg-3">
+            <div className="d-flex gap-2 justify-content-lg-end">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={handleSearch}
               >
-                <i className="fas fa-redo-alt btn-icon"></i>Réinitialiser
+                <i className="fas fa-search me-1"></i>Filtrer
               </button>
-              
-              <button 
-                type="button" 
-                className="btn btn-success" 
-                onClick={() => setShowAddModal(true)}
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={handleResetFilters}
+                title="Réinitialiser"
               >
-                <i className="fas fa-plus btn-icon"></i>Ajouter une visite
+                <i className="fas fa-undo"></i>
               </button>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Visites Table Card */}
-      <div className="card fade-in-up" style={{ animationDelay: '0.3s' }}>
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h3 className="card-title"><i className="fas fa-table me-2"></i>Visites médicales</h3>
-          <div>
-            <span className="badge bg-primary rounded-pill">{filteredVisites.length} résultat(s)</span>
-            <button 
-              className="btn btn-sm btn-outline-primary ms-2" 
+
+      <div className="medical-table-card">
+        <div className="medical-table-header">
+          <h5 className="table-title">
+            <div className="table-icon">
+              <i className="fas fa-notes-medical"></i>
+            </div>
+            Liste des visites ({filteredVisites.length})
+          </h5>
+          <div className="d-flex gap-2">
+            <button
+              className="btn btn-outline-primary"
               onClick={handleExport}
               disabled={isExporting || filteredVisites.length === 0}
             >
@@ -799,196 +733,177 @@ const MedicalVisits = () => {
               )}
               Exporter
             </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowAddModal(true)}
+            >
+              <i className="fas fa-plus me-2"></i>
+              Ajouter une visite
+            </button>
           </div>
         </div>
-        <div className="card-body">
-          {isLoading ? (
-            <div className="text-center p-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Chargement...</span>
-              </div>
-              <p className="mt-3 text-muted">Chargement des données...</p>
+
+        {isLoading ? (
+          <div className="text-center p-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Chargement...</span>
             </div>
-          ) : filteredVisites.length === 0 ? (
-            <div className="empty-state">
-              <i className="fas fa-search fa-3x text-muted mb-3"></i>
-              <h5>Aucune visite médicale trouvée</h5>
-              <p className="text-muted mb-3">
-                {(search || poste || periode || statut) ? 
-                  'Aucun résultat ne correspond à vos critères de recherche.' : 
-                  'Aucune visite médicale n\'a été enregistrée pour le moment.'
-                }
-              </p>
-              {(search || poste || periode || statut) ? (
-                <button className="btn btn-outline-secondary" onClick={handleResetFilters}>
-                  <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
-                </button>
-              ) : (
-                <button className="btn btn-success" onClick={() => setShowAddModal(true)}>
-                  <i className="fas fa-plus me-2"></i>Ajouter une visite
-                </button>
-              )}
-            </div>
-          ) : (
-            <>
-              <div className="table-responsive">
-                <table className="table table-hover" id="visiteTable">
-                  <thead>
-                    <tr>
-                      <th className="sortable" onClick={() => handleSort('nom')}>
-                        Collaborateur
-                        {sortConfig.key === 'nom' && (
-                          <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                        )}
-                      </th>
-                      <th className="sortable" onClick={() => handleSort('poste')}>
-                        Poste
-                        {sortConfig.key === 'poste' && (
-                          <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                        )}
-                      </th>
-                      <th className="sortable" onClick={() => handleSort('date_derniere_visite')}>
-                        Dernière visite
-                        {sortConfig.key === 'date_derniere_visite' && (
-                          <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                        )}
-                      </th>
-                      <th className="sortable" onClick={() => handleSort('date_prochaine_visite')}>
-                        Prochaine visite
-                        {sortConfig.key === 'date_prochaine_visite' && (
-                          <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                        )}
-                      </th>
-                      <th className="sortable" onClick={() => handleSort('statut')}>
-                        Statut
-                        {sortConfig.key === 'statut' && (
-                          <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
-                        )}
-                      </th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedVisites.map((visite) => {
-                      const { badgeClass, statusText } = getStatusBadge(visite.statut, visite.date_prochaine_visite);
-                      const daysInfo = getDaysInfo(visite.date_prochaine_visite, visite.statut);
-                      
-                      return (
-                        <tr key={visite.id} className={daysInfo?.isOverdue ? 'table-danger' : daysInfo?.isUpcoming ? 'table-warning' : ''}>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <div className="avatar-circle me-2" style={{
+            <p className="mt-3 text-muted">Chargement des données...</p>
+          </div>
+        ) : filteredVisites.length === 0 ? (
+          <div className="empty-state text-center p-5">
+            <i className="fas fa-notes-medical empty-icon text-muted mb-3"></i>
+            <h4 className="mb-3">Aucune visite médicale trouvée</h4>
+            <p className="text-muted mb-4">
+              {(search || poste || periode || statut)
+                ? 'Aucun résultat ne correspond à vos critères de recherche.'
+                : 'Aucune visite médicale n\'a été enregistrée pour le moment.'}
+            </p>
+            {(search || poste || periode || statut) ? (
+              <button className="btn btn-outline-secondary" onClick={handleResetFilters}>
+                <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+                <i className="fas fa-plus me-2"></i>Ajouter une visite
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className="table-responsive">
+              <table className="table table-hover align-middle custom-table" id="visiteTable">
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort('nom')} className="sortable-header">
+                      Collaborateur
+                      {sortConfig.key === 'nom' && (
+                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
+                      )}
+                    </th>
+                    <th onClick={() => handleSort('poste')} className="sortable-header">
+                      Poste
+                      {sortConfig.key === 'poste' && (
+                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
+                      )}
+                    </th>
+                    <th onClick={() => handleSort('date_derniere_visite')} className="sortable-header">
+                      Dernière
+                      {sortConfig.key === 'date_derniere_visite' && (
+                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
+                      )}
+                    </th>
+                    <th onClick={() => handleSort('date_prochaine_visite')} className="sortable-header">
+                      Prochaine
+                      {sortConfig.key === 'date_prochaine_visite' && (
+                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
+                      )}
+                    </th>
+                    <th onClick={() => handleSort('statut')} className="sortable-header">
+                      Statut
+                      {sortConfig.key === 'statut' && (
+                        <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
+                      )}
+                    </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedVisites.map((visite) => {
+                    const { badgeClass, statusText } = getStatusBadge(visite.statut, visite.date_prochaine_visite);
+                    const daysInfo = getDaysInfo(visite.date_prochaine_visite, visite.statut);
+
+                    return (
+                      <tr key={visite.id} className={daysInfo?.isOverdue ? 'table-danger' : daysInfo?.isUpcoming ? 'table-warning' : ''}>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <div
+                              className="medical-avatar me-2"
+                              style={{
                                 backgroundColor: `hsl(${(visite.nom?.charCodeAt(0) || 0) * 10}, 70%, 60%)`,
-                              }}>
-                                {visite.nom?.charAt(0)}{visite.prenom?.charAt(0)}
-                              </div>
-                              <div>
-                                <div className="employee-name">{visite.nom}</div>
-                                <div className="small text-muted">{visite.prenom}</div>
-                              </div>
+                              }}
+                            >
+                              {visite.nom?.charAt(0)}{visite.prenom?.charAt(0)}
                             </div>
-                          </td>
-                          <td>{visite.poste}</td>
-                          <td>{formatDate(visite.date_derniere_visite)}</td>
-                          <td>
-                            {formatDate(visite.date_prochaine_visite)}
-                            {daysInfo?.isUpcoming && (
-                              <span className="ms-2 badge bg-warning text-dark">
-                                Dans {daysInfo.days} jour{daysInfo.days > 1 ? 's' : ''}
-                              </span>
-                            )}
-                            {daysInfo?.isOverdue && (
-                              <span className="ms-2 badge bg-danger">
-                                Retard de {daysInfo.days} jour{daysInfo.days > 1 ? 's' : ''}
-                              </span>
-                            )}
-                          </td>
-                          <td>
-                            <span className={`badge-pill ${badgeClass}`}>{statusText}</span>
-                          </td>
-                          <td>
-                            <div className="action-buttons">
-                              <button 
-                                type="button" 
-                                className="btn btn-sm btn-outline-primary" 
-                                onClick={() => handleViewVisite(visite)}
-                                title="Voir détails"
-                              >
-                                <i className="fas fa-eye"></i>
-                              </button>
-                              <button 
-                                type="button" 
-                                className="btn btn-sm btn-outline-warning" 
-                                onClick={() => handleShowUpdateModal(visite)}
-                                title="Mettre à jour le statut"
-                              >
-                                <i className="fas fa-edit"></i>
-                              </button>
-                              <button 
-                                type="button" 
-                                className="btn btn-sm btn-outline-info" 
-                                onClick={() => handleShowReminderModal(visite)}
-                                title="Envoyer rappel"
-                              >
-                                <i className="fas fa-bell"></i>
-                              </button>
-                              <button 
-                                type="button" 
-                                className="btn btn-sm btn-outline-danger" 
-                                onClick={() => handleShowDeleteModal(visite)}
-                                title="Supprimer la visite"
-                              >
-                                <i className="fas fa-trash"></i>
-                              </button>
+                            <div>
+                              <div className="medical-name">{visite.nom}</div>
+                              <div className="medical-prenom">{visite.prenom}</div>
                             </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-              
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="d-flex justify-content-between align-items-center mt-4">
-                  <div className="pagination-info">
-                    Affichage de {Math.min((currentPage - 1) * itemsPerPage + 1, filteredVisites.length)} à {Math.min(currentPage * itemsPerPage, filteredVisites.length)} sur {filteredVisites.length} résultats
-                  </div>
-                  <nav aria-label="Page navigation">
-                    <ul className="pagination mb-0">
-                      <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                        <button 
-                          className="page-link" 
-                          onClick={() => handlePageChange(currentPage - 1)} 
-                          disabled={currentPage === 1}
-                          aria-label="Précédent"
-                        >
-                          <i className="fas fa-chevron-left"></i>
-                        </button>
-                      </li>
-                      
-                      {getPaginationItems()}
-                      
-                      <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                        <button 
-                          className="page-link" 
-                          onClick={() => handlePageChange(currentPage + 1)} 
-                          disabled={currentPage === totalPages}
-                          aria-label="Suivant"
-                        >
-                          <i className="fas fa-chevron-right"></i>
-                        </button>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                          </div>
+                        </td>
+                        <td>{visite.poste}</td>
+                        <td>{formatDate(visite.date_derniere_visite)}</td>
+                        <td>
+                          {formatDate(visite.date_prochaine_visite)}
+                          {daysInfo?.isUpcoming && (
+                            <span className="ms-2 badge bg-warning text-dark">
+                              Dans {daysInfo.days} jour{daysInfo.days > 1 ? 's' : ''}
+                            </span>
+                          )}
+                          {daysInfo?.isOverdue && (
+                            <span className="ms-2 badge bg-danger">
+                              Retard de {daysInfo.days} jour{daysInfo.days > 1 ? 's' : ''}
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          <span className={`badge-pill ${badgeClass}`}>{statusText}</span>
+                        </td>
+                        <td>
+                          <div className="d-flex">
+                            <button
+                              type="button"
+                              className="action-btn action-btn-view"
+                              onClick={() => handleViewVisite(visite)}
+                              title="Voir détails"
+                            >
+                              <i className="fas fa-eye"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="action-btn action-btn-edit"
+                              onClick={() => handleShowUpdateModal(visite)}
+                              title="Mettre à jour le statut"
+                            >
+                              <i className="fas fa-edit"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="action-btn action-btn-reminder"
+                              onClick={() => handleShowReminderModal(visite)}
+                              title="Envoyer rappel"
+                            >
+                              <i className="fas fa-bell"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="action-btn action-btn-delete"
+                              onClick={() => handleShowDeleteModal(visite)}
+                              title="Supprimer la visite"
+                            >
+                              <i className="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="medical-pagination-wrap">
+              <ListPagination
+                currentPage={currentPage}
+                totalItems={filteredVisites.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+                itemLabel="visite"
+              />
+            </div>
+          </>
+        )}
       </div>
-      
+
       {/* Add Visite Modal */}
       {showAddModal && (
         <div className="modal-backdrop">
@@ -1880,7 +1795,7 @@ const MedicalVisits = () => {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

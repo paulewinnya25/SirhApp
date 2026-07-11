@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { departService } from '../../services/api';
+import ListPagination from '../common/ListPagination';
 import '../../styles/Tables.css';
 import '../../styles/Forms.css';
+import '../../styles/DepartureHistory.css';
 
 const DepartureHistory = () => {
   // États principaux
@@ -282,6 +284,18 @@ const DepartureHistory = () => {
     });
   }, []);
 
+  const getInitials = (nom = '', prenom = '') => {
+    const n = String(nom).trim();
+    const p = String(prenom).trim();
+    if (!n && !p) return '?';
+    return `${n.charAt(0)}${p.charAt(0)}`.toUpperCase() || '?';
+  };
+
+  const avatarColor = (name = '') => {
+    const hue = (String(name).length * 37) % 360;
+    return `hsl(${hue}, 52%, 48%)`;
+  };
+
   // Traitement de l'ajout d'un départ
   const handleAddDeparture = async (values, { resetForm }) => {
     setIsSubmitting(true);
@@ -477,10 +491,12 @@ const DepartureHistory = () => {
   }, []);
 
   return (
-    <>
-      <div className="page-title-wrapper fade-in-up">
-        <h1 className="page-title">Historique des départs</h1>
-        <p className="page-subtitle">Suivez les départs des collaborateurs de votre entreprise</p>
+    <div className="departure-list-page">
+      <div className="page-title-wrapper">
+        <div className="title-content">
+          <h1 className="page-title">Historique des départs</h1>
+          <p className="page-subtitle">Suivez les départs des collaborateurs de votre entreprise</p>
+        </div>
       </div>
       
       {errorMessage && (
@@ -496,223 +512,226 @@ const DepartureHistory = () => {
           <button type="button" className="btn-close" onClick={() => setSuccessMessage('')}></button>
         </div>
       )}
-      
-      {/* Actions */}
-      <div className="card fade-in-up" style={{ animationDelay: '0.1s' }}>
-        <div className="card-header">
-          <h3 className="card-title"><i className="fas fa-cogs me-2"></i>Actions</h3>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-md-6">
-              <button 
-                className="btn btn-danger mb-3" 
-                onClick={() => setShowAddModal(true)}
+
+      <div className="departure-filters">
+        <h5 className="filter-title">Filtres</h5>
+        <div className="row g-2 align-items-end">
+          <div className="col-md-3 col-lg-2">
+            <input
+              type="text"
+              className="form-control"
+              id="search"
+              name="search"
+              placeholder="Nom, prénom, poste..."
+              value={filters.search}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div className="col-md-3 col-lg-2">
+            <input
+              type="text"
+              className="form-control"
+              id="matricule"
+              name="matricule"
+              placeholder="Matricule"
+              value={filters.matricule}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div className="col-md-3 col-lg-2">
+            <select
+              className="form-select"
+              id="departement"
+              name="departement"
+              value={filters.departement}
+              onChange={handleFilterChange}
+            >
+              <option value="">Tous les départements</option>
+              {departments.map((dept, index) => (
+                <option key={index} value={dept}>{dept}</option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-3 col-lg-2">
+            <select
+              className="form-select"
+              id="statut"
+              name="statut"
+              value={filters.statut}
+              onChange={handleFilterChange}
+            >
+              <option value="">Tous les contrats</option>
+              {contractTypes.map((type, index) => (
+                <option key={index} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-3 col-lg-2">
+            <select
+              className="form-select"
+              id="motif_depart"
+              name="motif_depart"
+              value={filters.motif_depart}
+              onChange={handleFilterChange}
+            >
+              <option value="">Tous les motifs</option>
+              {departureReasons.map((reason, index) => (
+                <option key={index} value={reason}>{reason}</option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-3 col-lg-1">
+            <input
+              type="date"
+              className="form-control"
+              id="date_debut"
+              name="date_debut"
+              value={filters.date_debut}
+              onChange={handleFilterChange}
+              title="Date début"
+            />
+          </div>
+          <div className="col-md-3 col-lg-1">
+            <input
+              type="date"
+              className="form-control"
+              id="date_fin"
+              name="date_fin"
+              value={filters.date_fin}
+              onChange={handleFilterChange}
+              title="Date fin"
+            />
+          </div>
+          <div className="col-md-6 col-lg-auto">
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={applyFilters}
+                title="Filtrer"
               >
-                <i className="fas fa-user-minus btn-icon"></i>Ajouter un départ
+                <i className="fas fa-search"></i>
               </button>
-            </div>
-            <div className="col-md-6 text-md-end">
-              <button 
-                className="btn btn-outline-danger mb-3 me-2" 
-                onClick={() => setShowImportModal(true)}
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={resetFilters}
+                title="Réinitialiser"
               >
-                <i className="fas fa-file-import btn-icon"></i>Importer des départs
-              </button>
-              <button 
-                className="btn btn-outline-success mb-3" 
-                onClick={handleExport}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                ) : (
-                  <i className="fas fa-file-export btn-icon"></i>
-                )}
-                Exporter (Excel)
+                <i className="fas fa-undo"></i>
               </button>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Filtres */}
-      <div className="card fade-in-up" style={{ animationDelay: '0.2s' }}>
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h3 className="card-title"><i className="fas fa-filter me-2"></i>Filtres</h3>
-          <button className="btn btn-sm btn-outline-secondary" onClick={resetFilters}>
-            <i className="fas fa-redo-alt me-1"></i>Réinitialiser
-          </button>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-md-3 mb-3">
-              <label htmlFor="search" className="form-label">Recherche</label>
-              <div className="input-group">
-                <span className="input-group-text"><i className="fas fa-search"></i></span>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  id="search" 
-                  name="search" 
-                  placeholder="Nom, prénom, poste..." 
-                  value={filters.search}
-                  onChange={handleFilterChange}
-                />
-              </div>
+
+      <div className="departure-table-card">
+        <div className="departure-table-header">
+          <h5 className="table-title">
+            <div className="table-icon">
+              <i className="fas fa-user-minus"></i>
             </div>
-            <div className="col-md-3 mb-3">
-              <label htmlFor="matricule" className="form-label">Matricule</label>
-              <input 
-                type="text" 
-                className="form-control" 
-                id="matricule" 
-                name="matricule" 
-                placeholder="CDL-2025-0001" 
-                value={filters.matricule}
-                onChange={handleFilterChange}
-              />
-            </div>
-            <div className="col-md-3 mb-3">
-              <label htmlFor="departement" className="form-label">Département</label>
-              <select 
-                className="form-select" 
-                id="departement" 
-                name="departement"
-                value={filters.departement}
-                onChange={handleFilterChange}
-              >
-                <option value="">Tous les départements</option>
-                {departments.map((dept, index) => (
-                  <option key={index} value={dept}>{dept}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-md-3 mb-3">
-              <label htmlFor="statut" className="form-label">Type de contrat</label>
-              <select 
-                className="form-select" 
-                id="statut" 
-                name="statut"
-                value={filters.statut}
-                onChange={handleFilterChange}
-              >
-                <option value="">Tous les types</option>
-                {contractTypes.map((type, index) => (
-                  <option key={index} value={type}>{type}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-3 mb-3">
-              <label htmlFor="motif_depart" className="form-label">Motif de départ</label>
-              <select 
-                className="form-select" 
-                id="motif_depart" 
-                name="motif_depart"
-                value={filters.motif_depart}
-                onChange={handleFilterChange}
-              >
-                <option value="">Tous les motifs</option>
-                {departureReasons.map((reason, index) => (
-                  <option key={index} value={reason}>{reason}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-3 mb-3">
-              <label htmlFor="date_debut" className="form-label">Date de départ (début)</label>
-              <input 
-                type="date" 
-                className="form-control" 
-                id="date_debut" 
-                name="date_debut"
-                value={filters.date_debut}
-                onChange={handleFilterChange}
-              />
-            </div>
-            <div className="col-md-3 mb-3">
-              <label htmlFor="date_fin" className="form-label">Date de départ (fin)</label>
-              <input 
-                type="date" 
-                className="form-control" 
-                id="date_fin" 
-                name="date_fin"
-                value={filters.date_fin}
-                onChange={handleFilterChange}
-              />
-            </div>
-          </div>
-          <div className="text-center">
-            <button 
-              type="button" 
-              className="btn btn-danger"
-              onClick={applyFilters}
+            Liste des départs ({pagination.totalItems})
+          </h5>
+          <div className="header-actions">
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowAddModal(true)}
             >
-              <i className="fas fa-search btn-icon"></i>Filtrer
+              <i className="fas fa-plus me-2"></i>
+              Ajouter
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => setShowImportModal(true)}
+            >
+              <i className="fas fa-file-import me-2"></i>
+              Importer
+            </button>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={handleExport}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+              ) : (
+                <i className="fas fa-file-export me-2"></i>
+              )}
+              Exporter
             </button>
           </div>
         </div>
-      </div>
-      
-      {/* Tableau des résultats */}
-      <div className="card fade-in-up" style={{ animationDelay: '0.3s' }}>
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h3 className="card-title"><i className="fas fa-list me-2"></i>Résultats</h3>
-          <span className="badge bg-danger rounded-pill">{pagination.totalItems} départ(s)</span>
-        </div>
-        <div className="card-body">
-          {isLoading ? (
-            <div className="text-center p-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Chargement...</span>
-              </div>
-              <p className="mt-3 text-muted">Chargement des données...</p>
+
+        {isLoading ? (
+          <div className="text-center p-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Chargement...</span>
             </div>
-          ) : (
+            <p className="mt-3 text-muted">Chargement des données...</p>
+          </div>
+        ) : sortedDepartures.length === 0 ? (
+          <div className="empty-state text-center p-5">
+            <i className="fas fa-user-slash empty-icon text-muted mb-3"></i>
+            <h4 className="mb-3">Aucun départ trouvé</h4>
+            <p className="text-muted mb-4">
+              {(filters.search || filters.matricule || filters.departement || filters.statut || filters.motif_depart || filters.date_debut || filters.date_fin)
+                ? 'Aucun résultat ne correspond à vos critères de recherche.'
+                : 'Aucun départ n\'a été enregistré pour le moment.'}
+            </p>
+            {(filters.search || filters.matricule || filters.departement || filters.statut || filters.motif_depart || filters.date_debut || filters.date_fin) ? (
+              <button className="btn btn-outline-secondary" onClick={resetFilters}>
+                <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+                <i className="fas fa-plus me-2"></i>Ajouter un départ
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
             <div className="table-responsive">
-              <table className="table table-hover" id="tableDepartures">
+              <table className="table table-hover align-middle custom-table">
                 <thead>
                   <tr>
-                    <th className="sortable" onClick={() => handleSort('nom')}>
-                      Nom & Prénom
+                    <th onClick={() => handleSort('nom')} className="sortable-header">
+                      Collaborateur
                       {sortConfig.key === 'nom' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('matricule')}>
+                    <th onClick={() => handleSort('matricule')} className="sortable-header">
                       Matricule
                       {sortConfig.key === 'matricule' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('date_depart')}>
-                      Date de départ
+                    <th onClick={() => handleSort('date_depart')} className="sortable-header">
+                      Date
                       {sortConfig.key === 'date_depart' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('departement')}>
+                    <th onClick={() => handleSort('departement')} className="sortable-header">
                       Département
                       {sortConfig.key === 'departement' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('poste')}>
+                    <th onClick={() => handleSort('poste')} className="sortable-header">
                       Poste
                       {sortConfig.key === 'poste' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('statut')}>
-                      Type de contrat
+                    <th onClick={() => handleSort('statut')} className="sortable-header">
+                      Contrat
                       {sortConfig.key === 'statut' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
                       )}
                     </th>
-                    <th className="sortable" onClick={() => handleSort('motif_depart')}>
+                    <th onClick={() => handleSort('motif_depart')} className="sortable-header">
                       Motif
                       {sortConfig.key === 'motif_depart' && (
                         <i className={`fas fa-sort-${sortConfig.direction === 'asc' ? 'up' : 'down'} ms-1`}></i>
@@ -722,162 +741,73 @@ const DepartureHistory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedDepartures.length === 0 ? (
-                    <tr>
-                      <td colSpan="8" className="text-center py-4">
-                        <div className="empty-state">
-                          <i className="fas fa-search fa-3x text-muted mb-3"></i>
-                          <h5>Aucun départ trouvé</h5>
-                          <p className="text-muted">
-                            {(filters.search || filters.departement || filters.statut || filters.motif_depart || filters.date_debut || filters.date_fin) ? 
-                              'Aucun résultat ne correspond à vos critères de recherche.' : 
-                              'Aucun départ n\'a été enregistré pour le moment.'
-                            }
-                          </p>
-                          {(filters.search || filters.departement || filters.statut || filters.motif_depart || filters.date_debut || filters.date_fin) && (
-                            <button className="btn btn-outline-secondary mt-2" onClick={resetFilters}>
-                              <i className="fas fa-filter-circle-xmark me-2"></i>Réinitialiser les filtres
-                            </button>
-                          )}
+                  {sortedDepartures.map((departure) => (
+                    <tr key={departure.id}>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div
+                            className="departure-avatar me-2"
+                            style={{ backgroundColor: avatarColor(`${departure.nom || ''} ${departure.prenom || ''}`) }}
+                          >
+                            {getInitials(departure.nom, departure.prenom)}
+                          </div>
+                          <div>
+                            <div className="departure-name">{departure.nom || '-'}</div>
+                            <div className="departure-secondary">{departure.prenom || '-'}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{departure.matricule && departure.matricule !== 'N/A' ? departure.matricule : 'Non assigné'}</td>
+                      <td>{formatDate(departure.date_depart)}</td>
+                      <td>{departure.departement && departure.departement !== 'Département inconnu' ? departure.departement : '-'}</td>
+                      <td>{departure.poste && departure.poste !== 'Poste inconnu' ? departure.poste : '-'}</td>
+                      <td>{departure.statut && departure.statut !== '-' ? departure.statut : '-'}</td>
+                      <td>
+                        <span className={`badge ${getDepartureReasonBadgeClass(departure.motif_depart)}`}>
+                          {departure.motif_depart || 'Non spécifié'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="d-flex">
+                          <button
+                            className="action-btn action-btn-view"
+                            onClick={() => handleViewDeparture(departure.id)}
+                            title="Voir détails"
+                          >
+                            <i className="fas fa-eye"></i>
+                          </button>
+                          <button
+                            className="action-btn action-btn-edit"
+                            onClick={() => handleEditDeparture(departure.id)}
+                            title="Modifier"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </button>
+                          <button
+                            className="action-btn action-btn-delete"
+                            onClick={() => confirmDeleteDeparture(departure)}
+                            title="Supprimer"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
                         </div>
                       </td>
                     </tr>
-                  ) : (
-                    sortedDepartures.map(departure => {
-                      // Debug: log pour vérifier les données
-                      if (departure.nom?.includes('IFOUNGA')) {
-                        console.log('🔍 IFOUNGA trouvé dans sortedDepartures:', departure);
-                      }
-                      return (
-                        <tr key={departure.id} className="departure-row">
-                        <td>
-                          <div className="d-flex align-items-center">
-                            <div className="avatar-circle me-2" style={{
-                              backgroundColor: `hsl(${(departure.nom?.charCodeAt(0) || 0) * 10}, 70%, 60%)`,
-                            }}>
-                              {departure.nom?.charAt(0) || ''}{departure.prenom?.charAt(0) || ''}
-                            </div>
-                            <div>
-                              <div className="fw-bold">{departure.nom || '-'}</div>
-                              <div>{departure.prenom || '-'}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span className="badge bg-secondary">{departure.matricule && departure.matricule !== 'N/A' ? departure.matricule : 'Non assigné'}</span>
-                        </td>
-                        <td>{formatDate(departure.date_depart)}</td>
-                        <td>{departure.departement && departure.departement !== 'Département inconnu' ? departure.departement : '-'}</td>
-                        <td>{departure.poste && departure.poste !== 'Poste inconnu' ? departure.poste : '-'}</td>
-                        <td>{departure.statut && departure.statut !== '-' ? departure.statut : '-'}</td>
-                        <td>
-                          <span className={`badge ${getDepartureReasonBadgeClass(departure.motif_depart)}`}>
-                            {departure.motif_depart || 'Non spécifié'}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="action-buttons">
-                            <button 
-                              className="btn btn-sm btn-outline-primary me-1" 
-                              onClick={() => handleViewDeparture(departure.id)}
-                              title="Voir détails"
-                            >
-                              <i className="fas fa-eye"></i>
-                            </button>
-                            <button 
-                              className="btn btn-sm btn-outline-warning me-1" 
-                              onClick={() => handleEditDeparture(departure.id)}
-                              title="Modifier"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </button>
-                            <button 
-                              className="btn btn-sm btn-outline-danger" 
-                              onClick={() => confirmDeleteDeparture(departure)}
-                              title="Supprimer"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      );
-                    })
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
-          )}
-          
-          {/* Pagination */}
-          {pagination.totalPages > 1 && (
-            <div className="d-flex justify-content-center mt-4">
-              <nav aria-label="Page navigation">
-                <ul className="pagination">
-                  {pagination.currentPage > 1 && (
-                    <li className="page-item">
-                      <button 
-                        className="page-link" 
-                        onClick={() => handlePageChange(pagination.currentPage - 1)}
-                        aria-label="Précédent"
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </button>
-                    </li>
-                  )}
-                  
-                  {[...Array(pagination.totalPages)].map((_, i) => {
-                    const pageNumber = i + 1;
-                    // Afficher les 5 pages autour de la page courante
-                    if (
-                      pageNumber === 1 ||
-                      pageNumber === pagination.totalPages ||
-                      (pageNumber >= pagination.currentPage - 2 && pageNumber <= pagination.currentPage + 2)
-                    ) {
-                      return (
-                        <li 
-                          key={i} 
-                          className={`page-item ${pageNumber === pagination.currentPage ? 'active' : ''}`}
-                        >
-                          <button 
-                            className="page-link" 
-                            onClick={() => handlePageChange(pageNumber)}
-                          >
-                            {pageNumber}
-                          </button>
-                        </li>
-                      );
-                    }
-                    // Afficher des points de suspension pour les pages omises
-                    if (
-                      (pageNumber === pagination.currentPage - 3 && pagination.currentPage > 3) ||
-                      (pageNumber === pagination.currentPage + 3 && pagination.currentPage < pagination.totalPages - 2)
-                    ) {
-                      return (
-                        <li key={i} className="page-item disabled">
-                          <span className="page-link">...</span>
-                        </li>
-                      );
-                    }
-                    return null;
-                  })}
-                  
-                  {pagination.currentPage < pagination.totalPages && (
-                    <li className="page-item">
-                      <button 
-                        className="page-link" 
-                        onClick={() => handlePageChange(pagination.currentPage + 1)}
-                        aria-label="Suivant"
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </nav>
+            <div className="departure-pagination-wrap">
+              <ListPagination
+                currentPage={pagination.currentPage}
+                totalItems={pagination.totalItems}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={handlePageChange}
+                itemLabel="départ"
+              />
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
       
       {/* Modal d'ajout */}
@@ -1699,7 +1629,7 @@ const DepartureHistory = () => {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

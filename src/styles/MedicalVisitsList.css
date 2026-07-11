@@ -1,0 +1,248 @@
+/* Visites médicales — même densité / structure que Recrutement / Effectif */
+
+.medical-list-page {
+  width: 100%;
+}
+
+.medical-list-page .page-title-wrapper {
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+}
+
+/* Compact stats row */
+.medical-list-page .stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.medical-list-page .stat-card {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.85rem;
+  background-color: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+  box-shadow: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+
+.medical-list-page .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(41, 87, 133, 0.08);
+}
+
+.medical-list-page .stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-size: 0.85rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.medical-list-page .stat-icon-red { background-color: #dc3545; }
+.medical-list-page .stat-icon-orange { background-color: #fd7e14; }
+.medical-list-page .stat-icon-blue { background-color: #0d6efd; }
+.medical-list-page .stat-icon-green { background-color: #198754; }
+
+.medical-list-page .stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+  line-height: 1.2;
+  color: #1a3348;
+}
+
+.medical-list-page .stat-label {
+  color: #6c757d;
+  font-size: var(--fs-xs, 0.75rem);
+  font-weight: 500;
+}
+
+.medical-filters {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+}
+
+.medical-list-page .filter-title {
+  font-size: var(--fs-sm, 0.8125rem);
+  color: #6c757d;
+  margin-bottom: 0.55rem;
+  font-weight: 600;
+}
+
+.medical-list-page .form-select,
+.medical-list-page .form-control {
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+}
+
+.medical-table-card {
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.medical-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(41, 87, 133, 0.1);
+}
+
+.medical-list-page .table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: #1a3348;
+  font-size: var(--fs-lg, 1.05rem);
+  font-weight: 650;
+}
+
+.medical-list-page .table-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #e8f4f8;
+  color: #295785;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.medical-list-page .custom-table {
+  margin: 0;
+}
+
+.medical-list-page .custom-table thead th {
+  background: #f7fafc;
+  white-space: nowrap;
+}
+
+.medical-list-page .custom-table tbody tr:hover {
+  background: rgba(58, 142, 186, 0.04);
+}
+
+.medical-list-page .sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.medical-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 650;
+  font-size: var(--fs-xs, 0.75rem);
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.medical-name {
+  font-weight: 600;
+  color: #1a3348;
+  line-height: 1.25;
+}
+
+.medical-prenom {
+  color: #6c757d;
+  font-weight: 450;
+  line-height: 1.25;
+  margin-top: 0.1rem;
+  font-size: var(--fs-sm, 0.8125rem);
+}
+
+.medical-list-page .action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  border: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.medical-list-page .action-btn:hover {
+  transform: scale(1.05);
+}
+
+.medical-list-page .action-btn-view {
+  background-color: rgba(58, 142, 186, 0.12);
+  color: var(--primary, #3a8eba);
+}
+
+.medical-list-page .action-btn-edit {
+  background-color: #fff3cd;
+  color: #d39e00;
+}
+
+.medical-list-page .action-btn-reminder {
+  background-color: #cff4fc;
+  color: #0aa2c0;
+}
+
+.medical-list-page .action-btn-delete {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.medical-list-page .badge-pill {
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 11px;
+  display: inline-block;
+}
+
+.medical-pagination-wrap {
+  padding: 0 1rem 0.5rem;
+}
+
+.medical-list-page .empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.45;
+}
+
+.medical-list-page .empty-state h4 {
+  font-size: var(--fs-lg, 1.05rem);
+}
+
+@media (max-width: 768px) {
+  .medical-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .medical-list-page .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .medical-list-page .stats-row {
+    grid-template-columns: 1fr;
+  }
+}

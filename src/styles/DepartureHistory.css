@@ -1,0 +1,179 @@
+/* Départs — même densité / structure que Effectif / Recrutement */
+
+.departure-list-page {
+  width: 100%;
+}
+
+.departure-list-page .page-title-wrapper {
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+}
+
+.departure-filters {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+}
+
+.departure-list-page .filter-title {
+  font-size: var(--fs-sm, 0.8125rem);
+  color: #6c757d;
+  margin-bottom: 0.55rem;
+  font-weight: 600;
+}
+
+.departure-list-page .form-select,
+.departure-list-page .form-control {
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+}
+
+.departure-table-card {
+  background: #fff;
+  border: 1px solid rgba(41, 87, 133, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.departure-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(41, 87, 133, 0.1);
+  flex-wrap: wrap;
+}
+
+.departure-list-page .table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: #1a3348;
+  font-size: var(--fs-lg, 1.05rem);
+  font-weight: 650;
+}
+
+.departure-list-page .table-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #e8f4f8;
+  color: #295785;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.departure-table-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.departure-list-page .custom-table {
+  margin: 0;
+}
+
+.departure-list-page .custom-table thead th {
+  background: #f7fafc;
+  white-space: nowrap;
+}
+
+.departure-list-page .custom-table tbody tr:hover {
+  background: rgba(58, 142, 186, 0.04);
+}
+
+.departure-list-page .sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.departure-list-page .sortable-header:hover {
+  background-color: #f0f5f8;
+}
+
+.departure-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 650;
+  font-size: var(--fs-xs, 0.75rem);
+  flex-shrink: 0;
+}
+
+.departure-name {
+  font-weight: 600;
+  color: #1a3348;
+  line-height: 1.25;
+}
+
+.departure-secondary {
+  color: #6c757d;
+  font-weight: 450;
+  line-height: 1.25;
+  margin-top: 0.1rem;
+  font-size: var(--fs-sm, 0.8125rem);
+}
+
+.departure-list-page .action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  border: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.departure-list-page .action-btn:hover {
+  transform: scale(1.05);
+}
+
+.departure-list-page .action-btn-view {
+  background-color: rgba(58, 142, 186, 0.12);
+  color: var(--primary, #3a8eba);
+}
+
+.departure-list-page .action-btn-edit {
+  background-color: #fff3cd;
+  color: #d39e00;
+}
+
+.departure-list-page .action-btn-delete {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.departure-pagination-wrap {
+  padding: 0 1rem 0.5rem;
+}
+
+.departure-list-page .empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.45;
+}
+
+.departure-list-page .empty-state h4 {
+  font-size: var(--fs-lg, 1.05rem);
+}
+
+@media (max-width: 768px) {
+  .departure-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
