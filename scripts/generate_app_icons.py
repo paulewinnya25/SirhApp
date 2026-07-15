@@ -1,10 +1,10 @@
 from PIL import Image
 from pathlib import Path
 
-# Logo SIRH / HR (icône d'installation)
+# Logo SIRH / HR (version dégradé) — icône d'installation
 src = Path(
     r"C:\Users\paule\.cursor\projects\c-Users-paule-Desktop-Projets-sirhCDL\assets"
-    r"\c__Users_paule_AppData_Roaming_Cursor_User_workspaceStorage_bf8e27c8eb04158c3dd9553957752ac4_images_Sirh-94a5df4b-cdf9-4897-bafe-1d6be1570eaf.png"
+    r"\c__Users_paule_AppData_Roaming_Cursor_User_workspaceStorage_bf8e27c8eb04158c3dd9553957752ac4_images_Design_sans_titre-2fe178f3-d615-4e82-877e-ad46a4d110df.png"
 )
 fallback = Path(r"c:\Users\paule\Desktop\Projets\sirhCDL\public\logo-cdl.png")
 out = Path(r"c:\Users\paule\Desktop\Projets\sirhCDL\public")
