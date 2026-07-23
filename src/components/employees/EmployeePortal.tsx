@@ -863,11 +863,11 @@ const EmployeePortal = ({ onLogout }: any) => {
             </li>
 
             <li className={activeTab === 'events' ? 'active' : ''}>
-  <button onClick={() => setActiveTab('events')}>
-    <i className="fas fa-calendar-week"></i>
-    <span>Événements</span>
-  </button>
-</li>
+              <button onClick={() => setActiveTab('events')}>
+                <i className="fas fa-calendar-week"></i>
+                <span>Événements</span>
+              </button>
+            </li>
             
             <li className={activeTab === 'sanctions' ? 'active' : ''}>
               <button onClick={() => setActiveTab('sanctions')}>
@@ -914,19 +914,20 @@ const EmployeePortal = ({ onLogout }: any) => {
           </div>
           
           <div className="header-actions">
-            <button className="btn-icon" onClick={() => alert('Vous avez 2 nouvelles notifications')}>
+            <button
+              className="btn-icon"
+              title="Notifications"
+              type="button"
+              aria-label="Notifications"
+            >
               <i className="fas fa-bell"></i>
-              <span className="notification-badge">2</span>
-            </button>
-            <button className="btn-icon" onClick={() => alert('Paramètres du compte')}>
-              <i className="fas fa-cog"></i>
             </button>
           </div>
         </header>
         
         {/* Afficher un message d'erreur global si nécessaire */}
         {error && (
-          <div className="alert alert-danger m-3" role="alert">
+          <div className="alert alert-danger mx-3 mt-2 mb-0 py-2" role="alert">
             <i className="fas fa-exclamation-circle me-2"></i>
             {error}
             <button 
@@ -940,7 +941,7 @@ const EmployeePortal = ({ onLogout }: any) => {
 
         {/* Afficher un message de succès si nécessaire */}
         {successMessage && (
-          <div className="alert alert-success m-3" role="alert">
+          <div className="alert alert-success mx-3 mt-2 mb-0 py-2" role="alert">
             <i className="fas fa-check-circle me-2"></i>
             {successMessage}
             <button 
@@ -1121,48 +1122,45 @@ const EmployeePortal = ({ onLogout }: any) => {
           {/* Documents Tab */}
           {activeTab === 'documents' && (
             <div className="documents-tab">
-              <div className="documents-header">
-                <div>
-                  <h3>Mes documents</h3>
-                  <p className="documents-subtitle">Consultez et téléchargez vos documents personnels</p>
+              <div className="portal-filters">
+                <div className="search-container">
+                  <i className="fas fa-search search-icon"></i>
+                  <input 
+                    type="text" 
+                    placeholder="Rechercher un document..." 
+                    className="search-input"
+                    value={documentSearchTerm}
+                    onChange={(e) => setDocumentSearchTerm(e.target.value)}
+                  />
                 </div>
-                <div className="documents-actions">
-                  <div className="search-container">
-                    <i className="fas fa-search search-icon"></i>
-                    <input 
-                      type="text" 
-                      placeholder="Rechercher un document..." 
-                      className="search-input"
-                      value={documentSearchTerm}
-                      onChange={(e) => setDocumentSearchTerm(e.target.value)}
-                    />
-                  </div>
-                  <select 
-                    className="form-select"
-                    value={documentFilterType}
-                    onChange={(e) => setDocumentFilterType(e.target.value)}
-                  >
-                    <option value="all">Tous les types</option>
-                    <option value="payslip">Fiches de paie</option>
-                    <option value="certificate">Attestations</option>
-                    <option value="contract">Contrats</option>
-                    <option value="identité">Pièces d'identité</option>
-                    <option value="administratif">Documents administratifs</option>
-                    <option value="other">Autres</option>
-                  </select>
-                </div>
+                <select 
+                  className="form-select"
+                  value={documentFilterType}
+                  onChange={(e) => setDocumentFilterType(e.target.value)}
+                >
+                  <option value="all">Tous les types</option>
+                  <option value="payslip">Fiches de paie</option>
+                  <option value="certificate">Attestations</option>
+                  <option value="contract">Contrats</option>
+                  <option value="identité">Pièces d'identité</option>
+                  <option value="administratif">Documents administratifs</option>
+                  <option value="other">Autres</option>
+                </select>
+                <button className="btn-primary" onClick={() => handleNewRequest('document')}>
+                  <i className="fas fa-plus"></i> Demander un document
+                </button>
               </div>
               
               {loadingDocuments ? (
-                <div className="text-center p-5">
+                <div className="text-center p-4">
                   <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">Chargement...</span>
                   </div>
-                  <p className="mt-3">Chargement de vos documents...</p>
+                  <p className="mt-2 mb-0" style={{ fontSize: 'var(--fs-sm)' }}>Chargement de vos documents...</p>
                 </div>
               ) : filteredDocuments.length === 0 ? (
                 <div className="empty-state-card">
-                  <i className="far fa-folder-open fa-4x mb-3" style={{ color: '#bdc3c7' }}></i>
+                  <i className="far fa-folder-open fa-2x mb-2" style={{ color: '#9aa8b5' }}></i>
                   <h4>
                     {documents.length === 0 
                       ? 'Aucun document disponible' 
@@ -1170,24 +1168,21 @@ const EmployeePortal = ({ onLogout }: any) => {
                   </h4>
                   <p>
                     {documents.length === 0 
-                      ? 'Vous n\'avez pas encore de documents dans votre espace. Les documents seront ajoutés ici par le service RH.'
-                      : 'Essayez de modifier vos critères de recherche ou de filtre.'}
+                      ? 'Les documents ajoutés par le service RH apparaîtront ici.'
+                      : 'Modifiez vos critères de recherche ou de filtre.'}
                   </p>
-                  {documents.length === 0 && (
-                    <button className="btn-primary mt-3" onClick={() => handleNewRequest('document')}>
-                      <i className="fas fa-plus"></i> Demander un document
-                    </button>
-                  )}
                 </div>
               ) : (
-                <>
-                  <div className="documents-stats mb-3">
+                <div className="portal-list-card">
+                  <div className="portal-list-header">
+                    <h4 className="portal-list-title">
+                      <span className="portal-list-icon"><i className="fas fa-file-alt"></i></span>
+                      Documents
+                    </h4>
                     <span className="documents-count">
-                      {filteredDocuments.length} document{filteredDocuments.length > 1 ? 's' : ''} 
-                      {documentSearchTerm || documentFilterType !== 'all' ? ' trouvé(s)' : ' disponible(s)'}
+                      {filteredDocuments.length} document{filteredDocuments.length > 1 ? 's' : ''}
                     </span>
                   </div>
-                  
                   <div className="documents-list">
                     {filteredDocuments.map(doc => (
                       <div className="document-card" key={doc.id}>
@@ -1229,43 +1224,20 @@ const EmployeePortal = ({ onLogout }: any) => {
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               )}
-              
-              <div className="document-request">
-                <div className="document-request-icon">
-                  <i className="fas fa-file-plus"></i>
-                </div>
-                <div className="document-request-content">
-                  <h4>Demander un document</h4>
-                  <p>Vous ne trouvez pas le document que vous cherchez ? Faites une demande auprès du service RH.</p>
-                </div>
-                <button className="btn-primary" onClick={() => handleNewRequest('document')}>
-                  <i className="fas fa-plus"></i> Nouvelle demande
-                </button>
-              </div>
             </div>
           )}
           
           {/* Requests Tab */}
           {activeTab === 'requests' && (
             <div className="requests-tab">
-              <div className="requests-header">
-                <h3>Mes demandes</h3>
-                <div className="requests-actions">
-                  <button className="btn-primary" onClick={() => setShowNewRequestModal(true)}>
-                    <i className="fas fa-plus"></i> Nouvelle demande
-                  </button>
-                </div>
-              </div>
-              
               <div className="request-types">
                 <div className="request-type-card">
                   <div className="request-type-icon leave-icon">
                     <i className="fas fa-calendar-alt"></i>
                   </div>
                   <h4>Congés</h4>
-                  <p>Demander des jours de congés ou des absences.</p>
                   <button className="btn-outline" onClick={() => handleNewRequest('leave')}>Demander</button>
                 </div>
                 
@@ -1274,7 +1246,6 @@ const EmployeePortal = ({ onLogout }: any) => {
                     <i className="fas fa-file-alt"></i>
                   </div>
                   <h4>Documents</h4>
-                  <p>Demander une attestation ou un autre document.</p>
                   <button className="btn-outline" onClick={() => handleNewRequest('document')}>Demander</button>
                 </div>
                 
@@ -1283,15 +1254,12 @@ const EmployeePortal = ({ onLogout }: any) => {
                     <i className="fas fa-clipboard-list"></i>
                   </div>
                   <h4>Autres</h4>
-                  <p>Faire une demande spécifique ou poser une question.</p>
                   <button className="btn-outline" onClick={() => handleNewRequest('other')}>Demander</button>
                 </div>
               </div>
               
               <div className="requests-history">
-                <h4>Historique des demandes</h4>
-                
-                <div className="history-filters">
+                <div className="portal-filters history-filters">
                   <select className="form-select">
                     <option value="all">Tous les types</option>
                     <option value="leave">Congés</option>
@@ -1307,52 +1275,63 @@ const EmployeePortal = ({ onLogout }: any) => {
                   </select>
                 </div>
                 
-                <div className="requests-list">
-                  {employeeRequests.length === 0 ? (
-                    <p className="empty-state p-4">Vous n'avez pas encore de demandes.</p>
-                  ) : (
-                    employeeRequests.map(request => {
-                      const { icon, statusClass, statusText } = getRequestInfo(
-                        request.type || request.request_type, 
-                        request.status
-                      );
-                      return (
-                        <div className="request-history-item" key={request.id}>
-                          <div className="request-history-icon">
-                            <i className={`fas ${icon}`}></i>
-                          </div>
-                          <div className="request-history-details">
-                            <div className="request-history-header">
-                              <h5>
-                                {(request.type || request.request_type) === 'leave' ? 'Demande de congé' : 
-                                 (request.type || request.request_type) === 'document' ? 'Demande de document' : 'Autre demande'}
-                              </h5>
-                              <span className={`status-badge ${statusClass}`}>{statusText}</span>
+                <div className="portal-list-card">
+                  <div className="portal-list-header">
+                    <h4 className="portal-list-title">
+                      <span className="portal-list-icon"><i className="fas fa-paper-plane"></i></span>
+                      Historique des demandes
+                    </h4>
+                    <span className="documents-count">
+                      {employeeRequests.length} demande{employeeRequests.length > 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <div className="requests-list">
+                    {employeeRequests.length === 0 ? (
+                      <p className="empty-state p-3 mb-0">Vous n'avez pas encore de demandes.</p>
+                    ) : (
+                      employeeRequests.map(request => {
+                        const { icon, statusClass, statusText } = getRequestInfo(
+                          request.type || request.request_type, 
+                          request.status
+                        );
+                        return (
+                          <div className="request-history-item" key={request.id}>
+                            <div className="request-history-icon">
+                              <i className={`fas ${icon}`}></i>
                             </div>
-                            <p className="request-history-date">Soumise le {formatDate(request.submitDate || request.request_date)}</p>
-                            {(request.type || request.request_type) === 'leave' && (
-                              <p className="request-history-period">
-                                Du {formatDate(request.startDate || request.start_date)} au {formatDate(request.endDate || request.end_date)}
-                              </p>
-                            )}
-                            {(request.description || request.request_details) && (
-                              <p className="request-history-description">{request.description || request.request_details}</p>
-                            )}
-                          </div>
-                          <div className="request-history-actions">
-                            <button className="btn-icon" title="Voir détails" onClick={() => viewRequestDetails(request)}>
-                              <i className="fas fa-eye"></i>
-                            </button>
-                            {request.status === 'pending' && (
-                              <button className="btn-icon" title="Annuler la demande" onClick={() => cancelRequest(request.id)}>
-                                <i className="fas fa-times"></i>
+                            <div className="request-history-details">
+                              <div className="request-history-header">
+                                <h5>
+                                  {(request.type || request.request_type) === 'leave' ? 'Demande de congé' : 
+                                   (request.type || request.request_type) === 'document' ? 'Demande de document' : 'Autre demande'}
+                                </h5>
+                                <span className={`status-badge ${statusClass}`}>{statusText}</span>
+                              </div>
+                              <p className="request-history-date">Soumise le {formatDate(request.submitDate || request.request_date)}</p>
+                              {(request.type || request.request_type) === 'leave' && (
+                                <p className="request-history-period">
+                                  Du {formatDate(request.startDate || request.start_date)} au {formatDate(request.endDate || request.end_date)}
+                                </p>
+                              )}
+                              {(request.description || request.request_details) && (
+                                <p className="request-history-description">{request.description || request.request_details}</p>
+                              )}
+                            </div>
+                            <div className="request-history-actions">
+                              <button className="btn-icon" title="Voir détails" onClick={() => viewRequestDetails(request)}>
+                                <i className="fas fa-eye"></i>
                               </button>
-                            )}
+                              {request.status === 'pending' && (
+                                <button className="btn-icon" title="Annuler la demande" onClick={() => cancelRequest(request.id)}>
+                                  <i className="fas fa-times"></i>
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })
-                  )}
+                        );
+                      })
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1368,13 +1347,9 @@ const EmployeePortal = ({ onLogout }: any) => {
           {/* Sanctions Tab */}
           {activeTab === 'sanctions' && (
             <div className="sanctions-tab">
-              <div className="sanctions-header">
-                <h3>Mes sanctions disciplinaires</h3>
-              </div>
-              
               {sanctions.length === 0 ? (
-                <div className="empty-state p-4 text-center">
-                  <i className="fas fa-check-circle fa-3x text-success mb-3"></i>
+                <div className="empty-state-card">
+                  <i className="fas fa-check-circle fa-2x mb-2" style={{ color: '#2bb673' }}></i>
                   <h4>Aucune sanction</h4>
                   <p>Vous n'avez pas de sanctions disciplinaires à votre dossier.</p>
                 </div>
@@ -1419,23 +1394,18 @@ const EmployeePortal = ({ onLogout }: any) => {
           {/* Events Tab */}
           {activeTab === 'events' && (
             <div className="events-tab">
-              <div className="events-header">
-                <h3>Calendrier des événements</h3>
-                <p className="events-subtitle">Consultez les événements et activités à venir</p>
-              </div>
-              
               <div className="events-container">
                 {loading ? (
-                  <div className="text-center p-5">
+                  <div className="text-center p-4">
                     <div className="spinner-border text-primary" role="status">
                       <span className="visually-hidden">Chargement...</span>
                     </div>
                   </div>
                 ) : events.length === 0 ? (
                   <div className="empty-state-card">
-                    <i className="far fa-calendar-times fa-4x mb-3" style={{ color: '#bdc3c7' }}></i>
+                    <i className="far fa-calendar-times fa-2x mb-2" style={{ color: '#9aa8b5' }}></i>
                     <h4>Aucun événement prévu</h4>
-                    <p>Aucun événement n'est prévu prochainement. Les nouveaux événements apparaîtront ici.</p>
+                    <p>Les nouveaux événements apparaîtront ici.</p>
                   </div>
                 ) : (
                   <div className="events-list-full">

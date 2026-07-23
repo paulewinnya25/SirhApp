@@ -73,7 +73,7 @@ const EmployeePersonalStats = ({ user, employeeRequests, events, notes, sanction
             key={card.id} 
             className="stat-card-personal"
             style={{ 
-              borderTop: `4px solid ${card.color}`,
+              borderTop: `3px solid ${card.color}`,
               cursor: 'pointer'
             }}
             onClick={() => {

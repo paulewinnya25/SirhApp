@@ -1,45 +1,44 @@
-/* Employee Personal Stats Styles */
+/* Employee Personal Stats — densifié */
+
 .employee-personal-stats {
-  margin-bottom: 30px;
-  animation: fadeInUp 0.6s ease-out;
+  margin-bottom: 1rem;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
 }
 
 .stat-card-personal {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(41, 87, 133, 0.1);
   overflow: hidden;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  transition: border-color 0.15s ease;
 }
 
 .stat-card-personal:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: rgba(58, 142, 186, 0.35);
 }
 
 .stat-card-content-personal {
-  padding: 20px;
+  padding: 0.75rem 0.9rem;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 0.75rem;
 }
 
 .stat-icon-personal {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
@@ -49,24 +48,24 @@
 }
 
 .stat-value-personal {
-  font-size: 32px;
+  font-size: var(--fs-lg, 1.05rem);
   font-weight: 700;
   color: #295785;
   line-height: 1.2;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .stat-label-personal {
-  font-size: 14px;
-  color: #7f8c8d;
+  font-size: var(--fs-xs, 0.75rem);
+  color: #6c757d;
   font-weight: 500;
 }
 
 .stat-footer-personal {
-  padding: 12px 20px;
-  background-color: #f8f9fa;
-  border-top: 1px solid #e9ecef;
-  font-size: 12px;
+  padding: 0.4rem 0.9rem;
+  background-color: #f7fafc;
+  border-top: 1px solid rgba(41, 87, 133, 0.08);
+  font-size: var(--fs-xs, 0.75rem);
   color: #6c757d;
 }
 
@@ -74,29 +73,10 @@
   display: block;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  .stat-value-personal {
-    font-size: 28px;
-  }
-
-  .stat-card-content-personal {
-    padding: 15px;
+    gap: 0.65rem;
   }
 }
 
@@ -105,4 +85,3 @@
     grid-template-columns: 1fr;
   }
 }
-
