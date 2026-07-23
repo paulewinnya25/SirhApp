@@ -8,25 +8,83 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Authorization, Content-Type, x-client-info, apikey",
+  "Access-Control-Allow-Headers":
+    "Authorization, Content-Type, x-client-info, apikey, X-Client-Info, Prefer, Range, Accept",
   "Access-Control-Max-Age": "86400",
 };
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+    },
   });
 }
 
-function getPathSegments(url: string): string[] {
+function getPathSegments(reqUrl: string): string[] {
   try {
-    const path = new URL(url).pathname;
-    const match = path.match(/\/functions\/v1\/admin(?:\/(.*))?$/);
-    const subPath = match?.[1] || "";
-    return subPath ? subPath.split("/").filter(Boolean) : [];
+    let path = reqUrl;
+    try {
+      path = new URL(reqUrl).pathname;
+    } catch {
+      // relative URL
+    }
+
+    const patterns = [
+      /\/functions\/v1\/admin\/?(.*)$/i,
+      /^\/admin\/?(.*)$/i,
+    ];
+
+    for (const re of patterns) {
+      const match = path.match(re);
+      if (match) {
+        const sub = match[1] || "";
+        return sub.split("/").filter(Boolean);
+      }
+    }
+
+    // Supabase may strip the function prefix → pathname like /stats/overview
+    return path
+      .split("/")
+      .filter(Boolean)
+      .filter((s) => !["functions", "v1", "admin"].includes(s.toLowerCase()));
   } catch {
     return [];
+  }
+}
+
+/** Fallback when pathname parsing fails (some runtimes strip prefixes oddly). */
+function routeKey(reqUrl: string, segments: string[]): string {
+  const joined = segments.join("/");
+  if (joined) return joined;
+
+  const raw = reqUrl.toLowerCase();
+  const markers = [
+    "stats/overview",
+    "audit-logs/deletions",
+    "login-history",
+    "audit-logs",
+    "users/all",
+    "users/rh",
+    "employees/active",
+    "toggle-status",
+    "reset-password",
+  ];
+  for (const m of markers) {
+    if (raw.includes(`/admin/${m}`) || raw.includes(m)) return m;
+  }
+  return "";
+}
+
+function getSearchParams(reqUrl: string): URLSearchParams {
+  try {
+    return new URL(reqUrl).searchParams;
+  } catch {
+    const q = reqUrl.includes("?") ? reqUrl.split("?")[1] : "";
+    return new URLSearchParams(q);
   }
 }
 
@@ -222,27 +280,27 @@ serve(async (req) => {
   try {
     const supabase = getClient();
     const segments = getPathSegments(req.url);
-    const url = new URL(req.url);
-    const limit = Math.min(parseInt(url.searchParams.get("limit") || "100", 10) || 100, 1000);
-    const offset = parseInt(url.searchParams.get("offset") || "0", 10) || 0;
+    const key = routeKey(req.url, segments);
+    const searchParams = getSearchParams(req.url);
+    const limit = Math.min(parseInt(searchParams.get("limit") || "100", 10) || 100, 1000);
+    const offset = parseInt(searchParams.get("offset") || "0", 10) || 0;
 
     // GET admin/stats/overview
-    if (req.method === "GET" && segments[0] === "stats" && segments[1] === "overview") {
+    if (req.method === "GET" && (key === "stats/overview" || (segments[0] === "stats" && segments[1] === "overview"))) {
       return json(await handleStatsOverview(supabase));
     }
 
     // GET admin/login-history
-    if (req.method === "GET" && segments[0] === "login-history") {
+    if (req.method === "GET" && (key === "login-history" || segments[0] === "login-history")) {
       let query = supabase.from("login_history").select("*");
-      const userType = url.searchParams.get("userType");
-      const userId = url.searchParams.get("userId");
+      const userType = searchParams.get("userType");
+      const userId = searchParams.get("userId");
       if (userType) query = query.eq("user_type", userType);
       if (userId) query = query.eq("user_id", userId);
       const { data, error } = await query
         .order("login_time", { ascending: false })
         .range(offset, offset + limit - 1);
       if (error) {
-        // Table missing or column missing — return empty list for UI
         console.error("login-history error:", error.message);
         return json([]);
       }
@@ -252,13 +310,13 @@ serve(async (req) => {
     // GET admin/audit-logs/deletions
     if (
       req.method === "GET" &&
-      segments[0] === "audit-logs" &&
-      segments[1] === "deletions"
+      (key === "audit-logs/deletions" ||
+        (segments[0] === "audit-logs" && segments[1] === "deletions"))
     ) {
       let query = supabase.from("audit_logs").select("*").eq("action_type", "delete");
-      const entityType = url.searchParams.get("entityType");
-      const startDate = url.searchParams.get("startDate");
-      const endDate = url.searchParams.get("endDate");
+      const entityType = searchParams.get("entityType");
+      const startDate = searchParams.get("startDate");
+      const endDate = searchParams.get("endDate");
       if (entityType) query = query.eq("entity_type", entityType);
       if (startDate) query = query.gte("created_at", startDate);
       if (endDate) query = query.lte("created_at", endDate);
@@ -273,13 +331,13 @@ serve(async (req) => {
     }
 
     // GET admin/audit-logs
-    if (req.method === "GET" && segments[0] === "audit-logs") {
+    if (req.method === "GET" && (key === "audit-logs" || segments[0] === "audit-logs")) {
       let query = supabase.from("audit_logs").select("*");
-      const actionType = url.searchParams.get("actionType");
-      const entityType = url.searchParams.get("entityType");
-      const userId = url.searchParams.get("userId");
-      const startDate = url.searchParams.get("startDate");
-      const endDate = url.searchParams.get("endDate");
+      const actionType = searchParams.get("actionType");
+      const entityType = searchParams.get("entityType");
+      const userId = searchParams.get("userId");
+      const startDate = searchParams.get("startDate");
+      const endDate = searchParams.get("endDate");
       if (actionType) query = query.eq("action_type", actionType);
       if (entityType) query = query.eq("entity_type", entityType);
       if (userId) query = query.eq("user_id", userId);
@@ -296,7 +354,7 @@ serve(async (req) => {
     }
 
     // GET admin/users/rh
-    if (req.method === "GET" && segments[0] === "users" && segments[1] === "rh") {
+    if (req.method === "GET" && (key === "users/rh" || (segments[0] === "users" && segments[1] === "rh"))) {
       const { data, error } = await supabase
         .from("users")
         .select("id, email, nom_prenom, first_name, last_name, role, created_at, last_login, status")
@@ -307,9 +365,9 @@ serve(async (req) => {
     }
 
     // GET admin/users/all
-    if (req.method === "GET" && segments[0] === "users" && segments[1] === "all") {
-      const search = url.searchParams.get("search");
-      const userType = url.searchParams.get("userType");
+    if (req.method === "GET" && (key === "users/all" || (segments[0] === "users" && segments[1] === "all"))) {
+      const search = searchParams.get("search");
+      const userType = searchParams.get("userType");
       const allUsers: any[] = [];
 
       if (userType !== "employee") {
@@ -371,7 +429,7 @@ serve(async (req) => {
     }
 
     // GET admin/employees/active
-    if (req.method === "GET" && segments[0] === "employees" && segments[1] === "active") {
+    if (req.method === "GET" && (key === "employees/active" || (segments[0] === "employees" && segments[1] === "active"))) {
       const { data, error } = await supabase
         .from("employees")
         .select(
@@ -387,8 +445,7 @@ serve(async (req) => {
     // PATCH admin/users/:userType/:userId/toggle-status
     if (
       req.method === "PATCH" &&
-      segments[0] === "users" &&
-      segments[3] === "toggle-status"
+      (key === "toggle-status" || segments[3] === "toggle-status")
     ) {
       const userType = segments[1];
       const userId = segments[2];
@@ -421,7 +478,7 @@ serve(async (req) => {
     }
 
     // DELETE admin/users/:userType/:userId
-    if (req.method === "DELETE" && segments[0] === "users" && segments[1] && segments[2]) {
+    if (req.method === "DELETE" && segments[0] === "users" && segments[1] && segments[2] && !segments[3]) {
       const userType = segments[1];
       const userId = segments[2];
 
@@ -440,12 +497,10 @@ serve(async (req) => {
       return json({ error: "Invalid user type" }, 400);
     }
 
-    // POST admin/users/rh/:userId/reset-password
-    // POST admin/users/employee/:userId/reset-password (frontend variant)
+    // POST admin/users/:userType/:userId/reset-password
     if (
       req.method === "POST" &&
-      segments[0] === "users" &&
-      segments[3] === "reset-password"
+      (key === "reset-password" || segments[3] === "reset-password")
     ) {
       const userType = segments[1];
       const userId = segments[2];
@@ -453,8 +508,6 @@ serve(async (req) => {
       const newPassword = body.newPassword;
       if (!newPassword) return json({ error: "New password is required" }, 400);
 
-      // Store plain for now if no bcrypt in Deno edge — prefer hashing via DB trigger if available
-      // Minimal: update password field (same as many legacy paths in this project)
       if (userType === "rh") {
         const { data, error } = await supabase
           .from("users")
@@ -480,7 +533,16 @@ serve(async (req) => {
       return json({ error: "Invalid user type" }, 400);
     }
 
-    return json({ error: "Not found", path: segments }, 404);
+    return json(
+      {
+        error: "Not found",
+        path: segments,
+        key,
+        url: req.url,
+        method: req.method,
+      },
+      404
+    );
   } catch (err) {
     console.error("admin function error:", err);
     return json({ error: String(err) }, 500);
