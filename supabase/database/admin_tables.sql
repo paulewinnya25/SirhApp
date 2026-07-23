@@ -21,6 +21,28 @@ CREATE TABLE IF NOT EXISTS login_history (
 CREATE INDEX IF NOT EXISTS idx_login_history_user_type ON login_history(user_type);
 CREATE INDEX IF NOT EXISTS idx_login_history_login_time ON login_history(login_time DESC);
 
+-- Table d'audit
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id SERIAL PRIMARY KEY,
+  action_type VARCHAR(50) NOT NULL,
+  entity_type VARCHAR(50) NOT NULL,
+  entity_id VARCHAR(255) NOT NULL,
+  entity_name VARCHAR(255),
+  user_type VARCHAR(20) NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
+  user_email VARCHAR(255),
+  changes JSONB,
+  description TEXT,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  status VARCHAR(20) DEFAULT 'success',
+  error_message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action_type ON audit_logs(action_type);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
+
 -- Table pour les utilisateurs RH
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,

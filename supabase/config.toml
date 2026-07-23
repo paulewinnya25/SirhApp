@@ -57,3 +57,6 @@ verify_jwt = false
 
 [functions.departments]
 verify_jwt = false
+
+[functions.admin]
+verify_jwt = false

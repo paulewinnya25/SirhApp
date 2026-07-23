@@ -16,7 +16,8 @@ $functions = @(
     "evenements",
     "departments",
     "performance",
-    "requests"
+    "requests",
+    "admin"
 )
 
 foreach ($fn in $functions) {
