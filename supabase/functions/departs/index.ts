@@ -71,6 +71,52 @@ serve(async (req) => {
     const supabase = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "", { auth: { persistSession: false } });
     const segments = getPathSegments(req.url);
 
+    // POST /departs - Créer un départ (offboarding)
+    if (req.method === "POST" && segments.length === 0) {
+      const body = await req.json().catch(() => ({})) as Record<string, unknown>;
+      const employeeId = body.employee_id != null ? Number(body.employee_id) : null;
+      if (!employeeId || !body.date_depart) {
+        return new Response(JSON.stringify({ error: "employee_id et date_depart requis" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const row = {
+        employee_id: employeeId,
+        date_depart: body.date_depart,
+        motif_depart: body.motif_depart || null,
+        type_depart: body.type_depart || null,
+        notes: typeof body.notes === "string"
+          ? body.notes
+          : (body.checklist ? JSON.stringify({ checklist: body.checklist, notes: body.notes || "" }) : (body.notes as string) || null),
+      };
+
+      const { data, error } = await supabase
+        .from("depart_history")
+        .insert([row])
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Marquer l'employé comme inactif si possible
+      await supabase
+        .from("employees")
+        .update({ statut_employe: "inactif" })
+        .eq("id", employeeId);
+
+      return new Response(JSON.stringify(data || { success: true }), {
+        status: 201,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // GET /departs/:id - Récupérer un départ par ID (avec infos employé)
     const rawId = segments[0];
     const id = rawId && /^\d+$/.test(rawId) ? parseInt(rawId, 10) : (rawId && /^(new_|old_)\d+$/.test(rawId) ? parseInt(rawId.replace(/^(new_|old_)/, ""), 10) : null);
@@ -92,8 +138,15 @@ serve(async (req) => {
     }
 
     // GET /departs - Liste
-    const data = await fetchDepartures(supabase);
-    return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (req.method === "GET") {
+      const data = await fetchDepartures(supabase);
+      return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (err) {
     console.error(err);
     return new Response(JSON.stringify({ error: String(err) }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

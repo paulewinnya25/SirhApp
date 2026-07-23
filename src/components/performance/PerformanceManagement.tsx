@@ -30,8 +30,14 @@ const PerformanceManagement = () => {
           performanceService.getAll().catch(() => []),
           employeeService.getAll().catch(() => [])
         ]);
-        setEvaluations(evaluationsData);
-        setEmployees(employeesData);
+        const evalList = Array.isArray(evaluationsData)
+          ? evaluationsData
+          : (evaluationsData?.evaluations || evaluationsData?.data || []);
+        const empList = Array.isArray(employeesData)
+          ? employeesData
+          : (employeesData?.employees || employeesData?.data || []);
+        setEvaluations(evalList);
+        setEmployees(empList);
       } catch (err) {
         console.error('Erreur lors du chargement des données:', err);
         setError('Erreur lors du chargement des données');
@@ -107,7 +113,10 @@ const PerformanceManagement = () => {
 
       // Recharger les données
       const evaluationsData = await performanceService.getAll();
-      setEvaluations(evaluationsData);
+      const evalList = Array.isArray(evaluationsData)
+        ? evaluationsData
+        : (evaluationsData?.evaluations || evaluationsData?.data || []);
+      setEvaluations(evalList);
       closeModal();
     } catch (err) {
       console.error('Erreur lors de la sauvegarde:', err);
@@ -124,7 +133,10 @@ const PerformanceManagement = () => {
     try {
       await performanceService.delete(id);
       const evaluationsData = await performanceService.getAll();
-      setEvaluations(evaluationsData);
+      const evalList = Array.isArray(evaluationsData)
+        ? evaluationsData
+        : (evaluationsData?.evaluations || evaluationsData?.data || []);
+      setEvaluations(evalList);
     } catch (err) {
       console.error('Erreur lors de la suppression:', err);
       setError('Erreur lors de la suppression de l\'évaluation');

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import API_CONFIG from '../../config/api.config';
+import { employeeService, departService } from '../../services/api';
 import './Offboarding.css';
 
 const Offboarding = () => {
@@ -74,24 +73,17 @@ const Offboarding = () => {
   ];
 
   useEffect(() => {
-    // Charger la liste des employés depuis la base de données
     const fetchEmployees = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(API_CONFIG.buildUrl(API_CONFIG.ENDPOINTS.EMPLOYEES.ACTIVE), {
-          headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          }
+        const data = await employeeService.getAll();
+        const list = Array.isArray(data) ? data : (data?.employees || data?.data || []);
+        const active = list.filter((emp: any) => {
+          const status = (emp.statut_employe || emp.status || '').toString().toLowerCase();
+          return !status || status === 'actif' || status === 'active';
         });
-        
-        if (response.data.success) {
-          setEmployees(response.data.employees || []);
-          console.log('✅ Employés chargés depuis la base de données:', response.data.employees.length);
-        } else {
-          console.error('❌ Erreur API:', response.data.message);
-          setError('Impossible de récupérer la liste des employés depuis la base de données');
-          setEmployees([]);
-        }
+        setEmployees(active);
+        console.log('✅ Employés chargés:', active.length);
       } catch (err) {
         console.error('❌ Erreur lors du chargement des employés:', err);
         setError('Erreur de connexion à la base de données. Vérifiez votre connexion et réessayez.');
@@ -195,44 +187,32 @@ const Offboarding = () => {
     setError(null);
     
     try {
-      // Créer un FormData pour l'envoi
-      const submitData = new FormData();
-      
-      // Ajouter les données de base
-      submitData.append('offboardingData', JSON.stringify({
-        ...formData.employeeInfo,
+      const payload = {
+        employee_id: formData.employeeInfo.employee_id,
+        matricule: formData.employeeInfo.matricule,
+        nom_prenom: formData.employeeInfo.nom_prenom,
+        poste_actuel: formData.employeeInfo.poste_actuel,
+        entity: formData.employeeInfo.entity,
+        departement: formData.employeeInfo.departement,
+        type_contrat: formData.employeeInfo.type_contrat,
+        date_entree: formData.employeeInfo.date_entree,
+        date_depart: formData.employeeInfo.date_depart,
+        motif_depart: formData.employeeInfo.motif_depart,
+        type_depart: formData.employeeInfo.type_depart,
         checklist: formData.checklist,
         notes: formData.notes
-      }));
-      
-      // Ajouter les documents
-      formData.documents.forEach((doc, index) => {
-        submitData.append('documents', doc.file);
-        submitData.append('documentTypes', doc.type);
-      });
+      };
 
-      // Appel API (à adapter selon votre backend)
-      const response = await axios.post(API_CONFIG.buildUrl(API_CONFIG.ENDPOINTS.EMPLOYEES.OFFBOARDING), submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-        }
-      });
+      await departService.create(payload);
 
-      if (response.data.success) {
-        // Supprimer l'employé de la liste locale
-        setEmployees(prev => prev.filter(emp => emp.id !== formData.employeeInfo.employee_id));
-        
-        setSuccess(true);
-        setTimeout(() => {
-          navigate('/employees');
-        }, 3000);
-      } else {
-        throw new Error(response.data.message || 'Erreur lors de l\'offboarding');
-      }
+      setEmployees(prev => prev.filter(emp => emp.id !== formData.employeeInfo.employee_id));
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/employees');
+      }, 3000);
     } catch (err) {
       console.error('Erreur offboarding:', err);
-      setError(err.response?.data?.message || 'Erreur lors de l\'offboarding. Veuillez réessayer.');
+      setError(err.response?.data?.message || err.message || 'Erreur lors de l\'offboarding. Veuillez réessayer.');
     } finally {
       setLoading(false);
     }

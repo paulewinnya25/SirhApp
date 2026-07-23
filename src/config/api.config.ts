@@ -6,9 +6,9 @@ const API_CONFIG = {
   // Endpoints
   ENDPOINTS: {
     EMPLOYEES: {
-      ACTIVE: '/api/employees/active',
-      OFFBOARDING: '/api/employees/offboarding',
-      ONBOARDING: '/api/employees/onboarding'
+      ACTIVE: '/employees',
+      OFFBOARDING: '/departs',
+      ONBOARDING: '/employees'
     }
   },
   
