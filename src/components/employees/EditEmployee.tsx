@@ -11,22 +11,6 @@ const EditEmployee = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
-    // Fonction de calcul du total de rémunération (réservée pour usage futur)
-    // eslint-disable-next-line no-unused-vars
-    const calculateTotalRemuneration = () => {
-        const compensationFields = [
-            'salaire_base', 'sursalaire', 'prime_responsabilite', 
-            'transport', 'logement', 'prime_assiduite', 'primes_diverses', 
-            'panier', 'prime_ca', 'ind_caisse', 'ind_domesticite', 
-            'ind_eau_electricite', 'ind_voiture', 'prime_salissure', 
-            'honoraires', 'ind_stage'
-        ];
-
-        return compensationFields.reduce((total, field) => {
-            return total + (parseFloat(employeeData[field] || 0));
-        }, 0);
-    };
-
     const [employeeData, setEmployeeData] = useState<any>({
         // Informations générales
         matricule: '',

@@ -144,17 +144,6 @@ const InterviewManagement = () => {
     }
   };
 
-  // Fonction réservée pour usage futur
-  // eslint-disable-next-line no-unused-vars
-  const getTypeText = (type) => {
-    switch (type) {
-      case 'face_to_face': return 'En présentiel';
-      case 'video': return 'Vidéo';
-      case 'phone': return 'Téléphonique';
-      default: return 'Autre';
-    }
-  };
-
   return (
     <div className="interview-management">
       <div className="page-title-wrapper">

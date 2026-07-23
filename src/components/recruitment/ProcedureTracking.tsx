@@ -85,41 +85,6 @@ const ProcedureTracking = () => {
     }
   };
 
-  // Documents requis par étape (réservé pour usage futur)
-  // eslint-disable-next-line no-unused-vars
-  const documentsRequis = {
-    'nouveau': {
-      'diplome': 'Diplôme de médecine (original et copie)',
-      'piece_identite': 'Pièce d\'identité (passeport)',
-      'releves_notes': 'Relevés de notes',
-      'acte_naissance': 'Acte de naissance'
-    },
-    'authentification': {
-      'diplome_authentifie': 'Diplômes authentifiés par l\'ambassade',
-      'attestation_ambassade': 'Attestation d\'authentification',
-      'engagement_rapatriement': 'Engagement de rapatriement'
-    },
-    'homologation': {
-      'demande_homologation': 'Demande d\'homologation complète',
-      'attestation_homologation': 'Attestation d\'homologation',
-      'certificat_competence': 'Certificat de compétence'
-    },
-    'cnom': {
-      'inscription_cnom': 'Inscription au CNOM',
-      'carte_professionnelle': 'Carte professionnelle',
-      'attestation_inscription': 'Attestation d\'inscription'
-    },
-    'autorisation_exercer': {
-      'autorisation_exercer': 'Autorisation d\'exercer',
-      'certificat_formation': 'Certificat de formation continue'
-    },
-    'autorisation_travail': {
-      'autorisation_travail': 'Autorisation de travail',
-      'carte_sejour': 'Carte de séjour',
-      'contrat_travail': 'Contrat de travail'
-    }
-  };
-
   // Charger les données depuis la base de données
   useEffect(() => {
     const fetchData = async () => {
@@ -269,22 +234,6 @@ const ProcedureTracking = () => {
     } catch (error) {
       console.error('Erreur lors du renvoi du lien:', error);
       setErrorMessage('Erreur lors du renvoi du lien d\'accès');
-    }
-  };
-
-  // Gérer le changement de statut (réservé pour usage futur)
-  // eslint-disable-next-line no-unused-vars
-  const handleStatusChange = async (dossierId, newStatus) => {
-    try {
-      await procedureService.updateDossier(dossierId, { statut: newStatus });
-      setSuccessMessage('Statut mis à jour avec succès');
-      
-      // Recharger les données
-      window.location.reload();
-      
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut:', error);
-      setErrorMessage('Erreur lors de la mise à jour du statut');
     }
   };
 

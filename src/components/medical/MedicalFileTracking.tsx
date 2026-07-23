@@ -40,7 +40,7 @@ const MedicalFileTracking = () => {
     const [dossier, setDossier] = useState(null);
     const [documents, setDocuments] = useState<any[]>([]);
     const [etapeActuelle, setEtapeActuelle] = useState('nouveau');
-    const [error, setError] = useState('');
+    const [, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [activeModal, setActiveModal] = useState(null);
     const [selectedDocument, setSelectedDocument] = useState(null);

@@ -420,18 +420,8 @@ const MedicalVisits = () => {
     try {
       setIsSendingReminder(true);
       
-      // Prepare reminder data (réservé pour usage futur)
-      // eslint-disable-next-line no-unused-vars
-      const reminderData = {
-        visite_id: reminderTarget.id,
-        employee_name: `${reminderTarget.nom} ${reminderTarget.prenom}`,
-        message: values.message,
-        send_email: values.send_email,
-        send_sms: values.send_sms
-      };
-      
       // In a real app, you would call an API endpoint to send a reminder
-      // await visiteMedicaleService.sendReminder(reminderData);
+      // await visiteMedicaleService.sendReminder({...});
       
       // Since this is a demo, we'll just simulate a delay
       await new Promise(resolve => setTimeout(resolve, 1000));
