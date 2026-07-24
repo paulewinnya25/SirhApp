@@ -185,6 +185,40 @@ serve(async (req) => {
       });
     }
 
+    // DELETE /requests/all - supprimer toutes les demandes
+    if (req.method === "DELETE" && segments[0] === "all") {
+      const { data: existing, error: countError } = await supabase
+        .from("employee_requests")
+        .select("id");
+
+      if (countError) {
+        return new Response(JSON.stringify({ error: countError.message }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const deletedCount = existing?.length ?? 0;
+      if (deletedCount > 0) {
+        const { error } = await supabase
+          .from("employee_requests")
+          .delete()
+          .gte("id", 0);
+
+        if (error) {
+          return new Response(JSON.stringify({ error: error.message }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+
+      return new Response(JSON.stringify({ success: true, deletedCount }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     return new Response(JSON.stringify({ error: "Not found" }), {
       status: 404,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

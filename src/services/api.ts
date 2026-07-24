@@ -320,6 +320,17 @@ export const requestService = {
       throw error;
     }
   },
+
+  // Supprimer toutes les demandes
+  deleteAll: async () => {
+    try {
+      const response = await api.delete('/requests/all');
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting all employee requests:', error);
+      throw error;
+    }
+  },
   
   // Rechercher des demandes avec filtres
   search: async (filters) => {

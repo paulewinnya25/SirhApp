@@ -312,21 +312,18 @@ const EmployeeRequests = () => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:5000/api/requests/all', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-        }
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erreur lors de la suppression');
+      let deletedCount = 0;
+      try {
+        const result = await requestService.deleteAll();
+        deletedCount = result?.deletedCount ?? requests.length;
+      } catch (bulkErr) {
+        // Fallback si DELETE /requests/all n'est pas encore déployé
+        console.warn('deleteAll unavailable, falling back to per-request delete:', bulkErr);
+        const ids = requests.map((r) => r.id).filter(Boolean);
+        await Promise.all(ids.map((id) => requestService.delete(id)));
+        deletedCount = ids.length;
       }
-      
-      const result = await response.json();
-      
+
       // Réinitialiser les données
       setRequests([]);
       setFilteredRequests([]);
@@ -340,7 +337,7 @@ const EmployeeRequests = () => {
         documents: 0
       });
       
-      showNotification(`Toutes les demandes ont été supprimées avec succès (${result.deletedCount} lignes supprimées)`, 'success');
+      showNotification(`Toutes les demandes ont été supprimées avec succès (${deletedCount} lignes supprimées)`, 'success');
       setShowDeleteAllModal(false);
       setConfirmDeleteAll(false);
       
