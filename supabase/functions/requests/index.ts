@@ -15,9 +15,12 @@ function getPathSegments(url: string): string[] {
   try {
     const u = new URL(url);
     const path = u.pathname;
-    const match = path.match(/\/functions\/v1\/requests(?:\/(.*))?$/);
-    const subPath = match?.[1] || "";
-    return subPath ? subPath.split("/").filter(Boolean) : [];
+    // Supabase peut exposer /functions/v1/requests/... ou /requests/...
+    const cleaned = path
+      .replace(/^\/functions\/v1\/requests\/?/, "")
+      .replace(/^\/requests\/?/, "")
+      .replace(/^\//, "");
+    return cleaned ? cleaned.split("/").filter(Boolean) : [];
   } catch {
     return [];
   }
@@ -160,6 +163,60 @@ serve(async (req) => {
       }
       return new Response(JSON.stringify(data), {
         status: 201,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // PUT /requests/:id/approve
+    if (req.method === "PUT" && segments[0] && /^\d+$/.test(segments[0]) && segments[1] === "approve") {
+      const id = parseInt(segments[0], 10);
+      const body = await req.json().catch(() => ({})) as Record<string, unknown>;
+      const { data, error } = await supabase
+        .from("employee_requests")
+        .update({
+          status: "approved",
+          response_date: new Date().toISOString(),
+          response_comments: body.response_comments ?? body.comments ?? "",
+        })
+        .eq("id", id)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify(data || { success: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // PUT /requests/:id/reject
+    if (req.method === "PUT" && segments[0] && /^\d+$/.test(segments[0]) && segments[1] === "reject") {
+      const id = parseInt(segments[0], 10);
+      const body = await req.json().catch(() => ({})) as Record<string, unknown>;
+      const { data, error } = await supabase
+        .from("employee_requests")
+        .update({
+          status: "rejected",
+          response_date: new Date().toISOString(),
+          response_comments: body.response_comments ?? body.rejectionReason ?? "",
+        })
+        .eq("id", id)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify(data || { success: true }), {
+        status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
