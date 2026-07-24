@@ -56,6 +56,58 @@ serve(async (req) => {
       );
     }
 
+    // GET /requests/stats/overview
+    if (req.method === "GET" && segments[0] === "stats" && (segments[1] === "overview" || !segments[1])) {
+      const { data, error } = await supabase
+        .from("employee_requests")
+        .select("id, status, request_type");
+
+      if (error) throw error;
+      const rows = data || [];
+      const isLeave = (t: string) => /leave|conge|cong[eé]/i.test(t);
+      const isAbsence = (t: string) => /absence/i.test(t);
+      const isDocument = (t: string) => /document/i.test(t);
+      const stats = {
+        total: rows.length,
+        pending: rows.filter((r) => r.status === "pending").length,
+        approved: rows.filter((r) => r.status === "approved").length,
+        rejected: rows.filter((r) => r.status === "rejected").length,
+        leaves: rows.filter((r) => isLeave(String(r.request_type || ""))).length,
+        absences: rows.filter((r) => isAbsence(String(r.request_type || ""))).length,
+        documents: rows.filter((r) => isDocument(String(r.request_type || ""))).length,
+      };
+      return new Response(JSON.stringify(stats), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // GET /requests/search/filter?status=&type=&...
+    if (req.method === "GET" && segments[0] === "search") {
+      const url = new URL(req.url);
+      let query = supabase.from("employee_requests").select("*").order("request_date", { ascending: false });
+      const status = url.searchParams.get("status");
+      const type = url.searchParams.get("type") || url.searchParams.get("request_type");
+      if (status) query = query.eq("status", status);
+      if (type) query = query.eq("request_type", type);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      const rows = (data || []) as Record<string, unknown>[];
+      const ids = [...new Set(rows.map((r) => r.employee_id).filter(Boolean))];
+      const empMap: Record<number, Record<string, unknown>> = {};
+      if (ids.length > 0) {
+        const { data: emps } = await supabase.from("employees").select("id, nom_prenom, poste_actuel, entity, email").in("id", ids);
+        (emps || []).forEach((e: Record<string, unknown>) => { empMap[Number(e.id)] = e; });
+      }
+      const result = rows.map((r) => {
+        const emp = empMap[Number(r.employee_id)];
+        return { ...r, nom_prenom: emp?.nom_prenom ?? null, poste_actuel: emp?.poste_actuel ?? null, entity: emp?.entity ?? null, email: emp?.email ?? null };
+      });
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (req.method === "GET" && segments.length === 0) {
       const { data: requests, error } = await supabase
         .from("employee_requests")

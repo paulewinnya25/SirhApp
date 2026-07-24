@@ -15,9 +15,11 @@ function getPathSegments(url: string): string[] {
   try {
     const u = new URL(url);
     const path = u.pathname;
-    const match = path.match(/\/functions\/v1\/employees(?:\/(.*))?$/);
-    const subPath = match?.[1] || "";
-    return subPath ? subPath.split("/").filter(Boolean) : [];
+    const cleaned = path
+      .replace(/^\/functions\/v1\/employees\/?/, "")
+      .replace(/^\/employees\/?/, "")
+      .replace(/^\//, "");
+    return cleaned ? cleaned.split("/").filter(Boolean) : [];
   } catch {
     return [];
   }

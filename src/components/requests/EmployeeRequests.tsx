@@ -60,11 +60,22 @@ const EmployeeRequests = () => {
     try {
       // Récupérer les demandes
       const requestsData = await requestService.getAll();
-      setRequests(requestsData);
-      
-      // Récupérer les statistiques
-      const statsData = await requestService.getStatistics();
-      setStats(statsData);
+      const list = Array.isArray(requestsData) ? requestsData : [];
+      setRequests(list);
+
+      // Stats calculées côté client (évite /requests/stats/overview si absente)
+      const isLeave = (t: string) => /leave|conge|cong[eé]/i.test(t || '');
+      const isAbsence = (t: string) => /absence/i.test(t || '');
+      const isDocument = (t: string) => /document/i.test(t || '');
+      setStats({
+        total: list.length,
+        pending: list.filter((r) => r.status === 'pending').length,
+        approved: list.filter((r) => r.status === 'approved').length,
+        rejected: list.filter((r) => r.status === 'rejected').length,
+        leaves: list.filter((r) => isLeave(r.request_type)).length,
+        absences: list.filter((r) => isAbsence(r.request_type)).length,
+        documents: list.filter((r) => isDocument(r.request_type)).length,
+      });
     } catch (err) {
       console.error('Error fetching requests data:', err);
       setError('Erreur lors du chargement des données. Veuillez réessayer plus tard.');

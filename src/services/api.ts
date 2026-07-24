@@ -136,7 +136,7 @@ export const employeeService = {
   // Get all employees
   getAll: async () => {
     try {
-      const response = await api.get('/employees');
+      const response = await api.get('/employees', { timeout: 60000 });
       return response.data;
     } catch (error) {
       console.error('Error fetching employees:', error);
